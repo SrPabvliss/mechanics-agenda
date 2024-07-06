@@ -11,15 +11,25 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Create new branch
         run: |
-          git checkout -b ${{ github.event.issue.title }}
-          git push origin ${{ github.event.issue.title }}
+          ISSUE_TITLE=${{ github.event.issue.title }}
+          BRANCH_NAME="feature/$(echo "$ISSUE_TITLE" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')"
+          git checkout -b $BRANCH_NAME
+          git push origin $BRANCH_NAME
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Comment on issue
         run: |
           ISSUE_NUMBER=${{ github.event.issue.number }}
-          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          BRANCH_NAME="feature/$(echo "${{ github.event.issue.title }}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')"
+          curl -X POST -H "Authorization: token ${{ github.token }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/${{ github.repository }}/issues/${ISSUE_NUMBER}/comments \
-            -d "{\"body\": \"Branch created: ${{ github.event.issue.title }}\"}"
+            -d "{\"body\": \"Branch created: $BRANCH_NAME\"}"
