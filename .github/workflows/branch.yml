@@ -21,7 +21,7 @@ jobs:
       - name: Create new branch
         run: |
           ISSUE_TITLE=${{ github.event.issue.title }}
-          BRANCH_NAME="feature/$(echo "$ISSUE_TITLE" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')"
+          BRANCH_NAME=${{ github.event.issue.title }}
           git checkout -b $BRANCH_NAME
           git push origin $BRANCH_NAME
         env:
