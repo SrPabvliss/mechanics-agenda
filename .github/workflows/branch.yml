@@ -12,11 +12,17 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+        with:
+          ref: develop
 
       - name: Set up Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Pull latest changes from develop
+        run: |
+          git pull origin develop
 
       - name: Create new branch
         run: |
