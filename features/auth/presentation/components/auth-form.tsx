@@ -1,32 +1,28 @@
 'use client'
-import Image from 'next/image'
 
-import Logo from '@/public/GabMotorsLogo.png'
+import { FormProvider } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import RHFInput from '@/components/ui/rhf/RHFInput'
+import RHFPasswordInput from '@/components/ui/rhf/RHFPasswordInput'
 
-import { PasswordInput } from './password-input'
+import { useAuth } from '../../hooks/use-auth-form'
 
 const AuthForm = () => {
+  const { methods, onSubmit, isSubmiting } = useAuth()
+
   return (
     <>
-      <div className="flex flex-col items-center gap-4 ">
-        <Image src={Logo} alt="Gab Motors Logo" width={170} height={170} />
-        <h1 className="text-2xl">Gab Motors Agenda</h1>
-        <h2>Inicio de sesión</h2>
-        <div className="w-full">
-          <Label htmlFor="username">Usuario</Label>
-          <Input placeholder="Usuario" id="username" name="username" />
-        </div>
-        <div className="w-full">
-          <Label htmlFor="password">Contraseña</Label>
-          <PasswordInput id="password" name="password" placeholder="Contraseña" />
-        </div>
-
-        <Button>Ingresar</Button>
-      </div>
+      <FormProvider {...methods}>
+        <form className="flex flex-col items-center gap-4" onSubmit={methods.handleSubmit(onSubmit)}>
+          <RHFInput name="username" label="Usuario" placeholder="Usuario" />
+          <RHFPasswordInput name="password" label="Contraseña" placeholder="Contraseña" />
+          <Button disabled={isSubmiting} type="submit">
+            {isSubmiting ? <LoadingSpinner /> : 'Ingresar'}
+          </Button>
+        </form>
+      </FormProvider>
     </>
   )
 }
