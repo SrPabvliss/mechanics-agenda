@@ -4,8 +4,9 @@ export interface IEvents {
 
 export interface IEvent {
   id: number
+  title: string
   label: string
   startTime: string
   endTime?: string
-  color?: string
+  color: string
 }
