@@ -1,12 +1,13 @@
-import { IActivity } from '@/shared/interfaces/ISchedule'
+import { IEvent } from '@/shared/interfaces/IEvents'
 
 interface ItemHourProps {
-  activity: IActivity
+  activity: IEvent
+  onClick: (id: number) => void
 }
 
-const ItemHour = ({ activity: { color, label, startTime, title } }: ItemHourProps) => {
+const ItemHour = ({ activity: { id, color, label, startTime, title }, onClick }: ItemHourProps) => {
   return (
-    <li className={`flex h-full w-full flex-col rounded-md ${color} p-1`}>
+    <li className={`flex h-full w-full flex-col rounded-md p-1 ${color}`} onClick={() => onClick(id)}>
       <div className="flex items-center gap-1 truncate">
         <h1 className="font-medium">{title}</h1> <span className="text-sm">{startTime}</span>
       </div>

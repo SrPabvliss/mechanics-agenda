@@ -1,31 +1,37 @@
 import { ISchedule } from '@/shared/interfaces/ISchedule'
 
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+
 import ItemHour from './item-hour'
 
 interface ItemDayProps {
-  shedule: ISchedule
+  schedule: ISchedule
+  onClick: (id: number) => void
 }
 
-const ItemDay = ({ shedule }: ItemDayProps) => {
+const ItemDay = ({ schedule, onClick }: ItemDayProps) => {
   return (
     <li className="flex gap-0.5">
-      <span className="-mt-[10px] w-12 text-sm text-blue-900">{shedule.hour}</span>
-      <div className="flex w-[calc(100%-50px)] flex-col gap-1 bg-blue-50 pb-1">
+      <span className="-mt-[10px] w-12 text-sm text-blue-900 dark:text-white">{schedule.hour}</span>
+      <div className="flex w-[calc(100%-50px)] flex-col gap-1 bg-blue-50 pb-1 dark:bg-blue-950">
         <hr className="w-full border-t-[1.5px] border-dashed border-blue-400" />
-        <div className="scrollbar-custom h-14 w-full overflow-x-auto text-blue-900">
-          <ul className="flex h-full w-full gap-1 px-1">
-            {shedule.activities1.map((activity) => (
-              <ItemHour key={activity.id} activity={activity} />
+        <ScrollArea className="h-14 text-blue-900">
+          <ul className="flex gap-1 px-1">
+            {schedule.activities1.map((activity) => (
+              <ItemHour key={activity.id} activity={activity} onClick={onClick} />
             ))}
           </ul>
-        </div>
-        <div className="scrollbar-custom h-14 w-full overflow-x-auto text-blue-900">
-          <ul className="flex h-full w-full gap-1 px-1">
-            {shedule.activities2.map((activity) => (
-              <ItemHour key={activity.id} activity={activity} />
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+
+        <ScrollArea className="h-14 text-blue-900">
+          <ul className="flex gap-1 px-1">
+            {schedule.activities2.map((activity) => (
+              <ItemHour key={activity.id} activity={activity} onClick={onClick} />
             ))}
           </ul>
-        </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
     </li>
   )

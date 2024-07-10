@@ -1,15 +1,8 @@
-export interface IActivity {
-  id: number
-  startTime: string
-  endTime?: string
-  title: string
-  label: string
-  color: string
-}
+import { IEvent } from './IEvents'
 
 export interface ISchedule {
   id: number
   hour: string
-  activities1: IActivity[]
-  activities2: IActivity[]
+  activities1: IEvent[]
+  activities2: IEvent[]
 }

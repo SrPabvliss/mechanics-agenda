@@ -1,5 +1,7 @@
 // import { useRouter } from 'next/router'
 
+import { useRouter } from 'next/navigation'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
@@ -12,7 +14,7 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>
 
 export function useAuth() {
-  // const router = useRouter()
+  const router = useRouter()
 
   const methods = useForm<FormFields>({
     resolver: zodResolver(schema),
@@ -24,7 +26,10 @@ export function useAuth() {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     await new Promise((resolve) => setTimeout(resolve, 1000))
+
     console.log(data)
+
+    router.push('/quotes')
   }
 
   return { onSubmit, methods, isSubmiting: methods.formState.isSubmitting }
