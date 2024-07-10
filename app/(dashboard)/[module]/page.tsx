@@ -1,6 +1,7 @@
 'use client'
 import { useParams } from 'next/navigation'
 
+import { ContentLayout } from '@/core/layout/content/content-layout'
 import { AdminQuotesView } from '@/features/admin-quotes/presentation/views/admin-quotes-view'
 import { QuotesView } from '@/features/quotes/presentation/views/quotes-view'
 import { ReviewsView } from '@/features/reviews/presentation/views/reviews-view'
@@ -15,7 +16,13 @@ const Page: FC = () => {
     reviews: ReviewsView,
   }
 
-  const SelectedView = Views[module] || (() => <div>Module not found</div>)
+  const SelectedView =
+    Views[module] ||
+    (() => (
+      <ContentLayout title="Not found">
+        <div>Module not found</div>
+      </ContentLayout>
+    ))
 
   return <div>{<SelectedView />}</div>
 }
