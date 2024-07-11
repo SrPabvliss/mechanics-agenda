@@ -1,21 +1,22 @@
-import { usePathname, useRouter } from 'next/navigation'
-
 import { ContentLayout } from '@/core/layout/content/content-layout'
+import { DatePicker } from '@/features/reviews/presentation/components/date-picker'
 import React from 'react'
 
-import { Button } from '@/components/ui/button'
+import { useReviewsView } from '../../hooks/use-reviews-view'
+import { TabList } from '../components/tab-list'
+import { ViewButtons } from '../components/views-buttons'
 
 export const ReviewsView = () => {
-  const router = useRouter()
-  const newPath = `${usePathname()}/new`
-  const editPath = `${usePathname()}/edit/1`
+  const { date, view, type } = useReviewsView()
 
   return (
     <>
       <ContentLayout title="Revisiones">
-        <div>ReviewsView</div>
-        <Button onClick={() => router.push(newPath)}>Crear</Button>
-        <Button onClick={() => router.push(editPath)}>Editar</Button>
+        <div className="flex flex-col gap-4">
+          <ViewButtons view={view} />
+          {view === 'day' && <DatePicker value={date} />}
+          {view === 'day' && <TabList type={type} />}
+        </div>
       </ContentLayout>
     </>
   )
