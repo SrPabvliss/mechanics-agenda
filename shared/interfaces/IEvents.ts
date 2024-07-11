@@ -10,3 +10,12 @@ export interface IEvent {
   endTime?: string
   color: string
 }
+
+export interface IEventsDayInWeek {
+  [key: string]: IEventsHour
+}
+
+export interface IEventsHour {
+  events1: IEvent[]
+  events2: IEvent[]
+}

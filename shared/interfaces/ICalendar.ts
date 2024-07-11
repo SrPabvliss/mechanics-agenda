@@ -1,4 +1,4 @@
-export interface IDaysInMonth {
+export interface IDay {
   day: number
   month: number
   year: number

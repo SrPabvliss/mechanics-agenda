@@ -8,8 +8,8 @@ interface CalendarEventProps {
 
 const CalendarEvent = ({ event }: CalendarEventProps) => {
   return (
-    <div className={cn('w-full rounded', event?.color)}>
-      <p className="truncate text-xs text-blue-900 md:text-sm">{event.label}</p>
+    <div className={cn('w-full rounded', event.color)}>
+      <p className="truncate text-xs text-blue-900 md:text-sm">{event.title}</p>
     </div>
   )
 }

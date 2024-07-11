@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { generateCalendar } from '@/lib/generateCalendar'
 
-import { IDaysInMonth } from '../interfaces/ICalendar'
+import { IDay } from '../interfaces/ICalendar'
 
 interface IUseCalendar {
   onClickDay: (day: string) => void
@@ -13,7 +13,7 @@ interface IUseCalendar {
 
 const useCalendar = ({ onChangeMonth, onClickDay }: IUseCalendar) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
-  const [daysInMonth, setDaysInMonth] = useState<IDaysInMonth[]>([])
+  const [daysInMonth, setDaysInMonth] = useState<IDay[]>([])
 
   useEffect(() => {
     setDaysInMonth(generateCalendar(currentDate.getFullYear(), currentDate.getMonth()))
@@ -35,7 +35,7 @@ const useCalendar = ({ onChangeMonth, onClickDay }: IUseCalendar) => {
     })
   }
 
-  const handleDayClick = ({ date }: IDaysInMonth): void => {
+  const handleDayClick = ({ date }: IDay): void => {
     onClickDay(date)
   }
 
