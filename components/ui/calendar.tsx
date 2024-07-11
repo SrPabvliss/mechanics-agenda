@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
+import { es } from 'date-fns/locale'
 import * as React from 'react'
 import { DayPicker } from 'react-day-picker'
 
@@ -10,7 +11,7 @@ import { cn } from '@/lib/utils'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
-function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+function Calendar({ className, classNames, showOutsideDays = true, locale = es, ...props }: CalendarProps) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -57,6 +58,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         IconRight: ({ ...props }) => <ChevronRightIcon className="h-4 w-4" />,
       }}
       {...props}
+      locale={locale}
     />
   )
 }
