@@ -1,4 +1,4 @@
-import { IDaysInMonth } from '@/shared/interfaces/ICalendar'
+import { IDay } from '@/shared/interfaces/ICalendar'
 import { IEvents } from '@/shared/interfaces/IEvents'
 
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -8,8 +8,8 @@ import { cn } from '@/lib/utils'
 import CalendarEvent from './calendar-event'
 
 interface CalendarDayInMonthProps {
-  handleDayClick: ({ date }: IDaysInMonth) => void
-  dayInMonth: IDaysInMonth
+  handleDayClick: ({ date }: IDay) => void
+  dayInMonth: IDay
   currentDate: Date
   events: IEvents
 }
