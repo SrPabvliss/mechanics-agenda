@@ -1,5 +1,5 @@
 import CalendarWeek from '@/shared/components/calendar-week/calendar-week'
-// import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
+import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
 import { useState } from 'react'
 
@@ -8,10 +8,9 @@ import { reviewData } from '../../models/IApiReview'
 
 const ReviewWeek = ({}: { value?: string }) => {
   const [schedule, setSchedule] = useState<IScheduleWeek[]>([])
-  // const updateQueryParam = useUpdateQueryParam()
+  const updateQueryParam = useUpdateQueryParam()
 
   const onChange = async (date1: string, date2: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
     const startDate = new Date(date1)
     const endDate = new Date(date2)
 
@@ -25,9 +24,11 @@ const ReviewWeek = ({}: { value?: string }) => {
   }
 
   const onClick = (date: string) => {
-    alert(`Clicked on ${date}`)
-    // updateQueryParam('date', date)
-    // updateQueryParam('view', 'day')
+    updateQueryParam([
+      { param: 'date', value: date },
+      { param: 'view', value: 'day' },
+      { param: 'type', value: 'pending' },
+    ])
   }
 
   return <CalendarWeek onChange={onChange} onClick={onClick} schedule={schedule} />
