@@ -1,4 +1,4 @@
-import { IEvent } from '@/shared/interfaces/IEvents'
+import { IEvent, IEvents } from '@/shared/interfaces/IEvents'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
 
 import { scheduleWeek } from '../../../shared/constants/schedule-week'
@@ -39,4 +39,29 @@ export const reviewWeekAdapter = (data: IReviewApi[]): IScheduleWeek[] => {
   })
 
   return schedule
+}
+
+export const reviewMonthAdapter = (data: IReviewApi[]): IEvents => {
+  const events: IEvents = {}
+
+  data.forEach((review) => {
+    const event: IEvent = {
+      id: parseInt(review.id),
+      title: review.car,
+      label: review.plate,
+      startTime: review.startTime,
+      endTime: review.endTime,
+      color: review.color,
+    }
+
+    const date = review.date
+
+    if (!events[date]) {
+      events[date] = []
+    }
+
+    events[date].push(event)
+  })
+
+  return events
 }
