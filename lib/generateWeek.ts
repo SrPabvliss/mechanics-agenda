@@ -5,7 +5,6 @@ export const generateWeek = (date: string): IDay[] => {
   const startOfWeek = dayjs(date).startOf('week')
   const week: IDay[] = []
 
-  // se cambia de 0 a 1 para que empiece en lunes
   for (let i = 0; i < 7; i++) {
     const currentDay = startOfWeek.add(i, 'day')
     week.push({

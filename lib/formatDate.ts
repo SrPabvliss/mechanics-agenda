@@ -9,7 +9,7 @@ export const formatLongDate = (date: string | Date): string => {
 }
 
 export const formatMonthYear = (date: string | Date): string => {
-  const formattedDate = dayjs(date).format('MMMM [de] YYYY')
+  const formattedDate = dayjs(date).format('MMMM YYYY')
   return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)
 }
 
