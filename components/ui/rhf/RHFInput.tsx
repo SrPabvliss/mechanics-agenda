@@ -22,12 +22,14 @@ const RHFInput: React.FC<FormInputProps> = ({ name, label, type = 'text', placeh
   }
 
   return (
-    <div className="w-full">
-      <Label htmlFor={name}>{label}</Label>
+    <div className="mt-1 w-full">
+      <Label htmlFor={name} className="ml-1 ">
+        {label}
+      </Label>
       <Controller
         name={name}
         control={control}
-        render={({ field }) => <Input {...field} id={name} type={type} placeholder={placeholder} />}
+        render={({ field }) => <Input {...field} id={name} type={type} placeholder={placeholder} className="mt-1" />}
       />
       {getErrorMessage(name) && <p className="mt-1 max-w-52 text-sm text-red-500">{getErrorMessage(name)}</p>}
     </div>

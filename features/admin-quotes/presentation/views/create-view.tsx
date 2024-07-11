@@ -1,15 +1,15 @@
-import { useRouter } from 'next/navigation'
-
+import { ContentLayout } from '@/core/layout/content/content-layout'
 import React from 'react'
 
-import { Button } from '@/components/ui/button'
+import AdminQuotesForm from '../components/admin-quotes-form'
 
 export const AdminQuotesCreateView = () => {
-  const router = useRouter()
   return (
     <>
-      <div>AdminQuotesCreateView</div>
-      <Button onClick={() => router.back()}>Volver</Button>
+      <ContentLayout title="Citas administrativas">
+        <h1 className="text-2xl font-semibold">Nueva cita administrativa</h1>
+        <AdminQuotesForm />
+      </ContentLayout>
     </>
   )
 }
