@@ -1,25 +1,22 @@
-import { useSearchParams } from 'next/navigation'
-
-import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { CalendarCheck } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
-import { formatDate, formatMonthYear } from '@/lib/formatDate'
+import { formatMonthYear } from '@/lib/formatDate'
 
-const CWHeader = () => {
-  const searchParams = useSearchParams()
-  const date = searchParams.get('date')!
-  const updateQueryParam = useUpdateQueryParam()
+import { getWeekOfMonth } from '../../../lib/getWeekOfMonth'
 
-  const setDate = (date: string) => {
-    updateQueryParam('date', formatDate(date))
-  }
+interface CWHeaderProps {
+  date: string
+  setDate: (date: string) => void
+}
+
+const CWHeader = ({ date, setDate }: CWHeaderProps) => {
   return (
     <div className="flex items-center text-blue-900 dark:text-white">
-      <h1 className="w-full text-lg font-medium lg:text-xl">{formatMonthYear(date)}</h1>
+      <h1 className="w-full text-lg font-medium lg:text-xl">{getWeekOfMonth(date) + ', ' + formatMonthYear(date)}</h1>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="w-fit px-1 py-2">
@@ -27,7 +24,7 @@ const CWHeader = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-fit">
-          <Calendar onDayClick={(date) => setDate(date.toISOString())} />
+          <Calendar onDayClick={(date) => setDate(date.toISOString())} selected={new Date(date)} />
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

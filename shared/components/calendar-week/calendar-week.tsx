@@ -1,3 +1,4 @@
+'use client'
 import { daysOfWeek } from '@/shared/constants/calendar'
 import useCalendarWeek from '@/shared/hooks/useCalendarWeek'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
@@ -13,7 +14,7 @@ interface CalendarWeekProps {
 }
 
 const CalendarWeek = ({ onChange, onClick, schedule: scheduleWithEvents }: CalendarWeekProps) => {
-  const { week, schedule, handleClickEvent } = useCalendarWeek({
+  const { week, date, setDate, schedule, handleClickEvent } = useCalendarWeek({
     scheduleWithEvents,
     onChange,
     onClick,
@@ -21,7 +22,7 @@ const CalendarWeek = ({ onChange, onClick, schedule: scheduleWithEvents }: Calen
 
   return (
     <section className="h-full w-full">
-      <CWHeader />
+      <CWHeader date={date} setDate={setDate} />
 
       <div className="mt-2 grid grid-cols-8 border-r-[1.5px] border-dashed border-blue-400">
         <div></div>
