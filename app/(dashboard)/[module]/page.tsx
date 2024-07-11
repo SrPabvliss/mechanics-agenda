@@ -5,6 +5,7 @@ import { ContentLayout } from '@/core/layout/content/content-layout'
 import { AdminQuotesView } from '@/features/admin-quotes/presentation/views/admin-quotes-view'
 import { QuotesView } from '@/features/quotes/presentation/views/quotes-view'
 import { ReviewsView } from '@/features/reviews/presentation/views/reviews-view'
+import AddButton from '@/shared/components/add-button'
 import React, { FC } from 'react'
 
 const Page: FC = () => {
@@ -16,15 +17,18 @@ const Page: FC = () => {
     reviews: ReviewsView,
   }
 
-  const SelectedView =
-    Views[module] ||
-    (() => (
-      <ContentLayout title="Not found">
-        <div>Module not found</div>
-      </ContentLayout>
-    ))
+  const SelectedView = Views[module]
 
-  return <div>{<SelectedView />}</div>
+  if (!SelectedView) {
+    return <ContentLayout title="404">Module not found</ContentLayout>
+  }
+
+  return (
+    <div>
+      <SelectedView />
+      <AddButton />
+    </div>
+  )
 }
 
 export default Page
