@@ -1,13 +1,16 @@
 'use client'
 
+import { colorOptions } from '@/shared/constants/color-options'
 import React from 'react'
 import { FormProvider } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import RHFColorSelect from '@/components/ui/rhf/RHFColorSelect'
 import RHFDatePicker from '@/components/ui/rhf/RHFDatePicker'
 import RHFInput from '@/components/ui/rhf/RHFInput'
-import { TimePicker12Demo } from '@/components/ui/time-picker-12h'
+import RHFTextArea from '@/components/ui/rhf/RHFTextArea'
+import RHFTimePicker from '@/components/ui/rhf/RHFTimePicker'
 
 import { useQuotesForm } from '../../hooks/use-quotes-form'
 
@@ -16,14 +19,9 @@ const QuotesForm = () => {
 
   const renderDateDetails = () => {
     return (
-      <div className="mb-2">
+      <div className="mb-2 md:flex md:items-center md:gap-4">
         <RHFDatePicker name="date" label="Fecha" />
-        <div className="pt-2">
-          <TimePicker12Demo
-            date={methods.watch('time') ? new Date(methods.watch('time')) : undefined}
-            setDate={(date) => methods.setValue('time', date?.toISOString() as string)}
-          />
-        </div>
+        <RHFTimePicker name="time" label="Hora" />
       </div>
     )
   }
@@ -32,8 +30,10 @@ const QuotesForm = () => {
     return (
       <div className="mb-2">
         <RHFInput name="dni" label="Cédula" />
-        <RHFInput name="name" label="Nombre" />
-        <RHFInput name="surname" label="Apellido" />
+        <div className="md:flex md:gap-4">
+          <RHFInput name="name" label="Nombre" />
+          <RHFInput name="surname" label="Apellido" />
+        </div>
       </div>
     )
   }
@@ -41,9 +41,12 @@ const QuotesForm = () => {
   const renderVehicleDetails = () => {
     return (
       <div className="mb-2">
-        <RHFInput name="vehicleType" label="Tipo de vehículo" />
+        <div className="md:flex md:gap-4">
+          <RHFInput name="vehicleType" label="Tipo de vehículo" />
+          <RHFColorSelect name="color" label="Color" options={colorOptions} placeholder="Selecciona un color" />
+        </div>
         <RHFInput name="plate" label="Placa" />
-        <RHFInput name="description" label="Descripción" />
+        <RHFTextArea name="description" label="Descripción" />
       </div>
     )
   }

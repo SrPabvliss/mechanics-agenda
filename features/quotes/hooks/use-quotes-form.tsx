@@ -11,6 +11,7 @@ const quotesSchema = z.object({
   vehicleType: z.string().nonempty('El tipo de vehículo es requerido'),
   plate: z.string().nonempty('La placa es requerida'),
   description: z.string().optional(),
+  color: z.string().nonempty('El color es requerido'),
 })
 
 type QuotesFormValues = z.infer<typeof quotesSchema>
@@ -20,24 +21,25 @@ export const useQuotesForm = () => {
     resolver: zodResolver(quotesSchema),
     defaultValues: {
       date: new Date(),
-      time: '',
+      time: '10:00 AM',
       name: '',
       surname: '',
       dni: '',
       vehicleType: '',
       plate: '',
       description: '',
+      color: '',
     },
   })
 
   const onSubmit: SubmitHandler<QuotesFormValues> = (data) => {
     console.log(data)
-    // Aquí puedes manejar el envío del formulario, como hacer una llamada a una API
   }
 
   return {
     methods,
     onSubmit: methods.handleSubmit(onSubmit),
     isSubmitting: methods.formState.isSubmitting,
+    isValid: methods.formState.isValid,
   }
 }

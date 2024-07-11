@@ -16,7 +16,15 @@ interface RHFDatePickerProps {
 }
 
 const RHFDatePicker: React.FC<RHFDatePickerProps> = ({ name, label }) => {
-  const { control } = useFormContext()
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext()
+
+  const getErrorMessage = (name: string): string | undefined => {
+    const error = errors[name]
+    return error && typeof error.message === 'string' ? error.message : undefined
+  }
 
   return (
     <div className="w-full">
@@ -31,24 +39,27 @@ const RHFDatePicker: React.FC<RHFDatePickerProps> = ({ name, label }) => {
 
           const handleDateChange = (selectedDate: Date | undefined) => {
             setDate(selectedDate)
-            field.onChange(selectedDate ? selectedDate.toISOString() : '')
+            field.onChange(selectedDate ? selectedDate : '')
           }
 
           return (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={'outline'}
-                  className={cn('w-full justify-start text-left font-normal', !date && 'text-muted-foreground')}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, 'PPP') : <span>Selecciona una fecha</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={date} onSelect={handleDateChange} initialFocus />
-              </PopoverContent>
-            </Popover>
+            <>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={'outline'}
+                    className={cn('mt-1 w-full justify-start text-left font-normal', !date && 'text-muted-foreground')}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date ? format(date, 'PPP') : <span>Selecciona una fecha</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar mode="single" selected={date} onSelect={handleDateChange} initialFocus />
+                </PopoverContent>
+              </Popover>
+              {getErrorMessage(name) && <p className="mt-1 max-w-52 text-sm text-red-500">{getErrorMessage(name)}</p>}
+            </>
           )
         }}
       />
