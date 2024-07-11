@@ -13,7 +13,7 @@ interface CalendarWeekProps {
 }
 
 const CalendarWeek = ({ onChange, onClick, schedule: scheduleWithEvents }: CalendarWeekProps) => {
-  const { week, date, setDate, schedule, handleClickEvent } = useCalendarWeek({
+  const { week, schedule, handleClickEvent } = useCalendarWeek({
     scheduleWithEvents,
     onChange,
     onClick,
@@ -21,7 +21,7 @@ const CalendarWeek = ({ onChange, onClick, schedule: scheduleWithEvents }: Calen
 
   return (
     <section className="h-full w-full">
-      <CWHeader date={date} setDate={setDate} />
+      <CWHeader />
 
       <div className="mt-2 grid grid-cols-8 border-r-[1.5px] border-dashed border-blue-400">
         <div></div>

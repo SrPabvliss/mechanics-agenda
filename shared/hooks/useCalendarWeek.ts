@@ -1,3 +1,5 @@
+import { useSearchParams } from 'next/navigation'
+
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 
@@ -14,15 +16,16 @@ interface IUseCalendarWeek {
 }
 
 const useCalendarWeek = ({ scheduleWithEvents, onChange, onClick }: IUseCalendarWeek) => {
+  const searchParams = useSearchParams()
   const [week, setWeek] = useState<IDay[]>([])
-  const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
   const [schedule, setSchedule] = useState<IScheduleWeek[]>(
     scheduleWithEvents.length ? scheduleWithEvents : scheduleWeek,
   )
 
   useEffect(() => {
+    const date = searchParams.get('date') || dayjs().format('YYYY-MM-DD')
     setWeek(generateWeek(date))
-  }, [date])
+  }, [searchParams])
 
   useEffect(() => {
     setSchedule(scheduleWithEvents.length ? scheduleWithEvents : scheduleWeek)
@@ -43,7 +46,7 @@ const useCalendarWeek = ({ scheduleWithEvents, onChange, onClick }: IUseCalendar
     onClick(date)
   }
 
-  return { week, date, setDate, schedule, handleOnChange, handleClickEvent }
+  return { week, schedule, handleOnChange, handleClickEvent }
 }
 
 export default useCalendarWeek

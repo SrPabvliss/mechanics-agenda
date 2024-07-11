@@ -1,17 +1,22 @@
+import { useSearchParams } from 'next/navigation'
+
+import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { CalendarCheck } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
-import { formatMonthYear } from '@/lib/formatDate'
+import { formatDate, formatMonthYear } from '@/lib/formatDate'
 
-interface CWHeaderProps {
-  date: string
-  setDate: (date: string) => void
-}
+const CWHeader = () => {
+  const searchParams = useSearchParams()
+  const date = searchParams.get('date')!
+  const updateQueryParam = useUpdateQueryParam()
 
-const CWHeader = ({ date, setDate }: CWHeaderProps) => {
+  const setDate = (date: string) => {
+    updateQueryParam('date', formatDate(date))
+  }
   return (
     <div className="flex items-center text-blue-900 dark:text-white">
       <h1 className="w-full text-lg font-medium lg:text-xl">{formatMonthYear(date)}</h1>
