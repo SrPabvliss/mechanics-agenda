@@ -1,15 +1,15 @@
-import { useRouter } from 'next/navigation'
-
+import { ContentLayout } from '@/core/layout/content/content-layout'
 import React from 'react'
 
-import { Button } from '@/components/ui/button'
+import QuotesForm from '../components/quotes-form'
 
 const QuotasCreateView = () => {
-  const router = useRouter()
   return (
     <>
-      <div>QuotasCreateView</div>
-      <Button onClick={() => router.back()}>Volver</Button>
+      <ContentLayout title="Citas">
+        <h1 className="text-2xl font-semibold">Nueva cita</h1>
+        <QuotesForm />
+      </ContentLayout>
     </>
   )
 }
