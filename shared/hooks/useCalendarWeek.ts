@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 
 import { generateWeek } from '@/lib/generateWeek'
@@ -15,7 +14,7 @@ interface IUseCalendarWeek {
 
 const useCalendarWeek = ({ scheduleWithEvents, onChange, onClick }: IUseCalendarWeek) => {
   const [week, setWeek] = useState<IDay[]>([])
-  const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
+  const [date, setDate] = useState(new Date().toISOString())
   const [schedule, setSchedule] = useState<IScheduleWeek[]>(
     scheduleWithEvents.length ? scheduleWithEvents : scheduleWeek,
   )

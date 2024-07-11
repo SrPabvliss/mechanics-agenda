@@ -1,3 +1,4 @@
+'use client'
 import { daysOfWeek } from '@/shared/constants/calendar'
 import useCalendarWeek from '@/shared/hooks/useCalendarWeek'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'

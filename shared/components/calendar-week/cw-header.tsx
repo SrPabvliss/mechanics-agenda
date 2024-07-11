@@ -6,6 +6,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/compon
 
 import { formatMonthYear } from '@/lib/formatDate'
 
+import { getWeekOfMonth } from '../../../lib/getWeekOfMonth'
+
 interface CWHeaderProps {
   date: string
   setDate: (date: string) => void
@@ -14,7 +16,7 @@ interface CWHeaderProps {
 const CWHeader = ({ date, setDate }: CWHeaderProps) => {
   return (
     <div className="flex items-center text-blue-900 dark:text-white">
-      <h1 className="w-full text-lg font-medium lg:text-xl">{formatMonthYear(date)}</h1>
+      <h1 className="w-full text-lg font-medium lg:text-xl">{getWeekOfMonth(date) + ', ' + formatMonthYear(date)}</h1>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="w-fit px-1 py-2">
@@ -22,7 +24,7 @@ const CWHeader = ({ date, setDate }: CWHeaderProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-fit">
-          <Calendar onDayClick={(date) => setDate(date.toISOString())} />
+          <Calendar onDayClick={(date) => setDate(date.toISOString())} selected={new Date(date)} />
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

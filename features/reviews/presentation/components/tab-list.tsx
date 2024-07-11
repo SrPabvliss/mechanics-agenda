@@ -9,7 +9,7 @@ export const TabList = ({ type }: { type: string }) => {
   const updateQueryParam = useUpdateQueryParam()
 
   return (
-    <Tabs defaultValue={type} onValueChange={(value) => updateQueryParam('type', value)}>
+    <Tabs defaultValue={type} onValueChange={(value) => updateQueryParam([{ param: 'type', value: value }])}>
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="pending">Pendientes</TabsTrigger>
         <TabsTrigger value="completed">Completadas</TabsTrigger>

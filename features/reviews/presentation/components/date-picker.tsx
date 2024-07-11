@@ -32,7 +32,7 @@ export function DatePicker({ value }: { value?: string }) {
           selected={date}
           onSelect={(value) => {
             setDate(value)
-            value && updateQueryParam('date', format(value, 'yyyy-MM-dd'))
+            value && updateQueryParam([{ param: 'date', value: format(value, 'yyyy-MM-dd') }])
           }}
           initialFocus
         />

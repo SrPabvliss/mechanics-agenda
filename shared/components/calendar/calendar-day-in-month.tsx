@@ -14,19 +14,29 @@ interface CalendarDayInMonthProps {
   events: IEvents
 }
 const CalendarDayInMonth = ({ currentDate, dayInMonth, events, handleDayClick }: CalendarDayInMonthProps) => {
+  const containsEvents = events[dayInMonth.date] !== undefined
+
+  const handleClick = () => {
+    if (containsEvents) handleDayClick(dayInMonth)
+  }
+
   return (
     <div
       className={cn(
-        'flex h-28 cursor-pointer flex-col border-l-[1.5px] border-t-[1.5px] border-dashed border-blue-400 bg-blue-50 p-1 text-center transition-all duration-200 dark:text-white md:p-2',
-        currentDate.getMonth() === dayInMonth.month
-          ? 'bg-blue-50 hover:bg-blue-100 dark:bg-blue-950 dark:hover:bg-blue-900'
-          : 'bg-slate-200 hover:bg-slate-300 dark:bg-gray-900 dark:hover:bg-gray-800',
+        'flex h-28 flex-col border-l-[1.5px] border-t-[1.5px] border-dashed border-blue-400 bg-blue-50 p-1 text-center transition-all duration-200 dark:text-white md:p-2',
+        currentDate.getMonth() === dayInMonth.month ? 'bg-blue-50 dark:bg-blue-950' : 'bg-gray-100 dark:bg-gray-800',
+        containsEvents &&
+          currentDate.getMonth() === dayInMonth.month &&
+          'cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900',
+        containsEvents &&
+          currentDate.getMonth() !== dayInMonth.month &&
+          'cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700',
       )}
-      onClick={() => handleDayClick(dayInMonth)}
+      onClick={() => handleClick()}
     >
       <span
         className={cn(
-          'mx-auto flex h-8 w-8 items-center justify-center rounded-full p-1',
+          'mx-auto flex h-8 w-8 items-center justify-center rounded-full p-1 text-blue-900 dark:text-white',
           dayInMonth.day === new Date().getDate() &&
             currentDate.getMonth() === new Date().getMonth() &&
             currentDate.getFullYear() === new Date().getFullYear() &&
