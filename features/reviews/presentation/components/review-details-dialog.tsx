@@ -1,3 +1,5 @@
+import { usePathname, useRouter } from 'next/navigation'
+
 import { useMediaQuery } from '@/shared/hooks/use-media-query'
 import { IEvent } from '@/shared/interfaces/IEvents'
 import { Clock, User } from 'lucide-react'
@@ -17,6 +19,8 @@ interface ReviewDetailsDialogProps {
 export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, children }) => {
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
+  const router = useRouter()
+  const pathname = usePathname()
 
   const dialogContent = (
     <div className="mt-1 flex flex-col gap-4">
@@ -35,7 +39,7 @@ export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, 
         <Button variant="outline" onClick={() => setOpen(false)}>
           Regresar
         </Button>
-        <Button>Acceder a la Revisión</Button>
+        <Button onClick={() => router.push(`${pathname}/edit/${item.id}`)}>Acceder a la Revisión</Button>
       </div>
     </div>
   )
