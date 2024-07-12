@@ -8,6 +8,9 @@ export interface IEvent {
   label: string
   startTime: string
   endTime?: string
+  status?: string
+  owner?: string
+  description?: string
   color: string
 }
 
