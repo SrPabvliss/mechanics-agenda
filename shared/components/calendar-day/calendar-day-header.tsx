@@ -1,10 +1,11 @@
+import dayjs from 'dayjs'
 import { CalendarCheck } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
-import { formatLongDate } from '@/lib/formatDate'
+import { formatDate, formatLongDate } from '@/lib/formatDate'
 
 interface CalendarDayHeaderProps {
   day: string
@@ -17,12 +18,12 @@ const CalendarDayHeader = ({ day, setDay }: CalendarDayHeaderProps) => {
       <h2 className="w-full text-lg font-medium lg:text-xl">{formatLongDate(day)}</h2>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="w-fit">
+          <Button variant="outline" className="w-fit px-1 py-2">
             <CalendarCheck className="h-6 w-6" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-fit">
-          <Calendar onDayClick={(day) => setDay(day.toISOString())} />
+          <Calendar onDayClick={(day) => setDay(formatDate(day))} selected={dayjs(day).toDate()} />
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
