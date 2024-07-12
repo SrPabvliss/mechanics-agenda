@@ -20,7 +20,7 @@ const List: React.FC = () => {
               <CardContent className="mt-4 flex flex-col gap-2">
                 <div className={`absolute bottom-4 right-4 top-4 w-14 rounded-md border-2 ${item.color}`} />
                 <div
-                  className={`flex ${item.title.length > 15 ? 'flex-col justify-center' : 'flex-row '}  items-center gap-2 md:flex-row md:gap-6`}
+                  className={`flex ${item.title.length > 15 ? 'flex-col justify-center' : 'flex-row '} items-center gap-2 md:flex-row md:gap-6`}
                 >
                   <div className="flex flex-col gap-2">
                     <h3 className="text-lg font-bold">{item.title}</h3>
@@ -32,11 +32,11 @@ const List: React.FC = () => {
                 <div className="flex flex-col gap-2 md:flex-row md:gap-6">
                   <div className="flex items-center gap-2">
                     <User size={24} />
-                    <p>{item.owner}</p>
+                    <span>{item.owner}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock size={24} />
-                    <p>{item.startTime}</p>k
+                    <span>{item.startTime}</span>
                   </div>
                 </div>
               </CardContent>

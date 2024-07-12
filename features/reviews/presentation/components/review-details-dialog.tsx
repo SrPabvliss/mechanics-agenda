@@ -6,22 +6,8 @@ import * as React from 'react'
 import { AutosizeTextarea } from '@/components/ui/autosize-textarea'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-  DrawerTrigger,
-} from '@/components/ui/drawer'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 
 interface ReviewDetailsDialogProps {
   item: IEvent
@@ -33,27 +19,25 @@ export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, 
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   const dialogContent = (
-    <>
-      <div className="mt-1 flex flex-col gap-4">
-        <div className="flex gap-4">
-          <div className="flex flex-1  gap-2">
-            <User size={24} />
-            <p>{item.owner}</p>
-          </div>
-          <div className="flex flex-1  gap-2">
-            <Clock size={24} />
-            <p>{item.startTime}</p>
-          </div>
+    <div className="mt-1 flex flex-col gap-4">
+      <div className="flex gap-4">
+        <div className="flex flex-1 items-center gap-2">
+          <User size={24} />
+          <span>{item.owner}</span>
         </div>
-        <AutosizeTextarea value={item.description} disabled />
-        <div className="mt-4 flex justify-end gap-2">
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            Regresar
-          </Button>
-          <Button>Acceder a la Revisión</Button>
+        <div className="flex flex-1 items-center gap-2">
+          <Clock size={24} />
+          <span>{item.startTime}</span>
         </div>
       </div>
-    </>
+      <AutosizeTextarea value={item.description} disabled />
+      <div className="mt-4 flex justify-end gap-2">
+        <Button variant="outline" onClick={() => setOpen(false)}>
+          Regresar
+        </Button>
+        <Button>Acceder a la Revisión</Button>
+      </div>
+    </div>
   )
 
   if (isDesktop) {
@@ -66,7 +50,7 @@ export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, 
           <DialogHeader>
             <DialogTitle>
               <div
-                className={`flex ${item.title.length > 15 ? 'flex-col justify-center' : 'flex-row '}  items-center gap-2 md:flex-row md:gap-6`}
+                className={`flex ${item.title.length > 15 ? 'flex-col justify-center' : 'flex-row '} items-center gap-2 md:flex-row md:gap-6`}
               >
                 <div className="flex flex-col gap-2">
                   <h3 className="text-lg font-bold">{item.title}</h3>
@@ -76,9 +60,7 @@ export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, 
                 </Badge>
               </div>
             </DialogTitle>
-            <DialogDescription>
-              <div className={`inline-block h-2 w-full rounded-full ${item.color}`}></div>
-            </DialogDescription>
+            <div className={`h-2 w-full rounded-full ${item.color}`}></div>
           </DialogHeader>
           <div className="px-1">{dialogContent}</div>
         </DialogContent>
@@ -95,7 +77,7 @@ export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, 
         <DrawerHeader className="text-left">
           <DrawerTitle>
             <div
-              className={`flex ${item.title.length > 15 ? 'flex-col justify-center' : 'flex-row '}  items-center gap-4 md:flex-row md:gap-6`}
+              className={`flex ${item.title.length > 15 ? 'flex-col justify-center' : 'flex-row '} items-center gap-4 md:flex-row md:gap-6`}
             >
               <div className="flex flex-col gap-2">
                 <h3 className="text-lg font-bold">{item.title}</h3>
@@ -105,9 +87,7 @@ export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, 
               </Badge>
             </div>
           </DrawerTitle>
-          <DrawerDescription>
-            <div className={`inline-block h-2 w-full rounded-full ${item.color}`}></div>
-          </DrawerDescription>
+          <div className={`h-2 w-full rounded-full ${item.color}`}></div>
         </DrawerHeader>
         <div className="px-4 pb-6">{dialogContent}</div>
       </DrawerContent>
