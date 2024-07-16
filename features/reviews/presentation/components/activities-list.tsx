@@ -10,7 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-import ConfirmationDialog from './confirmation-dialog'
+import ConfirmationDialog from '../../../../shared/components/confirmation-dialog'
 
 interface IActivity {
   id: string
@@ -76,7 +76,12 @@ export const ActivitiesList = ({ initialActivities = [] }: { initialActivities?:
         <Button variant="outline" onClick={() => router.back()}>
           Regresar
         </Button>
-        <ConfirmationDialog onConfirm={finalizeActivities} />
+        <ConfirmationDialog
+          onConfirm={finalizeActivities}
+          title="Confirmar finalización"
+          description="Una vez marcadas como finalizadas, las actividades no podrán ser editadas. ¿Deseas continuar?"
+          triggerLabel="Finalizar"
+        />
       </div>
     </div>
   )

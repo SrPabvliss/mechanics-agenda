@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Button } from '@/components/ui/button'
 
-import { useUpdateQueryParam } from '../../../../shared/hooks/update-query-param'
+import { useUpdateQueryParam } from '../hooks/update-query-param'
 
 export const ViewButtons = ({ view }: { view: string }) => {
   const updateQueryParams = useUpdateQueryParam()

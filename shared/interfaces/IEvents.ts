@@ -5,7 +5,7 @@ export interface IEvents<T extends IEvent = IEvent> {
 export interface IEvent {
   id: number
   title: string
-  label: string
+  label?: string
   startTime: string
   color: string
 }
@@ -18,8 +18,8 @@ export interface IAdminQuoteEvent extends IEvent {}
 
 export interface IReviewEvent extends IEvent {
   endTime: string
-  status?: string
-  owner?: string
+  status: string
+  owner: string
   description?: string
 }
 
