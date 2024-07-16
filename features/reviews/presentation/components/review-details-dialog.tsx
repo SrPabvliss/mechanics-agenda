@@ -1,7 +1,7 @@
 import { usePathname, useRouter } from 'next/navigation'
 
 import { useMediaQuery } from '@/shared/hooks/use-media-query'
-import { IEvent } from '@/shared/interfaces/IEvents'
+import { IReviewEvent } from '@/shared/interfaces/IEvents'
 import { Clock, User } from 'lucide-react'
 import * as React from 'react'
 
@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 
 interface ReviewDetailsDialogProps {
-  item: IEvent
+  item: IReviewEvent
   children: React.ReactNode
 }
 
@@ -23,25 +23,28 @@ export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, 
   const pathname = usePathname()
 
   const dialogContent = (
-    <div className="mt-1 flex flex-col gap-4">
-      <div className="flex gap-4">
-        <div className="flex flex-1 items-center gap-2">
-          <User size={24} />
-          <span>{item.owner}</span>
+    <>
+      <div className={`mb-4 h-2 w-full rounded-full ${item.color}`}></div>
+      <div className="mt-1 flex flex-col gap-4">
+        <div className="flex gap-4">
+          <div className="flex flex-1 items-center gap-2">
+            <User size={24} />
+            <span>{item.owner}</span>
+          </div>
+          <div className="flex flex-1 items-center gap-2">
+            <Clock size={24} />
+            <span>{item.startTime}</span>
+          </div>
         </div>
-        <div className="flex flex-1 items-center gap-2">
-          <Clock size={24} />
-          <span>{item.startTime}</span>
+        <AutosizeTextarea value={item.description} disabled />
+        <div className="mt-4 flex justify-end gap-2">
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Regresar
+          </Button>
+          <Button onClick={() => router.push(`${pathname}/edit/${item.id}`)}>Acceder a la Revisión</Button>
         </div>
       </div>
-      <AutosizeTextarea value={item.description} disabled />
-      <div className="mt-4 flex justify-end gap-2">
-        <Button variant="outline" onClick={() => setOpen(false)}>
-          Regresar
-        </Button>
-        <Button onClick={() => router.push(`${pathname}/edit/${item.id}`)}>Acceder a la Revisión</Button>
-      </div>
-    </div>
+    </>
   )
 
   if (isDesktop) {
@@ -64,7 +67,6 @@ export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, 
                 </Badge>
               </div>
             </DialogTitle>
-            <div className={`h-2 w-full rounded-full ${item.color}`}></div>
           </DialogHeader>
           <div className="px-1">{dialogContent}</div>
         </DialogContent>
@@ -91,7 +93,6 @@ export const ReviewDetailsDialog: React.FC<ReviewDetailsDialogProps> = ({ item, 
               </Badge>
             </div>
           </DrawerTitle>
-          <div className={`h-2 w-full rounded-full ${item.color}`}></div>
         </DrawerHeader>
         <div className="px-4 pb-6">{dialogContent}</div>
       </DrawerContent>

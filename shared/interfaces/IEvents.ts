@@ -1,5 +1,5 @@
-export interface IEvents {
-  [key: string]: IEvent[]
+export interface IEvents<T extends IEvent = IEvent> {
+  [key: string]: T[]
 }
 
 export interface IEvent {
@@ -7,12 +7,23 @@ export interface IEvent {
   title: string
   label: string
   startTime: string
-  endTime?: string
+  color: string
+}
+
+export interface IQuoteEvent extends IEvent {
+  endTime: string
+}
+
+export interface IAdminQuoteEvent extends IEvent {}
+
+export interface IReviewEvent extends IEvent {
+  endTime: string
   status?: string
   owner?: string
   description?: string
-  color: string
 }
+
+export type EventType = IQuoteEvent | IAdminQuoteEvent | IReviewEvent
 
 export interface IEventsDayInWeek {
   [key: string]: IEventsHour
