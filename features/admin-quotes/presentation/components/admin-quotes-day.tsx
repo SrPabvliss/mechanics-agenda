@@ -23,7 +23,11 @@ const AdminQuotesDay = ({ date }: QuotesDayProps) => {
     console.log(id)
     // Code here
   }
-  return <CalendarDay onChange={onChange} onClick={onClick} schedule={schedule} date={date} />
+  return (
+    <>
+      <CalendarDay onChange={onChange} onClick={onClick} schedule={schedule} date={date} />
+    </>
+  )
 }
 
 export default AdminQuotesDay

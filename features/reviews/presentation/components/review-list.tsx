@@ -1,3 +1,4 @@
+import { DetailsDialog } from '@/shared/components/details-dialog'
 import { Clock, User } from 'lucide-react'
 import React from 'react'
 
@@ -6,7 +7,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 import useList from '../../hooks/use-list'
-import { ReviewDetailsDialog } from './review-details-dialog'
 
 const List: React.FC = () => {
   const filteredItems = useList()
@@ -15,8 +15,8 @@ const List: React.FC = () => {
     <ScrollArea>
       <div className="mt-2 flex flex-col gap-4">
         {filteredItems.map((item) => (
-          <ReviewDetailsDialog key={item.id} item={item}>
-            <Card className="relative cursor-pointer">
+          <DetailsDialog key={item.id} item={item}>
+            <Card className="relative">
               <CardContent className="mt-4 flex flex-col gap-2">
                 <div className={`absolute bottom-4 right-4 top-4 w-14 rounded-md border-2 ${item.color}`} />
                 <div
@@ -41,7 +41,7 @@ const List: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-          </ReviewDetailsDialog>
+          </DetailsDialog>
         ))}
       </div>
     </ScrollArea>

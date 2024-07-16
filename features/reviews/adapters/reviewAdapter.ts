@@ -1,22 +1,23 @@
-import { IEvent, IEvents } from '@/shared/interfaces/IEvents'
+import { IEvents, IReviewEvent } from '@/shared/interfaces/IEvents'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
 
 import { scheduleWeek } from '../../../shared/constants/schedule-week'
 import { IReviewApi } from '../models/IApiReview'
 
 export const reviewWeekAdapter = (data: IReviewApi[]): IScheduleWeek[] => {
-  // Crear una copia del scheduleWeek para evitar mutaciones
   const schedule = JSON.parse(JSON.stringify(scheduleWeek)) as IScheduleWeek[]
 
-  // Convertir los datos del API en eventos y agrupar por hora
   data.forEach((review) => {
-    const event: IEvent = {
+    const event: IReviewEvent = {
       id: parseInt(review.id),
       title: `${review.owner}'s ${review.car}`,
       label: review.plate,
       startTime: review.startTime,
       endTime: review.endTime,
       color: review.color,
+      status: review.status,
+      owner: review.owner,
+      description: review.description || '',
     }
 
     const startHour = review.startTime.split(':')[0] + ':00'
@@ -41,17 +42,20 @@ export const reviewWeekAdapter = (data: IReviewApi[]): IScheduleWeek[] => {
   return schedule
 }
 
-export const reviewMonthAdapter = (data: IReviewApi[]): IEvents => {
-  const events: IEvents = {}
+export const reviewMonthAdapter = (data: IReviewApi[]): IEvents<IReviewEvent> => {
+  const events: IEvents<IReviewEvent> = {}
 
   data.forEach((review) => {
-    const event: IEvent = {
+    const event: IReviewEvent = {
       id: parseInt(review.id),
       title: review.car,
       label: review.plate,
       startTime: review.startTime,
       endTime: review.endTime,
       color: review.color,
+      status: review.status,
+      owner: review.owner,
+      description: review.description || '',
     }
 
     const date = review.date
@@ -66,11 +70,11 @@ export const reviewMonthAdapter = (data: IReviewApi[]): IEvents => {
   return events
 }
 
-export const reviewDayAdapter = (data: IReviewApi[]): IEvents => {
-  const events: IEvents = {}
+export const reviewDayAdapter = (data: IReviewApi[]): IEvents<IReviewEvent> => {
+  const events: IEvents<IReviewEvent> = {}
 
   data.forEach((review) => {
-    const event: IEvent = {
+    const event: IReviewEvent = {
       id: parseInt(review.id),
       title: review.car,
       label: review.plate,

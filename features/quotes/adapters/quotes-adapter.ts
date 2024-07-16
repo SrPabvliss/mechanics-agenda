@@ -1,6 +1,6 @@
 import { scheduleDay } from '@/shared/constants/schedule-day'
 import { scheduleWeek } from '@/shared/constants/schedule-week'
-import { IEvent, IEvents } from '@/shared/interfaces/IEvents'
+import { IEvents, IQuoteEvent } from '@/shared/interfaces/IEvents'
 import { ISchedule, IScheduleWeek } from '@/shared/interfaces/ISchedule'
 
 import { IApiQuote } from '../models/IApiQuote'
@@ -9,7 +9,7 @@ export const quotesDayAdapter = (data: IApiQuote[]): ISchedule[] => {
   const schedule = JSON.parse(JSON.stringify(scheduleDay)) as ISchedule[]
 
   data.forEach((quote) => {
-    const event: IEvent = {
+    const event: IQuoteEvent = {
       id: parseInt(quote.id),
       title: quote.car,
       label: quote.client,
@@ -38,7 +38,7 @@ export const quotesWeekAdapter = (data: IApiQuote[]): IScheduleWeek[] => {
   const schedule = JSON.parse(JSON.stringify(scheduleWeek)) as IScheduleWeek[]
 
   data.forEach((quote) => {
-    const event: IEvent = {
+    const event: IQuoteEvent = {
       id: parseInt(quote.id),
       title: quote.car,
       label: quote.client,
@@ -69,11 +69,11 @@ export const quotesWeekAdapter = (data: IApiQuote[]): IScheduleWeek[] => {
   return schedule
 }
 
-export const quotesMonthAdapter = (data: IApiQuote[]): IEvents => {
-  const events: IEvents = {}
+export const quotesMonthAdapter = (data: IApiQuote[]): IEvents<IQuoteEvent> => {
+  const events: IEvents<IQuoteEvent> = {}
 
   data.forEach((review) => {
-    const event: IEvent = {
+    const event: IQuoteEvent = {
       id: parseInt(review.id),
       title: review.car,
       label: review.client,
