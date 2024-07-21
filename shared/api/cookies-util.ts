@@ -3,15 +3,23 @@
 import { cookies } from 'next/headers'
 
 export const setCookie = (key: string, value: unknown) => {
-  cookies().set(key, value as string)
+  try {
+    cookies().set(key, value as string)
+  } catch (error) {
+    console.error('Error setting cookie', error)
+  }
 }
 
 export const getCookie = async (key: string) => {
-  const cookieData = cookies().get(key)?.value
+  try {
+    const cookieData = cookies().get(key)?.value
 
-  if (!cookieData) return null
+    if (!cookieData) return null
 
-  return cookieData
+    return cookieData
+  } catch (error) {
+    console.error('Error getting cookie', error)
+  }
 }
 
 export const deleteCookie = (key: string) => {

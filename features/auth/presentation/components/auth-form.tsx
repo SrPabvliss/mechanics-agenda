@@ -16,7 +16,7 @@ const AuthForm = () => {
     <>
       <FormProvider {...methods}>
         <form className="flex flex-col items-center gap-4" onSubmit={methods.handleSubmit(onSubmit)}>
-          <RHFInput name="username" label="Usuario" placeholder="Usuario" />
+          <RHFInput name="ci" label="Usuario" placeholder="Usuario" />
           <RHFPasswordInput name="password" label="Contraseña" placeholder="Contraseña" />
           <Button disabled={isSubmiting} type="submit">
             {isSubmiting ? <LoadingSpinner /> : 'Ingresar'}

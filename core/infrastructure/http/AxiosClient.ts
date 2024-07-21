@@ -6,6 +6,10 @@ import { DEFAULT_SUCCESS_MESSAGE } from '@/shared/constants/messages'
 import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios'
 import toast from 'react-hot-toast'
 
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  successMessage?: string
+}
+
 export class AxiosClient implements HttpHandler {
   private static instance: AxiosClient
   private axiosInstance: AxiosInstance
@@ -25,7 +29,6 @@ export class AxiosClient implements HttpHandler {
         const token = await getCookie(ACCESS_TOKEN_COOKIE_NAME)
         if (token) {
           config.headers.Authorization = `Bearer ${token.replaceAll('"', '')}`
-          AxiosClient.setAccessToken(token.replaceAll('"', ''))
         } else {
           document.dispatchEvent(new CustomEvent('unauthorized'))
         }
@@ -38,9 +41,10 @@ export class AxiosClient implements HttpHandler {
 
     this.axiosInstance.interceptors.response.use(
       (response) => {
-        if (response.config?.headers?.['X-Success-Message'] && !['get'].includes(response.config.method || '')) {
-          toast.success(response.config.headers['X-Success-Message'])
-        }
+        const customConfig = response.config as CustomAxiosRequestConfig
+        const successMessage = customConfig.successMessage || DEFAULT_SUCCESS_MESSAGE
+
+        if (!['get'].includes(response.config.method || '')) toast.success(successMessage)
         return response
       },
       (error) => {
@@ -66,65 +70,36 @@ export class AxiosClient implements HttpHandler {
     return this.instance
   }
 
-  public static setAccessToken(accessToken: string): void {
-    this.accessToken = accessToken
-    if (this.instance) {
-      this.instance.axiosInstance.defaults.headers['Authorization'] = `Bearer ${accessToken}`
+  setAccessToken(accessToken: string): void {
+    AxiosClient.accessToken = accessToken
+    if (AxiosClient.accessToken) {
+      this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${AxiosClient.accessToken}`
     }
   }
 
-  async get<T>(url: string, message?: string, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse<T> = await this.axiosInstance.get<T>(url, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        'X-Success-Message': message || DEFAULT_SUCCESS_MESSAGE,
-      },
-    })
+  async get<T>(url: string, config?: CustomAxiosRequestConfig): Promise<T> {
+    const promise = this.axiosInstance.get<T>(url, config)
+    const response: AxiosResponse<T> = await promise
     return response.data
   }
 
-  async post<T>(url: string, data: any, message?: string, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse<T> = await this.axiosInstance.post<T>(url, data, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        'X-Success-Message': message || DEFAULT_SUCCESS_MESSAGE,
-      },
-    })
+  async post<T>(url: string, data: any, config?: CustomAxiosRequestConfig): Promise<T> {
+    const response: AxiosResponse<T> = await this.axiosInstance.post(url, data, config)
     return response.data
   }
 
-  async put<T>(url: string, data: any, message?: string, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse<T> = await this.axiosInstance.put<T>(url, data, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        'X-Success-Message': message || DEFAULT_SUCCESS_MESSAGE,
-      },
-    })
+  async put<T>(url: string, data: any, config?: CustomAxiosRequestConfig): Promise<T> {
+    const response: AxiosResponse<T> = await this.axiosInstance.put(url, data, config)
     return response.data
   }
 
-  async patch<T>(url: string, data: any, message?: string, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse<T> = await this.axiosInstance.patch<T>(url, data, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        'X-Success-Message': message || DEFAULT_SUCCESS_MESSAGE,
-      },
-    })
+  async patch<T>(url: string, data: any, config?: CustomAxiosRequestConfig): Promise<T> {
+    const response: AxiosResponse<T> = await this.axiosInstance.patch(url, data, config)
     return response.data
   }
 
-  async delete<T>(url: string, message?: string, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse<T> = await this.axiosInstance.delete<T>(url, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        'X-Success-Message': message || DEFAULT_SUCCESS_MESSAGE,
-      },
-    })
+  async delete<T>(url: string, config?: CustomAxiosRequestConfig): Promise<T> {
+    const response: AxiosResponse<T> = await this.axiosInstance.delete(url, config)
     return response.data
   }
 }

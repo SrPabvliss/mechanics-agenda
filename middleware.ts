@@ -1,30 +1,45 @@
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+
+import { jwtVerify } from 'jose'
 
 import { ACCESS_TOKEN_COOKIE_NAME } from './shared/api/api-routes'
 
-export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)', '/', '/login', '/dashboard/:slug'],
+const secret = new TextEncoder().encode(process.env.JWT_SECRET)
+
+export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl
+  const token =
+    req.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value &&
+    req.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value.replaceAll('"', '')
+
+  if (pathname === '/login') {
+    if (token) {
+      try {
+        await jwtVerify(token, secret)
+        return NextResponse.redirect(new URL('/quotes', req.url))
+      } catch (error) {
+        return NextResponse.next()
+      }
+    }
+    return NextResponse.next()
+  }
+
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
+
+  if (!token) {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
+
+  try {
+    await jwtVerify(token, secret)
+    return NextResponse.next()
+  } catch (error) {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
 }
 
-export const middleware = async (request: NextRequest) => {
-  const hasAccessToken =
-    request.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value &&
-    request.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value !== 'null'
-
-  const isLoginPage = request.nextUrl.pathname.startsWith('/login')
-  const isRootPage = request.nextUrl.pathname === '/'
-
-  if (!hasAccessToken && !isLoginPage) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  if (hasAccessToken && isLoginPage) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
-  }
-
-  if (hasAccessToken && isRootPage) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
-  }
-
-  return NextResponse.next()
+export const config = {
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)', '/login', '/:slug', '/'],
 }

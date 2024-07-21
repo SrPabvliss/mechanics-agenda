@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import useAuth from '@/shared/hooks/use-auth'
 import { Ellipsis, LogOut } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -19,6 +20,7 @@ interface MenuProps {
 }
 
 export function Menu({ isOpen }: MenuProps) {
+  useAuth()
   const pathname = usePathname()
   const menuList = getMenuList(pathname)
 
