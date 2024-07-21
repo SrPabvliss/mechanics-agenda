@@ -1,7 +1,3 @@
-export interface IEvents<T extends IEvent = IEvent> {
-  [key: string]: T[]
-}
-
 export interface IEvent {
   id: number
   title: string
@@ -25,11 +21,22 @@ export interface IReviewEvent extends IEvent {
 
 export type EventType = IQuoteEvent | IAdminQuoteEvent | IReviewEvent
 
-export interface IEventsDayInWeek {
-  [key: string]: IEventsHour
+export interface IEventsHour<T> {
+  events1: T[]
+  events2: T[]
 }
 
-export interface IEventsHour {
-  events1: IEvent[]
-  events2: IEvent[]
+export interface EventsRecord<T> {
+  [key: string]: T
 }
+
+export type IReviewEventsDay = EventsRecord<IReviewEvent[]>
+
+export type IEvents = EventsRecord<IEventsHour<IEvent>>
+export type IEventsMechanic = EventsRecord<IEventsHour<boolean>>
+
+export type IEventsMonth<T extends IEvent = IEvent> = EventsRecord<T[]>
+
+export type IReviewEventsMonth = IEventsMonth<IReviewEvent>
+export type IQuoteEventsMonth = IEventsMonth<IQuoteEvent>
+export type IAdminQuoteEventsMonth = IEventsMonth<IAdminQuoteEvent>

@@ -10,7 +10,7 @@ import RHFColorSelect from '@/components/ui/rhf/RHFColorSelect'
 import RHFDatePicker from '@/components/ui/rhf/RHFDatePicker'
 import RHFInput from '@/components/ui/rhf/RHFInput'
 import RHFTextArea from '@/components/ui/rhf/RHFTextArea'
-import RHFTimePicker from '@/components/ui/rhf/RHFTimePicker'
+import RHFTimePickerByMechanic from '@/components/ui/rhf/RHFTimePickerByMechanic'
 
 import { useQuotesForm } from '../../hooks/use-quotes-form'
 
@@ -21,7 +21,7 @@ const QuotesForm = () => {
     return (
       <div className="mb-2 md:flex md:items-center md:gap-4">
         <RHFDatePicker name="date" label="Fecha" />
-        <RHFTimePicker name="time" label="Hora" />
+        <RHFTimePickerByMechanic name="time" label="Hora" />
       </div>
     )
   }

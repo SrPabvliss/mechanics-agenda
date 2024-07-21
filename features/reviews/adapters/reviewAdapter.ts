@@ -1,7 +1,8 @@
-import { IEvents, IReviewEvent } from '@/shared/interfaces/IEvents'
+import { IReviewEvent, IReviewEventsDay } from '@/shared/interfaces/IEvents'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
 
 import { scheduleWeek } from '../../../shared/constants/schedule-week'
+import { IReviewEventsMonth } from '../../../shared/interfaces/IEvents'
 import { IReviewApi } from '../models/IApiReview'
 
 export const reviewWeekAdapter = (data: IReviewApi[]): IScheduleWeek[] => {
@@ -42,8 +43,8 @@ export const reviewWeekAdapter = (data: IReviewApi[]): IScheduleWeek[] => {
   return schedule
 }
 
-export const reviewMonthAdapter = (data: IReviewApi[]): IEvents<IReviewEvent> => {
-  const events: IEvents<IReviewEvent> = {}
+export const reviewMonthAdapter = (data: IReviewApi[]): IReviewEventsMonth => {
+  const events: IReviewEventsMonth = {}
 
   data.forEach((review) => {
     const event: IReviewEvent = {
@@ -66,12 +67,11 @@ export const reviewMonthAdapter = (data: IReviewApi[]): IEvents<IReviewEvent> =>
 
     events[date].push(event)
   })
-
   return events
 }
 
-export const reviewDayAdapter = (data: IReviewApi[]): IEvents<IReviewEvent> => {
-  const events: IEvents<IReviewEvent> = {}
+export const reviewDayAdapter = (data: IReviewApi[]): IReviewEventsDay => {
+  const events: IReviewEventsDay = {}
 
   data.forEach((review) => {
     const event: IReviewEvent = {

@@ -1,6 +1,6 @@
 'use client'
 import CalendarDay from '@/shared/components/calendar-day/calendar-day'
-import { ISchedule } from '@/shared/interfaces/ISchedule'
+import { IDailySchedule } from '@/shared/interfaces/ISchedule'
 import { useState } from 'react'
 
 import { quotesDayAdapter } from '../../adapters/quotes-adapter'
@@ -11,7 +11,7 @@ interface QuotesDayProps {
 }
 
 const QuotesDay = ({ date }: QuotesDayProps) => {
-  const [schedule, setSchedule] = useState<ISchedule[]>([])
+  const [schedule, setSchedule] = useState<IDailySchedule[]>([])
   const onChange = async (day: string) => {
     // Filtrar las revisiones que están en el día seleccionado
     const filter = apiQuote.filter((quote) => quote.date === day)

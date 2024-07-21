@@ -1,12 +1,22 @@
-import { IEvent, IEventsDayInWeek } from './IEvents'
+import { IEvent, IEvents, IEventsMechanic } from './IEvents'
 
-export interface ISchedule {
-  hour: string
-  activities1: IEvent[]
-  activities2: IEvent[]
+export interface IScheduleInterval {
+  startTime: string
+  endTime: string
 }
 
-export interface IScheduleWeek {
+export interface ISchedule<T> {
   hour: string
-  events: IEventsDayInWeek
+  events1: T[]
+  events2: T[]
 }
+
+export interface IEventSchedule<T> {
+  hour: string
+  events: T
+}
+
+export type IScheduleWeek = IEventSchedule<IEvents>
+export type IScheduleMechanic = IEventSchedule<IEventsMechanic>
+
+export type IDailySchedule = ISchedule<IEvent>
