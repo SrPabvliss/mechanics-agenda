@@ -13,7 +13,7 @@ import AdminQuotesMonth from '../components/admin-quotes-month'
 import AdminQuotesWeek from '../components/admin-quotes-week'
 
 export const AdminQuotesView = () => {
-  useAdminQListener()
+  useAdminQListener() // suscripicón a los sockets
   const router = useRouter()
   const pathname = usePathname()
   const newPath = `${pathname}/new`
