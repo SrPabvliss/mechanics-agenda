@@ -22,8 +22,8 @@ export interface IReviewEvent extends IEvent {
 export type EventType = IQuoteEvent | IAdminQuoteEvent | IReviewEvent
 
 export interface IEventsHour<T> {
-  events1: T[]
-  events2: T[]
+  events1: T
+  events2: T
 }
 
 export interface EventsRecord<T> {
@@ -32,7 +32,7 @@ export interface EventsRecord<T> {
 
 export type IReviewEventsDay = EventsRecord<IReviewEvent[]>
 
-export type IEvents = EventsRecord<IEventsHour<IEvent>>
+export type IEvents = EventsRecord<IEventsHour<IEvent[]>>
 export type IEventsMechanic = EventsRecord<IEventsHour<boolean>>
 
 export type IEventsMonth<T extends IEvent = IEvent> = EventsRecord<T[]>
