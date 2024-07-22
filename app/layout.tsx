@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 
-import './globals.css'
 import { ThemeProvider } from '@/core/providers/theme-provider'
+import { Toaster } from 'react-hot-toast'
+
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Gab Motors Agenda',
@@ -47,6 +49,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} ${inter.className} `}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Toaster position="bottom-center" />
           {children}
         </ThemeProvider>
       </body>

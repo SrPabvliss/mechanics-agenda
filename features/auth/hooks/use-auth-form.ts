@@ -1,13 +1,13 @@
-// import { useRouter } from 'next/router'
-
 import { useRouter } from 'next/navigation'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
+import { UseAccountStore } from '../context/use-account-store'
+
 const schema = z.object({
-  username: z.string().min(1, 'Usuario requerido'),
+  ci: z.string().min(1, 'Cédula requerida'),
   password: z.string().min(1, 'La contraseña es requerida'),
 })
 
@@ -15,20 +15,18 @@ type FormFields = z.infer<typeof schema>
 
 export function useAuth() {
   const router = useRouter()
+  const { login } = UseAccountStore()
 
   const methods = useForm<FormFields>({
     resolver: zodResolver(schema),
     defaultValues: {
-      username: '',
+      ci: '',
       password: '',
     },
   })
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    console.log(data)
-
+    await login(data)
     router.push('/quotes')
   }
 
