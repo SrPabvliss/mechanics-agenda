@@ -1,3 +1,4 @@
+import { joinChannel, SOCKET_CHANNEL } from '@/core/infrastructure/sockets/socket-client'
 import { MESSAGES } from '@/shared/constants/messages'
 import toast from 'react-hot-toast'
 import { create, StateCreator } from 'zustand'
@@ -26,14 +27,13 @@ export const UseAccountStore = create<StoreState>(
       loading: false,
       login: async (credentials: IAuth) => {
         set({ loading: true })
-        try {
-          const user = await UserDatasourceImpl.getInstance().login(credentials)
-          set({ user })
-        } catch (error) {
-          console.error(error)
-        } finally {
-          set({ loading: false })
+        const user = await UserDatasourceImpl.getInstance().login(credentials)
+        if (!user) {
+          throw new Error('User not found')
         }
+        joinChannel(SOCKET_CHANNEL.ADMINS)
+        set({ user })
+        set({ loading: false })
       },
       setUser: (user?: IUser) => set({ user }),
       logout: async () => {

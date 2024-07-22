@@ -7,11 +7,13 @@ import React from 'react'
 
 import { Button } from '@/components/ui/button'
 
+import { useAdminQListener } from '../../services/quote-sockets'
 import AdminQuotesDay from '../components/admin-quotes-day'
 import AdminQuotesMonth from '../components/admin-quotes-month'
 import AdminQuotesWeek from '../components/admin-quotes-week'
 
 export const AdminQuotesView = () => {
+  useAdminQListener()
   const router = useRouter()
   const pathname = usePathname()
   const newPath = `${pathname}/new`
