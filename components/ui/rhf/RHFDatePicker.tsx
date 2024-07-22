@@ -40,7 +40,7 @@ const RHFDatePicker: React.FC<RHFDatePickerProps> = ({ name, label }) => {
 
           const handleDateChange = (selectedDate: Date | undefined) => {
             setDate(selectedDate)
-            field.onChange(selectedDate ? selectedDate : '')
+            field.onChange(selectedDate ? selectedDate : undefined)
           }
 
           return (
