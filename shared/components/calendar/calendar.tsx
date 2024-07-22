@@ -1,19 +1,20 @@
 'use client'
 
 import useCalendar from '@/shared/hooks/useCalendar'
-import { IEvents } from '@/shared/interfaces/IEvents'
+import { IEventsMonth } from '@/shared/interfaces/IEvents'
+import React from 'react'
 
 import CalendarDayInMonth from './calendar-day-in-month'
 import CalendarDaysOfWeek from './calendar-day-of-week'
 import CalendarHeader from './calendar-header'
 
 interface CalendarProps {
-  events: IEvents
+  events: IEventsMonth
   onClickDay: (date: string) => void
   onChangeMonth: (month: number, year: number) => void
 }
 
-const Calendar = ({ events, onClickDay, onChangeMonth }: CalendarProps) => {
+const Calendar: React.FC<CalendarProps> = ({ events, onClickDay, onChangeMonth }) => {
   const { currentDate, daysInMonth, handlePrevMonth, handleNextMonth, handleDayClick } = useCalendar({
     onChangeMonth,
     onClickDay,

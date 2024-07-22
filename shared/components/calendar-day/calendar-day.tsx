@@ -1,12 +1,12 @@
 import useCalendarDay from '@/shared/hooks/useCalendarDay'
-import { ISchedule } from '@/shared/interfaces/ISchedule'
+import { IDailySchedule } from '@/shared/interfaces/ISchedule'
 
 import CalendarDayHeader from './calendar-day-header'
 import ItemDay from './item-day'
 
 interface ItemHourProps {
   date?: string
-  schedule: ISchedule[]
+  schedule: IDailySchedule[]
   onClick: (id: number) => void
   onChange: (day: string) => void
 }

@@ -1,15 +1,15 @@
 'use client'
 import Calendar from '@/shared/components/calendar/calendar'
 import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
+import { IQuoteEventsMonth } from '@/shared/interfaces/IEvents'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 
-import { IEvents } from '../../../../shared/interfaces/IEvents'
 import { quotesMonthAdapter } from '../../adapters/quotes-adapter'
 import { apiQuote } from '../../models/IApiQuote'
 
 const QuotesMonth = () => {
-  const [events, setEvents] = useState<IEvents>({})
+  const [events, setEvents] = useState<IQuoteEventsMonth>({})
   const updateQueryParam = useUpdateQueryParam()
 
   const onChange = async (month: number, year: number) => {

@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Gab Motors Agenda',
   description: 'Agenda de mantenimiento de vehículos de Gab Motors',
   manifest: '/manifest.json',
-  themeColor: '#000000',
   icons: [
     {
       rel: 'icon',

@@ -65,7 +65,7 @@ const generateDaysFromNextMonth = (
 ): IDay[] => {
   const daysArray: IDay[] = []
 
-  for (let i = 1; i <= remainingDays; i++) {
+  for (let i = 0; i < remainingDays; i++) {
     const date = firstDayOfMonth.add(totalDaysInMonth + i, 'day')
     daysArray.push({
       day: date.date(),

@@ -1,11 +1,11 @@
-import { ISchedule } from '@/shared/interfaces/ISchedule'
+import { IDailySchedule } from '@/shared/interfaces/ISchedule'
 
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 import ItemHour from './item-hour'
 
 interface ItemDayProps {
-  schedule: ISchedule
+  schedule: IDailySchedule
   onClick: (id: number) => void
 }
 
@@ -18,8 +18,8 @@ const ItemDay = ({ schedule, onClick }: ItemDayProps) => {
           <hr className="w-full border-t-[1.5px] border-dashed border-blue-400" />
           <ScrollArea className="h-14 text-blue-900">
             <ul className="flex gap-1 px-1">
-              {schedule.activities1.map((activity) => (
-                <ItemHour key={activity.id} activity={activity} onClick={onClick} />
+              {schedule.events1.map((event) => (
+                <ItemHour key={event.id} event={event} onClick={onClick} />
               ))}
             </ul>
             <ScrollBar orientation="horizontal" />
@@ -27,8 +27,8 @@ const ItemDay = ({ schedule, onClick }: ItemDayProps) => {
 
           <ScrollArea className="h-14 text-blue-900">
             <ul className="flex gap-1 px-1">
-              {schedule.activities2.map((activity) => (
-                <ItemHour key={activity.id} activity={activity} onClick={onClick} />
+              {schedule.events2.map((event) => (
+                <ItemHour key={event.id} event={event} onClick={onClick} />
               ))}
             </ul>
             <ScrollBar orientation="horizontal" />
