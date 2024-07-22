@@ -70,7 +70,7 @@ export class AxiosClient implements HttpHandler {
     return this.instance
   }
 
-  setAccessToken(accessToken: string): void {
+  setAccessToken(accessToken: string | null): void {
     AxiosClient.accessToken = accessToken
     if (AxiosClient.accessToken) {
       this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${AxiosClient.accessToken}`

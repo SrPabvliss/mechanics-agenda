@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
+import { UseAccountStore } from '@/features/auth/context/use-account-store'
 import useAuth from '@/shared/hooks/use-auth'
 import { Ellipsis, LogOut } from 'lucide-react'
 
@@ -23,6 +24,13 @@ export function Menu({ isOpen }: MenuProps) {
   useAuth()
   const pathname = usePathname()
   const menuList = getMenuList(pathname)
+  const { logout } = UseAccountStore()
+  const router = useRouter()
+
+  const onLogout = async () => {
+    await logout()
+    router.push('/login')
+  }
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -93,7 +101,7 @@ export function Menu({ isOpen }: MenuProps) {
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Link href={'/login'} className="mt-5 h-10 w-full justify-center">
-                    <Button variant="outline">
+                    <Button variant="outline" onClick={() => onLogout()}>
                       <span className={cn(isOpen === false ? '' : 'mr-4')}>
                         <LogOut size={18} />
                       </span>

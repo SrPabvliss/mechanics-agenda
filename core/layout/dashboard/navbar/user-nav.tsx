@@ -1,7 +1,9 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
+import { UseAccountStore } from '@/features/auth/context/use-account-store'
 import { LogOut, User } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -18,6 +20,14 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 
 export function UserNav() {
+  const { logout } = UseAccountStore()
+  const router = useRouter()
+
+  const onLogout = async () => {
+    await logout()
+    router.push('/login')
+  }
+
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
@@ -53,7 +63,7 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuItem className="hover:cursor-pointer">
-          <Link href="/login" className="flex items-center">
+          <Link href="/login" className="flex items-center" onClick={() => onLogout()}>
             <LogOut className="mr-3 h-4 w-4 text-muted-foreground" />
             Cerrar sesión
           </Link>

@@ -14,7 +14,6 @@ const useAuth = () => {
   useEffect(() => {
     const checkAuth = async () => {
       const token = await getCookie('access_token')
-      console.log('Token:', token)
 
       if (!token) {
         router.push('/login')
