@@ -38,4 +38,7 @@ export const API_ROUTES = {
     UPDATE: (id: string) => `/jobs/${id}`,
     DELETE: (id: string) => `/jobs/${id}`,
   },
+  NOTIFICATIONS: {
+    SUBSCRIBE: '/subscriptions',
+  },
 }

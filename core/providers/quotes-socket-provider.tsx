@@ -24,14 +24,14 @@ const QuotesProvider: React.FC<Props> = ({ children }) => {
           // queryClient.invalidateQueries(['quotes'])
           // esto es lo que se debería hacer para actualizar la lista de citas
         }
-        console.log('new-appointment', data)
+        console.log('appointments-change', 'sx')
       }
 
-      socketClient.on('new-appointment', handleNewAppointment)
+      socketClient.on('appointments-change', handleNewAppointment)
 
       return () => {
         leaveChannel(SOCKET_CHANNEL.MECHANICS)
-        socketClient.off('new-appointment', handleNewAppointment)
+        socketClient.off('appointments-change', handleNewAppointment)
       }
     },
     [
