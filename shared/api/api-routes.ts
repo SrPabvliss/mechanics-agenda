@@ -1,4 +1,5 @@
 export const ACCESS_TOKEN_COOKIE_NAME = 'access_token'
+export const PUSH_NOTIFICATIONS_IDENTIFIER = 'push_identifier'
 
 export const API_ROUTES = {
   AUTH: {
@@ -40,5 +41,6 @@ export const API_ROUTES = {
   },
   NOTIFICATIONS: {
     SUBSCRIBE: '/subscriptions',
+    UNSUBSCRIBE: '/subscriptions',
   },
 }

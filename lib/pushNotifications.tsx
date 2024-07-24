@@ -8,42 +8,37 @@ const publicVapidKey = 'BCrldhzLz9ITO3yFs_G9p1toDacQt53SkXPjzHNiPKdQXwAPDGdg5UJo
 export const subscribeUserToPush = async () => {
   const { user } = UseAccountStore()
 
-  // if (!navigator) return
-  // comentado debido a falta de pruebas
+  if (typeof window === 'undefined' || !navigator) return
 
-  if ('serviceWorker' in navigator) {
-    const registration = await navigator.serviceWorker.ready
+  if (!('serviceWorker' in navigator)) return
 
-    if (!registration.pushManager) {
-      console.log('Push manager not available')
-      return
-    }
+  const registration = await navigator.serviceWorker.ready
 
-    try {
-      // guardar la subscripción o estado de la subscripción en el store
-      const subscription = await registration.pushManager.getSubscription()
+  if (!registration.pushManager) {
+    console.log('Push manager not available')
+    return
+  }
 
-      //comprobar el id del usuario y el rol, si coincide con el usuario logeado no se crea, en caso de que no coincida se crea
+  try {
+    // guardar la subscripción o estado de la subscripción en el store
+    const subscription = await registration.pushManager.getSubscription()
 
-      // en el logout borrar el estado del role la subscripción
+    //comprobar el id del usuario y el rol, si coincide con el usuario logeado no se crea, en caso de que no coincida se crea
 
-      if (subscription) {
-        return
-      }
+    // en el logout borrar el estado del role la subscripción
 
-      const newSubscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-      })
+    if (subscription) return
 
-      if (!user) {
-        return
-      }
+    const newSubscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+    })
 
-      await NotificationDataSourceImpl.getInstance().suscribeUser(newSubscription, user?.role)
-    } catch (error) {
-      console.error('Failed to subscribe the user: ', error)
-    }
+    if (!user) return
+
+    NotificationDataSourceImpl.getInstance().suscribeUser(newSubscription, user)
+  } catch (error) {
+    console.error('Failed to subscribe the user: ', error)
   }
 }
 
