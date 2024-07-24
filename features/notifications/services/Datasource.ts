@@ -1,16 +1,14 @@
 import { AxiosClient } from '@/core/infrastructure/http/AxiosClient'
-import { UserRole } from '@/features/auth/models/IApiUser'
 import { IUser } from '@/features/auth/models/IUser'
 import { API_ROUTES, PUSH_NOTIFICATIONS_IDENTIFIER } from '@/shared/api/api-routes'
 import { setObjectInCookie } from '@/shared/api/cookies-util'
 import { HttpHandler } from '@/shared/api/http-handler'
 
-import { encrypt } from '@/lib/encryption-utils'
+import { ISubscription } from '../models/ISubscription'
 
 interface NotificationDatasource {
-  suscribeUser: (subscription: PushSubscription, user: IUser) => void
-  unsuscribeUser: (subscription: PushSubscription) => void
-  registerEndpoint: (endpoint: string, ci: string, role: UserRole) => void
+  suscribeUser: (subscription: PushSubscription, user: IUser) => Promise<ISubscription>
+  updateSubscription: (susbscription: ISubscription) => Promise<ISubscription>
 }
 
 export class NotificationDataSourceImpl implements NotificationDatasource {
@@ -25,32 +23,41 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
   }
 
   async suscribeUser(subscription: PushSubscription, user: IUser) {
-    const { endpoint } = subscription
-    const { role, ci } = user
+    const { ci } = user
     const objectSubscription = {
       subscription,
-      userRole: role,
+      userCI: ci,
     }
 
-    const data = await this.httpClient.post(API_ROUTES.NOTIFICATIONS.SUBSCRIBE, objectSubscription, {
+    const data = await this.httpClient.post<ISubscription>(API_ROUTES.NOTIFICATIONS.SUBSCRIBE, objectSubscription, {
       successMessage: 'Notificaciones activadas',
     })
 
-    if (data) this.registerEndpoint(endpoint, ci, role)
+    console.log(data)
+
+    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data)
+
+    return data
   }
 
-  async unsuscribeUser(subscription: PushSubscription) {
-    const { endpoint } = subscription
+  async updateSubscription(subscription: ISubscription) {
+    const { id, available, userCI } = subscription
 
-    return await this.httpClient.delete(API_ROUTES.NOTIFICATIONS.UNSUBSCRIBE, { endpoint })
-  }
+    const data = await this.httpClient.put<ISubscription>(
+      API_ROUTES.NOTIFICATIONS.UPDATE_SUBSCRIPTION(id),
+      {
+        available: !available,
+        userCI,
+      },
+      {
+        successMessage: 'Notificaciones actualizadas',
+      },
+    )
 
-  async registerEndpoint(endpoint: string, ci: string, role: UserRole) {
-    const objectEndpoint = {
-      endpoint: await encrypt(endpoint),
-      ci,
-      role,
-    }
-    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, objectEndpoint)
+    console.log(data)
+
+    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data)
+
+    return data
   }
 }

@@ -42,6 +42,6 @@ export const API_ROUTES = {
   },
   NOTIFICATIONS: {
     SUBSCRIBE: '/subscriptions',
-    UNSUBSCRIBE: '/subscriptions',
+    UPDATE_SUBSCRIPTION: (id: number) => `/subscriptions/${id}`,
   },
 }
