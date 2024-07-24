@@ -6,6 +6,7 @@ export const API_ROUTES = {
     LOGIN: '/auth/login',
     LOGOUT: '/auth/logout',
     SIGN_UP: '/auth/signup',
+    VALIDATE_TOKEN: '/auth/validate-token',
   },
   USERS: {
     GET_ALL: '/users',

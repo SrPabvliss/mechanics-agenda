@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode'
 
 import { UserAdapter } from '../adapters/UserAdapter'
 import { IAPIUser, IDecodedToken } from '../models/IApiUser'
-import { IAuth, ILoginResponse } from '../models/IAuth'
+import { IAuth, ILoginResponse, IValidate } from '../models/IAuth'
 import { IUser } from '../models/IUser'
 
 interface UserDatasource {
@@ -15,6 +15,7 @@ interface UserDatasource {
   logout: () => void
   signup: (user: IUser) => void
   getUserByCi: (ci: string) => Promise<IUser>
+  validateToken: () => Promise<boolean>
 }
 
 export class UserDatasourceImpl implements UserDatasource {
@@ -52,5 +53,10 @@ export class UserDatasourceImpl implements UserDatasource {
 
   async signup(user: IUser) {
     return await this.httpClient.post(API_ROUTES.AUTH.SIGN_UP, user)
+  }
+
+  async validateToken() {
+    const { isValid } = await this.httpClient.get<IValidate>(API_ROUTES.AUTH.VALIDATE_TOKEN)
+    return isValid
   }
 }
