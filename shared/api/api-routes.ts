@@ -1,10 +1,12 @@
 export const ACCESS_TOKEN_COOKIE_NAME = 'access_token'
+export const PUSH_NOTIFICATIONS_IDENTIFIER = 'push_identifier'
 
 export const API_ROUTES = {
   AUTH: {
     LOGIN: '/auth/login',
     LOGOUT: '/auth/logout',
     SIGN_UP: '/auth/signup',
+    VALIDATE_TOKEN: '/auth/validate-token',
   },
   USERS: {
     GET_ALL: '/users',
@@ -37,5 +39,9 @@ export const API_ROUTES = {
     CREATE: '/jobs',
     UPDATE: (id: string) => `/jobs/${id}`,
     DELETE: (id: string) => `/jobs/${id}`,
+  },
+  NOTIFICATIONS: {
+    SUBSCRIBE: '/subscriptions',
+    UPDATE_SUBSCRIPTION: (id: number) => `/subscriptions/${id}`,
   },
 }

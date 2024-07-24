@@ -14,6 +14,17 @@ export const getCookie = async (key: string) => {
   return cookieData
 }
 
+export const setObjectInCookie = (key: string, obj: unknown) => {
+  const jsonString = JSON.stringify(obj)
+  setCookie(key, jsonString)
+}
+
+export const getObjectFromCookie = async (key: string) => {
+  const jsonString = await getCookie(key)
+  if (!jsonString) return null
+  return JSON.parse(jsonString)
+}
+
 export const deleteCookie = (key: string) => {
   cookies().delete(key)
 }

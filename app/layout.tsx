@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 
+import UseRegisterServiceWorker from '@/core/hooks/use-register-sw'
+import SocketsLayout from '@/core/layout/socket-layout'
 import { ThemeProvider } from '@/core/providers/theme-provider'
 import { Toaster } from 'react-hot-toast'
 
@@ -48,9 +50,12 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} ${inter.className} `}>
+        <UseRegisterServiceWorker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Toaster position="bottom-center" />
-          {children}
+          <SocketsLayout>
+            <Toaster position="bottom-center" />
+            {children}
+          </SocketsLayout>
         </ThemeProvider>
       </body>
     </html>

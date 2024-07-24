@@ -6,3 +6,8 @@ export interface IAuth {
 export interface ILoginResponse {
   access_token: string
 }
+
+export interface IValidate {
+  isValid: boolean
+  message?: string
+}
