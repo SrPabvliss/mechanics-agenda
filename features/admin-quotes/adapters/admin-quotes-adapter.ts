@@ -1,15 +1,15 @@
 import { scheduleDay } from '@/shared/constants/schedule-day'
 import { scheduleWeek } from '@/shared/constants/schedule-week'
-import { IEvent, IEvents } from '@/shared/interfaces/IEvents'
-import { ISchedule, IScheduleWeek } from '@/shared/interfaces/ISchedule'
+import { IAdminQuoteEvent, IAdminQuoteEventsMonth } from '@/shared/interfaces/IEvents'
+import { IDailySchedule, IScheduleWeek } from '@/shared/interfaces/ISchedule'
 
 import { IApiAdminQuotes } from '../models/IApiAdminQuotes'
 
-export const adminQuotesDayAdapter = (data: IApiAdminQuotes[]): ISchedule[] => {
-  const schedule = JSON.parse(JSON.stringify(scheduleDay)) as ISchedule[]
+export const adminQuotesDayAdapter = (data: IApiAdminQuotes[]): IDailySchedule[] => {
+  const schedule = JSON.parse(JSON.stringify(scheduleDay)) as IDailySchedule[]
 
   data.forEach((quote) => {
-    const event: IEvent = {
+    const event: IAdminQuoteEvent = {
       id: quote.id,
       title: quote.title,
       label: quote.description,
@@ -23,9 +23,9 @@ export const adminQuotesDayAdapter = (data: IApiAdminQuotes[]): ISchedule[] => {
     const scheduleHour = schedule.find((s) => s.hour === startHour)
     if (scheduleHour) {
       if (startMinutes < 30) {
-        scheduleHour.activities1.push(event)
+        scheduleHour.events1.push(event)
       } else {
-        scheduleHour.activities2.push(event)
+        scheduleHour.events2.push(event)
       }
     }
   })
@@ -37,7 +37,7 @@ export const adminQuotesWeekAdapter = (data: IApiAdminQuotes[]): IScheduleWeek[]
   const schedule = JSON.parse(JSON.stringify(scheduleWeek)) as IScheduleWeek[]
 
   data.forEach((quote) => {
-    const event: IEvent = {
+    const event: IAdminQuoteEvent = {
       id: quote.id,
       title: quote.title,
       label: quote.description,
@@ -67,11 +67,11 @@ export const adminQuotesWeekAdapter = (data: IApiAdminQuotes[]): IScheduleWeek[]
   return schedule
 }
 
-export const adminQuotesMonthAdapter = (data: IApiAdminQuotes[]): IEvents => {
-  const events: IEvents = {}
+export const adminQuotesMonthAdapter = (data: IApiAdminQuotes[]): IAdminQuoteEventsMonth => {
+  const events: IAdminQuoteEventsMonth = {}
 
   data.forEach((quote) => {
-    const event: IEvent = {
+    const event: IAdminQuoteEvent = {
       id: quote.id,
       title: quote.title,
       label: quote.description,

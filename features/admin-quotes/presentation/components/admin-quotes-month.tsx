@@ -4,12 +4,12 @@ import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 
-import { IEvents } from '../../../../shared/interfaces/IEvents'
+import { IAdminQuoteEventsMonth } from '../../../../shared/interfaces/IEvents'
 import { adminQuotesMonthAdapter } from '../../adapters/admin-quotes-adapter'
 import { apiAdminQuotes } from '../../models/IApiAdminQuotes'
 
 const AdminQuotesMonth = () => {
-  const [events, setEvents] = useState<IEvents>({})
+  const [events, setEvents] = useState<IAdminQuoteEventsMonth>({})
   const updateQueryParam = useUpdateQueryParam()
 
   const onChange = async (month: number, year: number) => {

@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import * as React from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
@@ -39,7 +40,7 @@ const RHFDatePicker: React.FC<RHFDatePickerProps> = ({ name, label }) => {
 
           const handleDateChange = (selectedDate: Date | undefined) => {
             setDate(selectedDate)
-            field.onChange(selectedDate ? selectedDate : '')
+            field.onChange(selectedDate ? selectedDate : undefined)
           }
 
           return (
@@ -51,7 +52,7 @@ const RHFDatePicker: React.FC<RHFDatePickerProps> = ({ name, label }) => {
                     className={cn('mt-1 w-full justify-start text-left font-normal', !date && 'text-muted-foreground')}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, 'PPP') : <span>Selecciona una fecha</span>}
+                    {date ? format(date, 'PPP', { locale: es }) : <span>Selecciona una fecha</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">

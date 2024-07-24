@@ -1,6 +1,6 @@
 import Calendar from '@/shared/components/calendar/calendar'
 import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
-import { IEvents } from '@/shared/interfaces/IEvents'
+import { IReviewEventsMonth } from '@/shared/interfaces/IEvents'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 
@@ -8,7 +8,7 @@ import { reviewMonthAdapter } from '../../adapters/reviewAdapter'
 import { reviewData } from '../../models/IApiReview'
 
 const ReviewMonth = () => {
-  const [events, setEvents] = useState<IEvents>({})
+  const [events, setEvents] = useState<IReviewEventsMonth>({})
   const updateQueryParam = useUpdateQueryParam()
 
   const onChange = async (month: number, year: number) => {

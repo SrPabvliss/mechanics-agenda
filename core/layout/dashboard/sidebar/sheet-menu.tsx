@@ -4,7 +4,7 @@ import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { MenuIcon, PanelsTopLeft } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetHeader, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
+import { Sheet, SheetHeader, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 
 import { Menu } from './menu'
 
@@ -19,6 +19,7 @@ export function SheetMenu() {
       <VisuallyHidden.Root>
         <SheetTitle>Menu</SheetTitle>
       </VisuallyHidden.Root>
+      <SheetDescription className="hidden">Menu de navegación</SheetDescription>
       <SheetContent className="flex h-full flex-col px-3 sm:w-72" side="left">
         <SheetHeader>
           <Button className="flex items-center justify-center pt-1" variant="link" asChild>

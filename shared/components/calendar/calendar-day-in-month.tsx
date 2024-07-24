@@ -1,5 +1,5 @@
 import { IDay } from '@/shared/interfaces/ICalendar'
-import { IEvents } from '@/shared/interfaces/IEvents'
+import { IEventsMonth } from '@/shared/interfaces/IEvents'
 
 import { ScrollArea } from '@/components/ui/scroll-area'
 
@@ -11,7 +11,7 @@ interface CalendarDayInMonthProps {
   handleDayClick: ({ date }: IDay) => void
   dayInMonth: IDay
   currentDate: Date
-  events: IEvents
+  events: IEventsMonth
 }
 const CalendarDayInMonth = ({ currentDate, dayInMonth, events, handleDayClick }: CalendarDayInMonthProps) => {
   const containsEvents = events[dayInMonth.date] !== undefined

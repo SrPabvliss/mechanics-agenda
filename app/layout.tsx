@@ -1,14 +1,17 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 
-import './globals.css'
+import UseRegisterServiceWorker from '@/core/hooks/use-register-sw'
+import SocketsLayout from '@/core/layout/socket-layout'
 import { ThemeProvider } from '@/core/providers/theme-provider'
+import { Toaster } from 'react-hot-toast'
+
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Gab Motors Agenda',
   description: 'Agenda de mantenimiento de vehículos de Gab Motors',
   manifest: '/manifest.json',
-  themeColor: '#000000',
   icons: [
     {
       rel: 'icon',
@@ -47,8 +50,12 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} ${inter.className} `}>
+        <UseRegisterServiceWorker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <SocketsLayout>
+            <Toaster position="bottom-center" />
+            {children}
+          </SocketsLayout>
         </ThemeProvider>
       </body>
     </html>

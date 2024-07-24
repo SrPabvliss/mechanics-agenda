@@ -13,9 +13,21 @@ import {
 
 interface ConfirmationDialogProps {
   onConfirm: () => void
+  title: string
+  description: string
+  confirmLabel?: string
+  cancelLabel?: string
+  triggerLabel: string
 }
 
-export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ onConfirm }) => {
+export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+  onConfirm,
+  title,
+  description,
+  confirmLabel = 'Confirmar',
+  cancelLabel = 'Cancelar',
+  triggerLabel,
+}) => {
   const [open, setOpen] = React.useState(false)
 
   const handleConfirm = () => {
@@ -26,20 +38,18 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ onConfir
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Finalizar</Button>
+        <Button>{triggerLabel}</Button>
       </DialogTrigger>
       <DialogContent className="max-w-80 md:max-w-96">
         <DialogHeader>
-          <DialogTitle>Confirmar finalización</DialogTitle>
-          <DialogDescription>
-            Una vez marcadas como finalizadas, las actividades no podrán ser editadas. ¿Deseas continuar?
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex gap-2">
           <Button variant="outline" onClick={() => setOpen(false)}>
-            Cancelar
+            {cancelLabel}
           </Button>
-          <Button onClick={handleConfirm}>Confirmar</Button>
+          <Button onClick={handleConfirm}>{confirmLabel}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

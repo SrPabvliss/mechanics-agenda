@@ -1,7 +1,7 @@
 import { usePathname, useRouter } from 'next/navigation'
 
 import { ContentLayout } from '@/core/layout/content/content-layout'
-import { ViewButtons } from '@/features/reviews/presentation/components/views-buttons'
+import { ViewButtons } from '@/shared/components/views-buttons'
 import React from 'react'
 
 import { Button } from '@/components/ui/button'
