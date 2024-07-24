@@ -42,9 +42,9 @@ export const UseAccountStore = create<StoreState>(
       },
       setUser: (user?: IUser) => set({ user }),
       logout: async () => {
-        await UserDatasourceImpl.getInstance().logout()
         const subscription: ISubscription | undefined = await getObjectFromCookie(PUSH_NOTIFICATIONS_IDENTIFIER)
-        if (subscription) NotificationDataSourceImpl.getInstance().updateSubscription(subscription)
+        if (subscription) await NotificationDataSourceImpl.getInstance().updateSubscription(subscription)
+        await UserDatasourceImpl.getInstance().logout()
         toast.success(MESSAGES.AUTH.LOGOUT)
         set({ user: DEFAULT_USER })
       },
