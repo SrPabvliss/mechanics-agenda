@@ -43,7 +43,7 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
   async updateSubscription(subscription: ISubscription) {
     const { id, available, userCI } = subscription
 
-    const data = await this.httpClient.put<ISubscription>(
+    const data = await this.httpClient.patch<ISubscription>(
       API_ROUTES.NOTIFICATIONS.UPDATE_SUBSCRIPTION(id),
       {
         available: !available,
