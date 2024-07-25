@@ -6,18 +6,15 @@ import { NotificationDataSourceImpl } from '@/features/notifications/services/Da
 import { PUSH_NOTIFICATIONS_IDENTIFIER } from '@/shared/api/api-routes'
 import { getObjectFromCookie } from '@/shared/api/cookies-util'
 
-const publicVapidKey = 'BCrldhzLz9ITO3yFs_G9p1toDacQt53SkXPjzHNiPKdQXwAPDGdg5UJo1R93K2ZmP8oVHgHXc0UNaEsDe38LxXs' || ''
+const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
 
 export const handleUserSubscription = async (user: IUser) => {
-  console.log('handleUserSubscription')
   if (typeof window === 'undefined' || !navigator) return
 
   if (!('serviceWorker' in navigator)) return
 
   const permission = await Notification.requestPermission()
-  console.log(permission)
   if (permission !== 'granted') {
-    console.error('Permiso de notificación no concedido')
     return
   }
 
@@ -40,7 +37,7 @@ export const handleUserSubscription = async (user: IUser) => {
 
     const newSubscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+      applicationServerKey: urlBase64ToUint8Array(publicVapidKey as string),
     })
 
     NotificationDataSourceImpl.getInstance().suscribeUser(newSubscription, user)

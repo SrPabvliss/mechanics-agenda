@@ -30,7 +30,7 @@ export class AxiosClient implements HttpHandler {
         if (token) {
           config.headers.Authorization = `Bearer ${token.replaceAll('"', '')}`
         } else {
-          document.dispatchEvent(new CustomEvent('unauthorized'))
+          delete config.headers.Authorization
         }
         return config
       },
