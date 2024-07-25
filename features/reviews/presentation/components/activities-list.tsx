@@ -41,7 +41,6 @@ export const ActivitiesList = ({ initialActivities = [] }: { initialActivities?:
   }
 
   const finalizeActivities = () => {
-    console.log('Actividades finalizadas:', activities)
     router.back()
   }
 

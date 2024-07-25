@@ -47,8 +47,8 @@ export class UserDatasourceImpl implements UserDatasource {
 
   async logout() {
     await this.httpClient.get(API_ROUTES.AUTH.LOGOUT)
-    AxiosClient.getInstance().setAccessToken(null)
-    deleteCookie(ACCESS_TOKEN_COOKIE_NAME)
+    await AxiosClient.getInstance().setAccessToken(null)
+    await deleteCookie(ACCESS_TOKEN_COOKIE_NAME)
   }
 
   async signup(user: IUser) {

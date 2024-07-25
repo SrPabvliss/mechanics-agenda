@@ -33,8 +33,6 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
       successMessage: 'Notificaciones activadas',
     })
 
-    console.log(data)
-
     setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data)
 
     return data
@@ -53,8 +51,6 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
         successMessage: 'Notificaciones actualizadas',
       },
     )
-
-    console.log(data)
 
     setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data)
 
