@@ -8,7 +8,7 @@ import { IDay } from '../interfaces/ICalendar'
 
 interface IUseCalendar {
   onClickDay: (day: string) => void
-  onChangeMonth: (month: number, year: number) => void
+  onChangeMonth: (date1: string, date2: string) => void
 }
 
 const useCalendar = ({ onChangeMonth, onClickDay }: IUseCalendar) => {
@@ -17,9 +17,16 @@ const useCalendar = ({ onChangeMonth, onClickDay }: IUseCalendar) => {
 
   useEffect(() => {
     setDaysInMonth(generateCalendar(currentDate.getFullYear(), currentDate.getMonth()))
-    onChangeMonth(currentDate.getMonth() + 1, currentDate.getFullYear())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentDate])
+
+  useEffect(() => {
+    if (daysInMonth.length) {
+      const firstDay = daysInMonth[0].date
+      const lastDay = daysInMonth[daysInMonth.length - 1].date
+      onChangeMonth(firstDay, lastDay)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [daysInMonth])
 
   const handlePrevMonth = (): void => {
     setCurrentDate((prev) => {

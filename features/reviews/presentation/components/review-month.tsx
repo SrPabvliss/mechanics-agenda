@@ -11,14 +11,13 @@ const ReviewMonth = () => {
   const [events, setEvents] = useState<IReviewEventsMonth>({})
   const updateQueryParam = useUpdateQueryParam()
 
-  const onChange = async (month: number, year: number) => {
-    await new Promise((resolve) => setTimeout(resolve, 250))
-
+  const onChange = async (date1: string, date2: string) => {
+    const startDate = dayjs(date1).toDate()
+    const endDate = dayjs(date2).toDate()
     const filter = reviewData.filter((review) => {
-      const reviewDate = dayjs(review.date)
-      return reviewDate.month() + 1 === month && reviewDate.year() === year
+      const reviewDate = dayjs(review.date).toDate()
+      return reviewDate >= startDate && reviewDate <= endDate
     })
-
     setEvents(reviewMonthAdapter(filter))
   }
 
