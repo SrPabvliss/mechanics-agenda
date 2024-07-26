@@ -37,9 +37,9 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
       },
     )
 
-    if (error || !data) return
+    if (error) return
 
-    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data)
+    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data!)
 
     return data
   }
@@ -58,9 +58,9 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
       },
     )
 
-    if (error || !data) return
+    if (error) return
 
-    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data)
+    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data!)
 
     return data
   }

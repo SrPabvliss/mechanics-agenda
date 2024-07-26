@@ -31,16 +31,16 @@ export class UserDatasourceImpl implements UserDatasource {
 
   async getUserByCi(ci: string) {
     const { data, error } = await this.httpClient.get<IAPIUser>(API_ROUTES.USERS.GET_BY_CI(ci))
-    if (error || !data) return
-    return UserAdapter.toDomain(data)
+    if (error) return
+    return UserAdapter.toDomain(data!)
   }
 
   async login(credentials: IAuth) {
     const { data, error } = await this.httpClient.post<ILoginResponse>(API_ROUTES.AUTH.LOGIN, credentials, {
       successMessage: MESSAGES.AUTH.LOGIN,
     })
-    if (error || !data) return
-    const { access_token } = data
+    if (error) return
+    const { access_token } = data!
     this.httpClient.setAccessToken(access_token)
     setCookie(ACCESS_TOKEN_COOKIE_NAME, access_token)
     const decodedToken: IDecodedToken = jwtDecode(access_token)
@@ -61,7 +61,7 @@ export class UserDatasourceImpl implements UserDatasource {
 
   async validateToken() {
     const { data, error } = await this.httpClient.get<IValidate>(API_ROUTES.AUTH.VALIDATE_TOKEN)
-    if (error || !data) return false
-    return data.isValid
+    if (error) return false
+    return data!.isValid
   }
 }
