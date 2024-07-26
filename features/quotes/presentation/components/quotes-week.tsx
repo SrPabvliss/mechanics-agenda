@@ -3,35 +3,40 @@
 import CalendarWeek from '@/shared/components/calendar-week/calendar-week'
 import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
-import dayjs from 'dayjs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { quotesWeekAdapter } from '../../adapters/quotes-adapter'
-import { apiQuote } from '../../models/IApiQuote'
+import { formatDateTime } from '@/lib/formatDate'
+
+import { QuotesAdapter } from '../../adapters/quotes-adapter'
+import useQuotesQuery from '../../hooks/use-quotes-query'
 
 const QuotesWeek = () => {
-  const [schedule, setSchedule] = useState<IScheduleWeek[]>([])
+  const [events, setEvents] = useState<IScheduleWeek[]>([])
   const updateQueryParam = useUpdateQueryParam()
 
-  const onChange = async (date1: string, date2: string) => {
-    const startDate = dayjs(date1).toDate()
-    const endDate = dayjs(date2).toDate()
+  const [dates, setDates] = useState<{ date1: string; date2: string }>({ date1: '', date2: '' })
+  const { data } = useQuotesQuery({
+    date1: formatDateTime(dates.date1, '00:00'),
+    date2: formatDateTime(dates.date2, '23:59'),
+  })
 
-    const filter = apiQuote.filter((review) => {
-      const reviewDate = dayjs(review.date).toDate()
-      return reviewDate >= startDate && reviewDate <= endDate
-    })
+  useEffect(() => {
+    if (data) {
+      setEvents(QuotesAdapter.quotesWeekAdapter(data))
+    }
+  }, [data])
 
-    setSchedule(quotesWeekAdapter(filter))
+  const handleDateChange = (date1: string, date2: string) => {
+    setDates({ date1, date2 })
   }
 
-  const onClick = (date: string) => {
+  const handleClick = (date: string) => {
     updateQueryParam([
       { param: 'date', value: date },
       { param: 'view', value: 'day' },
     ])
   }
-  return <CalendarWeek onChange={onChange} onClick={onClick} schedule={schedule} />
+  return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={events} />
 }
 
 export default QuotesWeek
