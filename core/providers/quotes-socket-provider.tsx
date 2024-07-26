@@ -1,7 +1,7 @@
-// import { useQueryClient } from '@tanstack/react-query'
-import { IQuoteEvent } from '@/shared/interfaces/IEvents'
+import { QUERY_KEY } from '@/shared/api/query-key'
 import React, { createContext, useContext, useEffect } from 'react'
 
+import queryClient from '../infrastructure/react-query/query-client'
 import { joinChannel, leaveChannel, SOCKET_CHANNEL, socketClient } from '../infrastructure/sockets/socket-client'
 
 interface Props {
@@ -13,18 +13,12 @@ const QuotesContext = createContext(null)
 export const useQuotes = () => useContext(QuotesContext)
 
 const QuotesProvider: React.FC<Props> = ({ children }) => {
-  // const queryClient = useQueryClient()
-
   useEffect(
     () => {
       joinChannel(SOCKET_CHANNEL.MECHANICS)
 
-      const handleNewAppointment = (data: IQuoteEvent | null) => {
-        if (data) {
-          // queryClient.invalidateQueries(['quotes'])
-          // esto es lo que se debería hacer para actualizar la lista de citas
-        }
-        console.log('appointments-change', 'sx')
+      const handleNewAppointment = () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.QUOTES] })
       }
 
       socketClient.on('appointments-change', handleNewAppointment)
