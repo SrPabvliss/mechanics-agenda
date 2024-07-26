@@ -41,10 +41,9 @@ export const useQuotesForm = () => {
   })
 
   const onSubmit: SubmitHandler<QuotesFormValues> = async (data) => {
-    try {
-      await QuotesDatasourceImpl.getInstance().create(QuotesAdapter.createQuoteAdapter(data))
-      router.push('/quotes')
-    } catch (error) {}
+    const newQuote = await QuotesDatasourceImpl.getInstance().create(QuotesAdapter.createQuoteAdapter(data))
+    if (!newQuote) return
+    router.push('/quotes')
   }
 
   return {

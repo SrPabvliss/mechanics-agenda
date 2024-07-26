@@ -1,4 +1,4 @@
-import { AxiosClient } from '@/core/infrastructure/http/AxiosClient'
+import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
 import { API_ROUTES } from '@/shared/api/api-routes'
 import { HttpHandler } from '@/shared/api/http-handler'
 import { IQuoteFilter } from '@/shared/interfaces/IFilters'
@@ -6,46 +6,58 @@ import { IQuoteFilter } from '@/shared/interfaces/IFilters'
 import { IApiCreateQuote, IApiQuote, IApiUpdateQuote } from '../models/IApiQuote'
 
 export interface QuoteDatasource {
-  getAll(): Promise<IApiQuote[]>
-  create(quote: IApiCreateQuote): Promise<IApiQuote>
-  update(id: number, quote: IApiUpdateQuote): Promise<IApiQuote>
-  delete(id: number): Promise<IApiQuote>
-  getById(id: number): Promise<IApiQuote>
-  getByFilter(paramsFilter: IQuoteFilter): Promise<IApiQuote[]>
+  getAll(): Promise<IApiQuote[] | undefined>
+  create(quote: IApiCreateQuote): Promise<IApiQuote | undefined>
+  update(id: number, quote: IApiUpdateQuote): Promise<IApiQuote | undefined>
+  delete(id: number): Promise<IApiQuote | undefined>
+  getById(id: number): Promise<IApiQuote | undefined>
+  getByFilter(paramsFilter: IQuoteFilter): Promise<IApiQuote[] | undefined>
 }
 
 export class QuotesDatasourceImpl implements QuoteDatasource {
   private httpClient: HttpHandler
 
   constructor() {
-    this.httpClient = AxiosClient.getInstance()
+    this.httpClient = AxiosAdapter.getInstance()
   }
 
   static getInstance(): QuoteDatasource {
     return new QuotesDatasourceImpl()
   }
 
-  async getAll(): Promise<IApiQuote[]> {
-    return await this.httpClient.get<IApiQuote[]>(API_ROUTES.APPOINTMENTS.GET_ALL)
+  async getAll() {
+    const { data, error } = await this.httpClient.get<IApiQuote[]>(API_ROUTES.APPOINTMENTS.GET_ALL)
+    if (error) return
+    return data
   }
 
-  async create(quote: IApiCreateQuote): Promise<IApiQuote> {
-    return await this.httpClient.post<IApiQuote>(API_ROUTES.APPOINTMENTS.CREATE, quote)
+  async create(quote: IApiCreateQuote) {
+    const { data, error } = await this.httpClient.post<IApiQuote>(API_ROUTES.APPOINTMENTS.CREATE, quote)
+    if (error) return
+    return data
   }
 
-  async update(id: number, quote: IApiUpdateQuote): Promise<IApiQuote> {
-    return await this.httpClient.put<IApiQuote>(API_ROUTES.APPOINTMENTS.UPDATE(id), quote)
+  async update(id: number, quote: IApiUpdateQuote) {
+    const { data, error } = await this.httpClient.patch<IApiQuote>(API_ROUTES.APPOINTMENTS.UPDATE(id), quote)
+    if (error) return
+    return data
   }
 
-  async delete(id: number): Promise<IApiQuote> {
-    return await this.httpClient.delete<IApiQuote>(API_ROUTES.APPOINTMENTS.DELETE(id))
+  async delete(id: number) {
+    const { data, error } = await this.httpClient.delete<IApiQuote>(API_ROUTES.APPOINTMENTS.DELETE(id))
+    if (error) return
+    return data
   }
 
-  async getById(id: number): Promise<IApiQuote> {
-    return await this.httpClient.get<IApiQuote>(API_ROUTES.APPOINTMENTS.GET_BY_ID(id))
+  async getById(id: number) {
+    const { data, error } = await this.httpClient.get<IApiQuote>(API_ROUTES.APPOINTMENTS.GET_BY_ID(id))
+    if (error) return
+    return data
   }
 
-  async getByFilter(paramsFilter: IQuoteFilter): Promise<IApiQuote[]> {
-    return await this.httpClient.get<IApiQuote[]>(API_ROUTES.APPOINTMENTS.GET_BY_FILTER(paramsFilter))
+  async getByFilter(paramsFilter: IQuoteFilter) {
+    const { data, error } = await this.httpClient.get<IApiQuote[]>(API_ROUTES.APPOINTMENTS.GET_BY_FILTER(paramsFilter))
+    if (error) return
+    return data
   }
 }
