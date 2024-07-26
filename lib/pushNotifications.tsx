@@ -1,8 +1,8 @@
 'use client'
 
-import { IUser } from '@/features/auth/models/IUser'
 import { ISubscription } from '@/features/notifications/models/ISubscription'
 import { NotificationDataSourceImpl } from '@/features/notifications/services/Datasource'
+import { IUser } from '@/features/users/models/IUser'
 import { PUSH_NOTIFICATIONS_IDENTIFIER } from '@/shared/api/api-routes'
 import { getObjectFromCookie } from '@/shared/api/cookies-util'
 
