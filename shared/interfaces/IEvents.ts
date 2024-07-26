@@ -6,9 +6,7 @@ export interface IEvent {
   color: string
 }
 
-export interface IQuoteEvent extends IEvent {
-  endTime: string
-}
+export interface IQuoteEvent extends IEvent {}
 
 export interface IAdminQuoteEvent extends IEvent {}
 

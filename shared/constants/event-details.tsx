@@ -29,7 +29,7 @@ const QuoteEventDetails: React.FC<ReviewEventDetailsProps<IQuoteEvent>> = ({ eve
         </div>
         <div className="flex flex-1 items-center gap-2">
           <Clock size={24} />
-          <span>{`${event.startTime} - ${event.endTime}`}</span>
+          <span>{`${event.startTime}}`}</span>
         </div>
       </div>
 
