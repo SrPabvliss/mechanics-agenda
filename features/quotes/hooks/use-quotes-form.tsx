@@ -1,6 +1,11 @@
+import { useRouter } from 'next/navigation'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
+
+import { QuotesAdapter } from '../adapters/quotes-adapter'
+import { QuotesDatasourceImpl } from '../services/datasource'
 
 const timeAndResponsibleSchema = z.object({
   time: z.string().min(1, 'La hora es requerida'),
@@ -12,13 +17,15 @@ const quotesSchema = z.object({
   timeAndResponsible: timeAndResponsibleSchema,
   client: z.string().min(1, 'El cliente es requerido'),
   vehicleType: z.string().min(1, 'El tipo de vehículo es requerido'),
-  plate: z.string().optional(),
   description: z.string().optional(),
 })
 
-type QuotesFormValues = z.infer<typeof quotesSchema>
+export type QuotesFormValues = z.infer<typeof quotesSchema>
 
 export const useQuotesForm = () => {
+  const router = useRouter()
+  //const pathname = usePathname()
+
   const methods = useForm<QuotesFormValues>({
     resolver: zodResolver(quotesSchema),
     defaultValues: {
@@ -29,14 +36,15 @@ export const useQuotesForm = () => {
       },
       client: '',
       vehicleType: '',
-      plate: '',
       description: '',
     },
   })
 
-  const onSubmit: SubmitHandler<QuotesFormValues> = (data) => {
-    // eslint-disable-next-line no-console
-    alert(JSON.stringify(data, null, 2))
+  const onSubmit: SubmitHandler<QuotesFormValues> = async (data) => {
+    try {
+      await QuotesDatasourceImpl.getInstance().create(QuotesAdapter.createQuoteAdapter(data))
+      router.push('/quotes')
+    } catch (error) {}
   }
 
   return {
