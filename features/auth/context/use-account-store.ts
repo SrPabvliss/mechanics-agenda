@@ -27,9 +27,7 @@ export const UseAccountStore = create<StoreState>(
       login: async (credentials: IAuth) => {
         set({ loading: true })
         const user = await UserDatasourceImpl.getInstance().login(credentials)
-        if (!user) {
-          throw new Error('User not found')
-        }
+        if (!user) return
         set({ user })
         set({ loading: false })
       },

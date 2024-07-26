@@ -16,6 +16,19 @@ const QuotesDay = ({ date }: QuotesDayProps) => {
     // Filtrar las revisiones que están en el día seleccionado
     const filter = apiQuote.filter((quote) => quote.date === day)
     setSchedule(quotesDayAdapter(filter))
+
+    /* 
+      const { data } = useQuery(
+      queryKey: ['quotes'], 
+      queryFn: async () => {
+        const response = await QuotesDatasourceImpl.getInstance().getQuotes()
+      }
+      onError: (error) => {
+        toast.error(error.message)
+      }
+
+      const data = useCahche(filters)
+    */
   }
 
   const onClick = (id: number) => {

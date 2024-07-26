@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { UserDatasourceImpl } from './features/auth/services/Datasource'
-import { ISubscription } from './features/notifications/models/ISubscription'
-import { NotificationDataSourceImpl } from './features/notifications/services/Datasource'
-import { ACCESS_TOKEN_COOKIE_NAME, PUSH_NOTIFICATIONS_IDENTIFIER } from './shared/api/api-routes'
-import { getObjectFromCookie } from './shared/api/cookies-util'
+import { ACCESS_TOKEN_COOKIE_NAME } from './shared/api/api-routes'
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
@@ -24,8 +21,6 @@ export async function middleware(req: NextRequest) {
   }
 
   if (!token || !isValid) {
-    const subscription: ISubscription | undefined = await getObjectFromCookie(PUSH_NOTIFICATIONS_IDENTIFIER)
-    if (subscription) await NotificationDataSourceImpl.getInstance().updateSubscription(subscription)
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
