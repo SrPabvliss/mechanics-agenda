@@ -15,7 +15,7 @@ interface IUseCalendarDay {
 }
 
 const useCalendarDay = ({ date, onChange, onClick, scheduleWithEvents }: IUseCalendarDay) => {
-  const [day, setDay] = useState<string>(date)
+  const [currentDate, setCurrentDate] = useState<string>(date)
   const updateQueryParam = useUpdateQueryParam()
   const [schedule, setSchedule] = useState<IDailySchedule[]>(
     scheduleWithEvents.length ? scheduleWithEvents : scheduleDay,
@@ -26,13 +26,13 @@ const useCalendarDay = ({ date, onChange, onClick, scheduleWithEvents }: IUseCal
   }, [scheduleWithEvents])
 
   useEffect(() => {
-    onChangeDay(day)
-    updateQueryParam([{ param: 'date', value: formatDate(day) }])
+    onChangeDay(currentDate)
+    updateQueryParam([{ param: 'date', value: formatDate(currentDate) }])
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [day])
+  }, [currentDate])
 
-  const onChangeDay = (day: string) => {
-    onChange(day)
+  const onChangeDay = (date: string) => {
+    onChange(date)
   }
 
   const handleClickEvent = (id: number) => {
@@ -40,8 +40,8 @@ const useCalendarDay = ({ date, onChange, onClick, scheduleWithEvents }: IUseCal
   }
 
   return {
-    day,
-    setDay,
+    day: currentDate,
+    setCurrentDate,
     handleClickEvent,
     schedule,
   }
