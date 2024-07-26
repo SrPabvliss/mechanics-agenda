@@ -1,4 +1,4 @@
-import { IUser } from '@/shared/interfaces/IUser'
+import { IUser } from '@/features/users/models/IUser'
 import React from 'react'
 
 interface TPHeaderProps {
