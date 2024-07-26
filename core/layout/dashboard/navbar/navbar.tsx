@@ -1,5 +1,6 @@
 import { SheetMenu } from '../sidebar/sheet-menu'
 import { ModeToggle } from './mode-toggle'
+import { NotificationToggle } from './notifications-toggle'
 import { UserNav } from './user-nav'
 
 interface NavbarProps {
@@ -15,6 +16,7 @@ export function Navbar({ title }: NavbarProps) {
           <h1 className="font-bold">{title}</h1>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
+          <NotificationToggle />
           <ModeToggle />
           <UserNav />
         </div>

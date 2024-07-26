@@ -1,4 +1,4 @@
-import { AxiosClient } from '@/core/infrastructure/http/AxiosClient'
+import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
 import { IUser } from '@/features/users/models/IUser'
 import { API_ROUTES, PUSH_NOTIFICATIONS_IDENTIFIER } from '@/shared/api/api-routes'
 import { setObjectInCookie } from '@/shared/api/cookies-util'
@@ -7,15 +7,15 @@ import { HttpHandler } from '@/shared/api/http-handler'
 import { ISubscription } from '../models/ISubscription'
 
 interface NotificationDatasource {
-  suscribeUser: (subscription: PushSubscription, user: IUser) => Promise<ISubscription>
-  updateSubscription: (susbscription: ISubscription) => Promise<ISubscription>
+  suscribeUser: (subscription: PushSubscription, user: IUser) => Promise<ISubscription | undefined>
+  updateSubscription: (susbscription: ISubscription) => Promise<ISubscription | undefined>
 }
 
 export class NotificationDataSourceImpl implements NotificationDatasource {
   private httpClient: HttpHandler
 
   constructor() {
-    this.httpClient = AxiosClient.getInstance()
+    this.httpClient = AxiosAdapter.getInstance()
   }
 
   static getInstance(): NotificationDatasource {
@@ -29,13 +29,17 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
       userCI: ci,
     }
 
-    const data = await this.httpClient.post<ISubscription>(API_ROUTES.NOTIFICATIONS.SUBSCRIBE, objectSubscription, {
-      successMessage: 'Notificaciones activadas',
-    })
+    const { data, error } = await this.httpClient.post<ISubscription>(
+      API_ROUTES.NOTIFICATIONS.SUBSCRIBE,
+      objectSubscription,
+      {
+        successMessage: 'Notificaciones activadas',
+      },
+    )
 
-    console.log(data)
+    if (error) return
 
-    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data)
+    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data!)
 
     return data
   }
@@ -43,7 +47,7 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
   async updateSubscription(subscription: ISubscription) {
     const { id, available, userCI } = subscription
 
-    const data = await this.httpClient.patch<ISubscription>(
+    const { data, error } = await this.httpClient.patch<ISubscription>(
       API_ROUTES.NOTIFICATIONS.UPDATE_SUBSCRIPTION(id),
       {
         available: !available,
@@ -54,9 +58,9 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
       },
     )
 
-    console.log(data)
+    if (error) return
 
-    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data)
+    setObjectInCookie(PUSH_NOTIFICATIONS_IDENTIFIER, data!)
 
     return data
   }

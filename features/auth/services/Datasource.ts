@@ -1,4 +1,4 @@
-import { AxiosClient } from '@/core/infrastructure/http/AxiosClient'
+import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
 import { IUser } from '@/features/users/models/IUser'
 import { UserDatasourcesImpl } from '@/features/users/services/datasource'
 import { ACCESS_TOKEN_COOKIE_NAME, API_ROUTES } from '@/shared/api/api-routes'
@@ -11,8 +11,8 @@ import { IAuth, ILoginResponse, IValidate } from '../models/IAuth'
 import { IDecodedToken } from '../models/IDecodedToken'
 
 interface AuthDatasource {
-  login(credentials: IAuth): Promise<IUser>
-  logout: () => Promise<void>
+  login(credentials: IAuth): Promise<IUser | undefined>
+  logout: () => void
   signup: (user: IUser) => void
   validateToken: () => Promise<boolean>
 }
@@ -21,7 +21,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
   private httpClient: HttpHandler
 
   constructor() {
-    this.httpClient = AxiosClient.getInstance()
+    this.httpClient = AxiosAdapter.getInstance()
   }
 
   static getInstance(): AuthDatasource {
@@ -29,9 +29,11 @@ export class AuthDatasourceImpl implements AuthDatasource {
   }
 
   async login(credentials: IAuth) {
-    const { access_token } = await this.httpClient.post<ILoginResponse>(API_ROUTES.AUTH.LOGIN, credentials, {
+    const { data, error } = await this.httpClient.post<ILoginResponse>(API_ROUTES.AUTH.LOGIN, credentials, {
       successMessage: MESSAGES.AUTH.LOGIN,
     })
+    if (error) return
+    const { access_token } = data!
     this.httpClient.setAccessToken(access_token)
     setCookie(ACCESS_TOKEN_COOKIE_NAME, access_token)
     const decodedToken: IDecodedToken = jwtDecode(access_token)
@@ -40,9 +42,10 @@ export class AuthDatasourceImpl implements AuthDatasource {
   }
 
   async logout() {
-    await this.httpClient.get(API_ROUTES.AUTH.LOGOUT)
-    AxiosClient.getInstance().setAccessToken(null)
-    deleteCookie(ACCESS_TOKEN_COOKIE_NAME)
+    const { error } = await this.httpClient.get(API_ROUTES.AUTH.LOGOUT)
+    if (error) return
+    await this.httpClient.setAccessToken(null)
+    await deleteCookie(ACCESS_TOKEN_COOKIE_NAME)
   }
 
   async signup(user: IUser) {
@@ -50,7 +53,8 @@ export class AuthDatasourceImpl implements AuthDatasource {
   }
 
   async validateToken() {
-    const { isValid } = await this.httpClient.get<IValidate>(API_ROUTES.AUTH.VALIDATE_TOKEN)
-    return isValid
+    const { data, error } = await this.httpClient.get<IValidate>(API_ROUTES.AUTH.VALIDATE_TOKEN)
+    if (error) return false
+    return data!.isValid
   }
 }
