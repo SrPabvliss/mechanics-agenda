@@ -14,6 +14,7 @@ export const handleUserSubscription = async (user: IUser) => {
   if (!('serviceWorker' in navigator)) return
 
   const permission = await Notification.requestPermission()
+
   if (permission !== 'granted') {
     return
   }
@@ -28,7 +29,7 @@ export const handleUserSubscription = async (user: IUser) => {
   if (!user) return
 
   try {
-    const subscription: ISubscription | undefined = await getObjectFromCookie(PUSH_NOTIFICATIONS_IDENTIFIER)
+    const subscription: ISubscription | null = await getObjectFromCookie(PUSH_NOTIFICATIONS_IDENTIFIER)
 
     if (subscription) {
       NotificationDataSourceImpl.getInstance().updateSubscription(subscription)
