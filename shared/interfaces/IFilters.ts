@@ -12,4 +12,6 @@ export interface IQuoteFilter extends IFilter {
 
 export interface IAdminQuoteFilter extends IFilter {}
 
-export interface IReviewFilter extends IFilter {}
+export interface IReviewFilter extends IFilter {
+  status?: string
+}

@@ -1,27 +1,32 @@
 import { useSearchParams } from 'next/navigation'
 
-import { IReviewEvent } from '@/shared/interfaces/IEvents'
 import { useEffect, useState } from 'react'
 
-import { reviewDayAdapter } from '../adapters/reviewAdapter'
-import { reviewData } from '../models/IApiReview'
+import { formatDateTime } from '@/lib/formatDate'
+
+import { ReviewAdapter } from '../adapters/reviewAdapter'
+import useReviewsQuery from './use-reviews-query'
 
 const useList = () => {
   const searchParams = useSearchParams()
-  const [filteredItems, setFilteredItems] = useState<IReviewEvent[]>([])
+  const date = searchParams.get('date') || ''
+  const [dates, setDates] = useState<{ date1: string; date2: string }>({ date1: '', date2: '' })
+  const status = (searchParams.get('type') as 'pending' | 'completed') || 'pending'
+  const type = searchParams.get('view') || 'day'
+
+  const { data } = useReviewsQuery({
+    date1: formatDateTime(dates.date1, '00:00'),
+    date2: formatDateTime(dates.date2, '23:59'),
+    status: status.toUpperCase(),
+    type,
+  })
 
   useEffect(() => {
-    const date = searchParams.get('date') || ''
-    const status = searchParams.get('type') as 'pending' | 'completed'
-
-    if (date && status) {
-      const itemsForDate = reviewDayAdapter(reviewData)[date] || []
-      const filtered = itemsForDate.filter((item) => item.status?.toLowerCase() === status.toLowerCase())
-      setFilteredItems(filtered)
-    }
+    setDates({ date1: date, date2: date })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
-  return filteredItems
+  return data ? ReviewAdapter.dayAdapter(data) : []
 }
 
 export default useList

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { AuthDatasourceImpl } from './features/auth/services/Datasource'
 import { ACCESS_TOKEN_COOKIE_NAME } from './shared/api/api-routes'
+import { deleteCookie } from './shared/api/cookies-util'
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
@@ -18,6 +19,12 @@ export async function middleware(req: NextRequest) {
 
   if (pathname === '/') {
     return NextResponse.redirect(new URL('/login', req.url))
+  }
+
+  if (!isValid) {
+    const response = NextResponse.next()
+    deleteCookie(ACCESS_TOKEN_COOKIE_NAME, response)
+    return response
   }
 
   if (!token || !isValid) {

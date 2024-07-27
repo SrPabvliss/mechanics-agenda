@@ -19,6 +19,7 @@ const QuotesProvider: React.FC<Props> = ({ children }) => {
 
       const handleNewAppointment = () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.QUOTES] })
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] })
       }
 
       socketClient.on('appointments-change', handleNewAppointment)

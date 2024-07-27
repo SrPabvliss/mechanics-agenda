@@ -1,18 +1,19 @@
-import { ContentLayout } from '@/core/layout/content/content-layout'
-import { Calendar, Car, Clock } from 'lucide-react'
-import React from 'react'
+// import { ContentLayout } from '@/core/layout/content/content-layout'
+// import { Calendar, Car, Clock } from 'lucide-react'
+// import React from 'react'
 
-import { Badge } from '@/components/ui/badge'
+// import { Badge } from '@/components/ui/badge'
 
-import useActivityView from '../../hooks/use-activities-view'
-import ActivitiesList from '../components/activities-list'
+// import useActivityView from '../../hooks/use-activities-view'
+// import ActivitiesList from '../components/activities-list'
 
 export const ReviewsEditView = ({ id }: { id: string }) => {
-  const { review } = useActivityView({ id })
+  console.log('ReviewsEditView', id)
+  // const { review } = useActivityView({ id })
 
   return (
     <>
-      <ContentLayout title="Revisiones">
+      {/* <ContentLayout title="Revisiones">
         <div className="flex flex-col gap-4">
           <div className="flex items-end gap-4">
             <h1 className="text-2xl font-semibold">{review?.car}</h1>
@@ -42,7 +43,7 @@ export const ReviewsEditView = ({ id }: { id: string }) => {
 
           <ActivitiesList initialActivities={[]} />
         </div>
-      </ContentLayout>
+      </ContentLayout> */}
     </>
   )
 }

@@ -4,4 +4,5 @@ export const QUERY_KEY = {
   REMINDERS: 'reminders',
   APPOINTMENTS: 'appointments',
   JOBS: 'jobs',
+  REVIEWS: 'reviews',
 }

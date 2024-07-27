@@ -28,7 +28,7 @@ export interface EventsRecord<T> {
   [key: string]: T
 }
 
-export type IReviewEventsDay = EventsRecord<IReviewEvent[]>
+export type IReviewEventsDay = IReviewEvent[]
 
 export type IEvents = EventsRecord<IEventsHour<IEvent[]>>
 export type IEventsMechanic = EventsRecord<IEventsHour<boolean>>
