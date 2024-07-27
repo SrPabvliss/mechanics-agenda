@@ -14,10 +14,10 @@ const QuotesWeek = () => {
   const [events, setEvents] = useState<IScheduleWeek[]>([])
   const updateQueryParam = useUpdateQueryParam()
 
-  const [dates, setDates] = useState<{ date1: string; date2: string }>({ date1: '', date2: '' })
+  const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
   const { data } = useQuotesQuery({
-    date1: formatDateTime(dates.date1, '00:00'),
-    date2: formatDateTime(dates.date2, '23:59'),
+    startDate: formatDateTime(filters.startDate, '00:00'),
+    endDate: formatDateTime(filters.endDate, '23:59'),
   })
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const QuotesWeek = () => {
   }, [data])
 
   const handleDateChange = (date1: string, date2: string) => {
-    setDates({ date1, date2 })
+    setFilters({ startDate: date1, endDate: date2 })
   }
 
   const handleClick = (date: string) => {

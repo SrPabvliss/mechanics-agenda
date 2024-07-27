@@ -39,8 +39,8 @@ const TimePickerDialog: React.FC<TimeSelectionProps> = ({ children, onChange, se
   const { data: users, isFetching: isFetchingUsers } = useUsersQuery()
 
   const { data: quotes, isFetching: isFetchingQuotes } = useQuotesQuery({
-    date1: formatDateTime(date, '00:00'),
-    date2: formatDateTime(date, '23:59'),
+    startDate: formatDateTime(date, '00:00'),
+    endDate: formatDateTime(date, '23:59'),
   })
 
   const mechanics = React.useMemo(() => users?.filter((user) => user.role === UserRole.MECHANIC) || [], [users])

@@ -4,19 +4,19 @@ import { useQuery } from '@tanstack/react-query'
 import { QuotesDatasourceImpl } from '../services/datasource'
 
 interface IQuotesQuery {
-  date1: string
-  date2: string
+  startDate: string
+  endDate: string
 }
 
-const useQuotesQuery = ({ date1, date2 }: IQuotesQuery) => {
+const useQuotesQuery = ({ startDate, endDate }: IQuotesQuery) => {
   const query = useQuery({
-    queryKey: [QUERY_KEY.QUOTES, date1, date2],
+    queryKey: [QUERY_KEY.QUOTES, startDate, endDate],
     queryFn: async () =>
       QuotesDatasourceImpl.getInstance().getByFilter({
-        startDate: date1,
-        endDate: date2,
+        startDate: startDate,
+        endDate: endDate,
       }),
-    enabled: !!date1 && !!date2,
+    enabled: !!startDate && !!endDate,
   })
 
   return query
