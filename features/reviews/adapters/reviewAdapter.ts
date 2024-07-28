@@ -87,4 +87,19 @@ export class ReviewAdapter {
       description: review.appointment?.description || '',
     }))
   }
+
+  static individualAdapter = (data: IApiReview): IReviewEvent => {
+    return {
+      id: data.id,
+      title: data.appointment?.vehicleDescription,
+      label: data.appointment?.clientName,
+      startTime: formatTime(data.startDate),
+      endTime: data.endDate ? formatTime(data.endDate) : '',
+      color: data.appointment.user.color || 'bg-gray-200',
+      status: data.status,
+      owner: data.appointment?.clientName,
+      description: data.appointment?.description || '',
+      date: formatDate(data.startDate),
+    }
+  }
 }

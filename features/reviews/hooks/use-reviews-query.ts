@@ -10,7 +10,7 @@ interface IQuotesQuery {
   type?: string
 }
 
-const useReviewsQuery = ({ date1, date2, status, type }: IQuotesQuery) => {
+export const useReviewsQuery = ({ date1, date2, status, type }: IQuotesQuery) => {
   const getQueryKey = () => {
     if (type === 'day') {
       return [QUERY_KEY.REVIEWS, date1, date2, status]
@@ -32,4 +32,12 @@ const useReviewsQuery = ({ date1, date2, status, type }: IQuotesQuery) => {
   return query
 }
 
-export default useReviewsQuery
+export const useIndividualReviewQuery = (id: string) => {
+  const query = useQuery({
+    queryKey: [QUERY_KEY.REVIEWS, id],
+    queryFn: async () => await ReviewDatasourceImpl.getInstance().getById(+id),
+    enabled: !!id,
+  })
+
+  return query
+}

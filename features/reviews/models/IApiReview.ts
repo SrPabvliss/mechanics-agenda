@@ -1,4 +1,4 @@
-import { IApiJob } from '@/features/jobs/models/IApiJob'
+import { IJob } from '@/features/jobs/models/IJob'
 import { IApiQuote } from '@/features/quotes/models/IApiQuote'
 
 export interface IApiReview {
@@ -7,7 +7,7 @@ export interface IApiReview {
   startDate: string
   endDate: string | null
   status: string
-  jobs: IApiJob[]
+  jobs: IJob[]
   appointment: IApiQuote
 }
 

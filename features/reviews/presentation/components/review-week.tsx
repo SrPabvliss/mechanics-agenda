@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { formatDateTime } from '@/lib/formatDate'
 
 import { ReviewAdapter } from '../../adapters/reviewAdapter'
-import useReviewsQuery from '../../hooks/use-reviews-query'
+import { useReviewsQuery } from '../../hooks/use-reviews-query'
 
 const ReviewWeek = ({}: { value?: string }) => {
   const [events, setEvents] = useState<IScheduleWeek[]>([])

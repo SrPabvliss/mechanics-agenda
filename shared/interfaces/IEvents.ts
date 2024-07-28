@@ -12,6 +12,7 @@ export interface IAdminQuoteEvent extends IEvent {}
 
 export interface IReviewEvent extends IEvent {
   endTime: string
+  date?: string
   status: string
   owner: string
   description?: string

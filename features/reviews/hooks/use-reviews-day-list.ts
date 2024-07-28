@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react'
 import { formatDateTime } from '@/lib/formatDate'
 
 import { ReviewAdapter } from '../adapters/reviewAdapter'
-import useReviewsQuery from './use-reviews-query'
+import { useReviewsQuery } from './use-reviews-query'
 
-const useList = () => {
+const useReviewsList = () => {
   const searchParams = useSearchParams()
   const date = searchParams.get('date') || ''
   const [dates, setDates] = useState<{ date1: string; date2: string }>({ date1: '', date2: '' })
@@ -29,4 +29,4 @@ const useList = () => {
   return data ? ReviewAdapter.dayAdapter(data) : []
 }
 
-export default useList
+export default useReviewsList

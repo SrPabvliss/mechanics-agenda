@@ -3,9 +3,9 @@ import React from 'react'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import List from './review-list'
+import List from './reviews-list'
 
-export const TabList = ({ type }: { type: string }) => {
+export const ReviewsTab = ({ type }: { type: string }) => {
   const updateQueryParam = useUpdateQueryParam()
 
   return (
