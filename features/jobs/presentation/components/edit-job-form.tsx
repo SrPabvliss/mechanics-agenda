@@ -19,9 +19,10 @@ interface EditFormDialogProps {
 }
 
 export const EditFormDialog: React.FC<EditFormDialogProps> = ({ job, children }) => {
+  const { id, ...rest } = job
   const [open, setOpen] = useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const { methods, handleSubmit } = useJobMethods(job, job.id.toString())
+  const { methods, handleSubmit } = useJobMethods(rest, id)
 
   const formContent = (
     <FormProvider {...methods}>

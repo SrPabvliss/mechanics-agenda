@@ -1,4 +1,5 @@
 import Calendar from '@/shared/components/calendar/calendar'
+import { VIEW_TYPES } from '@/shared/constants/view-types'
 import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IReviewEventsMonth } from '@/shared/interfaces/IEvents'
 import { useEffect, useState } from 'react'
@@ -31,7 +32,7 @@ const ReviewMonth = () => {
   const handleClick = (date: string) => {
     updateQueryParam([
       { param: 'date', value: date },
-      { param: 'view', value: 'day' },
+      { param: 'view', value: VIEW_TYPES.DAY },
     ])
   }
 

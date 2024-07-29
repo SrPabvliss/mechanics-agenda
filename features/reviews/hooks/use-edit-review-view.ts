@@ -2,7 +2,7 @@ import { ReviewAdapter } from '../adapters/reviewAdapter'
 import { useIndividualReviewQuery } from './use-reviews-query'
 
 const useEditReviewView = ({ id }: { id: string }) => {
-  const { data } = useIndividualReviewQuery(id)
+  const { data } = useIndividualReviewQuery(+id)
 
   if (!data) {
     return {

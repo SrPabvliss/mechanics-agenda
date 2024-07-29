@@ -5,7 +5,7 @@ import { useJobsQuery } from './use-jobs-query'
 const useJobsView = () => {
   const { id } = useParams()
 
-  const { data } = useJobsQuery(id.toString())
+  const { data } = useJobsQuery(+id)
 
   if (!data) {
     return {

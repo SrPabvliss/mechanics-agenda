@@ -1,4 +1,5 @@
 import CalendarWeek from '@/shared/components/calendar-week/calendar-week'
+import { VIEW_TYPES } from '@/shared/constants/view-types'
 import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
 import { useEffect, useState } from 'react'
@@ -31,7 +32,7 @@ const ReviewWeek = ({}: { value?: string }) => {
   const handleClick = (date: string) => {
     updateQueryParam([
       { param: 'date', value: date },
-      { param: 'view', value: 'day' },
+      { param: 'view', value: VIEW_TYPES.DAY },
     ])
   }
   return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={events} />

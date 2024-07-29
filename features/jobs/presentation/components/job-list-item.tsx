@@ -25,7 +25,7 @@ export const JobListItem = ({ job }: Props) => {
       ></div>
       <span className="ml-4 flex-1">{job.name}</span>
       <div className="flex items-center gap-1">
-        <Button variant="outline" size={'icon'} onClick={() => handleToggleStatus(job.id.toString(), job.status)}>
+        <Button variant="outline" size={'icon'} onClick={() => handleToggleStatus(job.id, job.status)}>
           {job.status === 'COMPLETED' ? <CircleDashed size={20} /> : <CircleCheck size={20} />}
         </Button>
         <Popover>
@@ -41,7 +41,7 @@ export const JobListItem = ({ job }: Props) => {
                   <Pencil size={20} />
                 </Button>
               </EditFormDialog>
-              <Button variant="outline" size={'icon'} onClick={() => handleDeleteJob(job.id.toString())}>
+              <Button variant="outline" size={'icon'} onClick={() => handleDeleteJob(job.id)}>
                 <Trash size={20} />
               </Button>
             </div>

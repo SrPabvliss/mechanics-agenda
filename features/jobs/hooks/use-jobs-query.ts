@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query'
 
 import { JobDatasourceImpl } from '../services/datasource'
 
-export const useJobsQuery = (id: string) => {
+export const useJobsQuery = (inspectionId: number) => {
   const query = useQuery({
-    queryKey: [QUERY_KEY.REVIEWS, id, QUERY_KEY.JOBS],
-    queryFn: async () => await JobDatasourceImpl.getInstance().getByInspectionId(+id),
-    enabled: !!id,
+    queryKey: [QUERY_KEY.JOBS, inspectionId],
+    queryFn: async () => await JobDatasourceImpl.getInstance().getByInspectionId(inspectionId),
+    enabled: !!inspectionId,
   })
 
   return query

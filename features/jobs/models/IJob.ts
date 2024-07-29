@@ -1,8 +1,13 @@
+export enum JOB_STATUS {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+}
+
 export interface IJob {
   id: number
   inspectionId: number
   name: string
-  status: string
+  status: JOB_STATUS
 }
 
 export interface ICreateJob extends Omit<IJob, 'id'> {}
