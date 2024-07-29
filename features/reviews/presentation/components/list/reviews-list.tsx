@@ -11,7 +11,11 @@ const List: React.FC = () => {
   return (
     <ScrollArea>
       <div className="mt-2 flex flex-col gap-4">
-        {filteredItems ? filteredItems?.map((item) => ReviewListItem({ review: item })) : <p>No hay revisiones</p>}
+        {filteredItems ? (
+          filteredItems?.map((item) => <ReviewListItem review={item} key={item.id} />)
+        ) : (
+          <p>No hay revisiones</p>
+        )}
       </div>
     </ScrollArea>
   )
