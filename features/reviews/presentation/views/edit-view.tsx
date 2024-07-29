@@ -1,4 +1,5 @@
 import { ContentLayout } from '@/core/layout/content/content-layout'
+import { JobsListView } from '@/features/jobs/presentation/views/jobs-list-view'
 import { Calendar, Car, Clock } from 'lucide-react'
 import React from 'react'
 
@@ -45,7 +46,7 @@ export const ReviewsEditView = ({ id }: { id: string }) => {
             <p className="mt-2 text-sm font-light">{review?.description}</p>
           </div>
 
-          {/* <ActivitiesList initialActivities={[]} /> */}
+          <JobsListView />
         </div>
       </ContentLayout>
     </>
