@@ -8,11 +8,14 @@ import { Badge } from '@/components/ui/badge'
 import { getPlateAndTitle } from '@/lib/get-plate-title'
 
 import useEditReviewView from '../../hooks/use-edit-review-view'
+import { REVIEW_STATUS } from '../../models/IApiReview'
 
 export const ReviewsEditView = ({ id }: { id: string }) => {
   const { review } = useEditReviewView({ id })
 
   const carInfo = review && getPlateAndTitle(review?.title)
+
+  if (!review) return null
 
   return (
     <>
@@ -20,8 +23,8 @@ export const ReviewsEditView = ({ id }: { id: string }) => {
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-semibold">{carInfo?.newTitle}</h1>
-            <Badge variant={review?.status === 'completed' ? 'default' : 'outline'}>
-              {review?.status === 'completed' ? 'Completado' : 'Pendiente'}
+            <Badge variant={review?.status === REVIEW_STATUS.COMPLETED ? 'default' : 'outline'}>
+              {review?.status === REVIEW_STATUS.COMPLETED ? 'Completado' : 'Pendiente'}
             </Badge>
           </div>
 
@@ -32,7 +35,10 @@ export const ReviewsEditView = ({ id }: { id: string }) => {
 
           <div className="flex items-center gap-2">
             <Clock size={20} />
-            <p>{review?.startTime}</p> <p>{review?.endTime ? ` - ${review.endTime}` : ''}</p>
+            <div className="flex gap-1">
+              <p>{review?.startTime}</p>
+              <p>{review?.endTime ? `- ${review.endTime}` : ''}</p>
+            </div>
           </div>
           {carInfo?.plate && (
             <div className="flex items-center gap-2">
@@ -46,7 +52,7 @@ export const ReviewsEditView = ({ id }: { id: string }) => {
             <p className="mt-2 text-sm font-light">{review?.description}</p>
           </div>
 
-          <JobsListView />
+          <JobsListView reviewStatus={review?.status} />
         </div>
       </ContentLayout>
     </>

@@ -32,27 +32,27 @@ export const useJobMethods = (currentJob?: Partial<JobFormValues>, id?: number) 
       ? await JobDatasourceImpl.getInstance().update(id, data)
       : await JobDatasourceImpl.getInstance().create({ ...data, inspectionId: +inspectionId })
     if (!response) return
-    methods.setValue('name', '')
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS, inspectionId, QUERY_KEY.JOBS] })
+    methods.reset()
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEY.JOBS, +inspectionId] })
   }
 
   const handleToggleStatus = async (jobId: number, currentStatus: string) => {
     const updatedStatus = currentStatus === JOB_STATUS.COMPLETED ? JOB_STATUS.PENDING : JOB_STATUS.COMPLETED
     const response = await JobDatasourceImpl.getInstance().update(+jobId, { status: updatedStatus })
     if (!response) return
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS, inspectionId, QUERY_KEY.JOBS] })
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEY.JOBS, +inspectionId] })
   }
 
   const handleDeleteJob = async (jobId: number) => {
     const response = await JobDatasourceImpl.getInstance().delete(+jobId)
     if (!response) return
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS, inspectionId, QUERY_KEY.JOBS] })
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEY.JOBS, +inspectionId] })
   }
 
   const handleCloseReview = async () => {
     const response = await ReviewDatasourceImpl.getInstance().update(+inspectionId, { status: REVIEW_STATUS.COMPLETED })
     if (!response) return
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS, inspectionId] })
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS, +inspectionId] })
   }
 
   return {

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation'
 
+import { REVIEW_STATUS } from '@/features/reviews/models/IApiReview'
 import ConfirmationDialog from '@/shared/components/confirmation-dialog'
 import React from 'react'
 
@@ -7,7 +8,11 @@ import { Button } from '@/components/ui/button'
 
 import { useJobMethods } from '../../hooks/use-job-methods'
 
-export const ReviewActions = () => {
+interface Props {
+  status: REVIEW_STATUS
+}
+
+export const ReviewActions = ({ status }: Props) => {
   const router = useRouter()
   const { handleCloseReview } = useJobMethods()
   return (
@@ -20,6 +25,8 @@ export const ReviewActions = () => {
         title="Confirmar finalización"
         description="Una vez marcadas como finalizadas, las actividades no podrán ser editadas. ¿Deseas continuar?"
         triggerLabel="Finalizar"
+        disabled={status === REVIEW_STATUS.COMPLETED}
+        disabledLabel="Finalizado"
       />
     </div>
   )

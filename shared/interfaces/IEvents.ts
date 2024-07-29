@@ -1,3 +1,5 @@
+import { REVIEW_STATUS } from '@/features/reviews/models/IApiReview'
+
 export interface IEvent {
   id: number
   title: string
@@ -13,7 +15,7 @@ export interface IAdminQuoteEvent extends IEvent {}
 export interface IReviewEvent extends IEvent {
   endTime: string
   date?: string
-  status: string
+  status: REVIEW_STATUS
   owner: string
   description?: string
 }
