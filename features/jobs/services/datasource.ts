@@ -1,6 +1,7 @@
 import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
 import { API_ROUTES } from '@/shared/api/api-routes'
 import { HttpHandler } from '@/shared/api/http-handler'
+import { MESSAGES } from '@/shared/constants/messages'
 
 import { IApiReview } from '../../reviews/models/IApiReview'
 import { ICreateJob, IJob, IUpdateJob } from '../models/IJob'
@@ -44,19 +45,25 @@ export class JobDatasourceImpl implements JobDatasource {
   }
 
   async create(job: ICreateJob) {
-    const { data, error } = await this.httpClient.post<IJob>(API_ROUTES.JOBS.CREATE, job)
+    const { data, error } = await this.httpClient.post<IJob>(API_ROUTES.JOBS.CREATE, job, {
+      successMessage: MESSAGES.JOBS.CREATE,
+    })
     if (error) return
     return data!
   }
 
   async update(id: number, job: IUpdateJob) {
-    const { data, error } = await this.httpClient.patch<IJob>(API_ROUTES.JOBS.UPDATE(id), job)
+    const { data, error } = await this.httpClient.patch<IJob>(API_ROUTES.JOBS.UPDATE(id), job, {
+      successMessage: MESSAGES.JOBS.UPDATE,
+    })
     if (error) return
     return data!
   }
 
   async delete(id: number) {
-    const { error } = await this.httpClient.delete(API_ROUTES.JOBS.DELETE(id))
+    const { error } = await this.httpClient.delete(API_ROUTES.JOBS.DELETE(id), {
+      successMessage: MESSAGES.JOBS.DELETE,
+    })
     return !error
   }
 }

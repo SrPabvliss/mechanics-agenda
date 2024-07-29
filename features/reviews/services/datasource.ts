@@ -1,6 +1,7 @@
 import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
 import { API_ROUTES } from '@/shared/api/api-routes'
 import { HttpHandler } from '@/shared/api/http-handler'
+import { MESSAGES } from '@/shared/constants/messages'
 import { IReviewFilter } from '@/shared/interfaces/IFilters'
 
 import { IApiCreateReview, IApiReview, IApiUpdateReview } from '../models/IApiReview'
@@ -32,19 +33,25 @@ export class ReviewDatasourceImpl implements ReviewDatasource {
   }
 
   async create(quote: IApiCreateReview) {
-    const { data, error } = await this.httpClient.post<IApiReview>(API_ROUTES.INSPECTIONS.CREATE, quote)
+    const { data, error } = await this.httpClient.post<IApiReview>(API_ROUTES.INSPECTIONS.CREATE, quote, {
+      successMessage: MESSAGES.REVIEWS.CREATE,
+    })
     if (error) return
     return data
   }
 
   async update(id: number, quote: IApiUpdateReview) {
-    const { data, error } = await this.httpClient.patch<IApiReview>(API_ROUTES.INSPECTIONS.UPDATE(id), quote)
+    const { data, error } = await this.httpClient.patch<IApiReview>(API_ROUTES.INSPECTIONS.UPDATE(id), quote, {
+      successMessage: MESSAGES.REVIEWS.UPDATE,
+    })
     if (error) return
     return data
   }
 
   async delete(id: number) {
-    const { data, error } = await this.httpClient.delete<IApiReview>(API_ROUTES.INSPECTIONS.DELETE(id))
+    const { data, error } = await this.httpClient.delete<IApiReview>(API_ROUTES.INSPECTIONS.DELETE(id), {
+      successMessage: MESSAGES.REVIEWS.DELETE,
+    })
     if (error) return
     return data
   }
