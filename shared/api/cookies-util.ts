@@ -1,6 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
 
 export const setCookie = (key: string, value: unknown) => {
   cookies().set(key, value as string)
@@ -25,6 +26,10 @@ export const getObjectFromCookie = async (key: string) => {
   return JSON.parse(jsonString)
 }
 
-export const deleteCookie = (key: string) => {
+export const deleteCookie = (key: string, res?: NextResponse) => {
+  if (res) {
+    res.cookies.set(key, '', { maxAge: -1 })
+    return res
+  }
   cookies().delete(key)
 }

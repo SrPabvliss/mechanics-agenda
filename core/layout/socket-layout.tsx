@@ -16,6 +16,7 @@ const SocketsLayout: React.FC<Props> = ({ children }) => {
   const modules: Record<string, () => React.ReactElement> = {
     'admin-quotes': () => <AdminQuotesProvider>{children}</AdminQuotesProvider>,
     quotes: () => <QuotesProvider>{children}</QuotesProvider>,
+    reviews: () => <QuotesProvider>{children}</QuotesProvider>,
   }
 
   const Module = module ? modules[module] : null

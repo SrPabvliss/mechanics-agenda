@@ -21,7 +21,17 @@ const QuotesProvider: React.FC<Props> = ({ children }) => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.QUOTES] })
       }
 
+      const handleInspectionChange = () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] })
+      }
+
+      const handleJobChange = () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.JOBS] })
+      }
+
       socketClient.on('appointments-change', handleNewAppointment)
+      socketClient.on('jobs-change', handleJobChange)
+      socketClient.on('inspections-change', handleInspectionChange)
 
       return () => {
         leaveChannel(SOCKET_CHANNEL.MECHANICS)

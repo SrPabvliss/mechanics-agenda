@@ -6,4 +6,14 @@ export const MESSAGES = {
     LOGIN: 'Bienvenido de vuelta!',
     LOGOUT: 'Hasta luego!',
   },
+  REVIEWS: {
+    CREATE: 'Revisión creada con éxito',
+    UPDATE: 'Revisión actualizada con éxito',
+    DELETE: 'Revisión eliminada con éxito',
+  },
+  JOBS: {
+    CREATE: 'Actividad creada con éxito',
+    UPDATE: 'Actividad actualizada con éxito',
+    DELETE: 'Actividad eliminada con éxito',
+  },
 }

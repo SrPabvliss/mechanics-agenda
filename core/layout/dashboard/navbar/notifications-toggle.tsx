@@ -40,7 +40,7 @@ export function NotificationToggle() {
             onClick={toggleColor}
           >
             <div className="flex items-center gap-1">
-              <Bell className="h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-transform duration-500 ease-in-out dark:rotate-0 dark:scale-100" />
+              <Bell className="h-[1.2rem] w-[1.2rem]  transition-transform duration-500 ease-in-out dark:rotate-0 dark:scale-100" />
               <div className={`mx-1 h-2 w-2 rounded-full ${isRed ? 'bg-red-500' : 'bg-green-500'}`} />
             </div>
             <span className="sr-only">Recibir notificaciones</span>

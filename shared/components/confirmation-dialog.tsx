@@ -18,6 +18,8 @@ interface ConfirmationDialogProps {
   confirmLabel?: string
   cancelLabel?: string
   triggerLabel: string
+  disabled?: boolean
+  disabledLabel?: string
 }
 
 export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
@@ -27,6 +29,8 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   confirmLabel = 'Confirmar',
   cancelLabel = 'Cancelar',
   triggerLabel,
+  disabled = false,
+  disabledLabel,
 }) => {
   const [open, setOpen] = React.useState(false)
 
@@ -38,7 +42,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>{triggerLabel}</Button>
+        <Button disabled={disabled}>{disabled ? disabledLabel : triggerLabel}</Button>
       </DialogTrigger>
       <DialogContent className="max-w-80 md:max-w-96">
         <DialogHeader>
