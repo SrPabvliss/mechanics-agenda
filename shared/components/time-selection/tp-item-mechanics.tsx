@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 
 import ContainsEvents from './contains-events'
 import NoEvents from './no-events'
+import { isDefaultValues } from './time-picker-dialog'
 
 interface TPItemMechanicsProps {
   schedule: IScheduleMechanic
@@ -13,6 +14,8 @@ interface TPItemMechanicsProps {
   onChange: (selectTime: string, selectMechanic: IUser) => void
   selectTime?: string
   selectMechanic?: IUser
+  defaultValues?: { selectTime: string; selectMechanic: IUser; date: Date }
+  currentDate: Date
 }
 
 const TPItemMechanics: React.FC<TPItemMechanicsProps> = ({
@@ -21,12 +24,21 @@ const TPItemMechanics: React.FC<TPItemMechanicsProps> = ({
   schedule,
   selectMechanic,
   selectTime,
+  defaultValues,
+  currentDate,
 }) => {
   const selectTimeEvent1 = schedule.hour
   const selectTimeEvent2 = schedule.hour.split(':')[0] + ':30'
 
   const renderEvent = (mechanic: IUser, time: string, event: boolean) => {
-    if (event) {
+    const isDefault = isDefaultValues({
+      selectTime: time,
+      defaultValues,
+      selectMechanicCI: mechanic.ci,
+      date: currentDate,
+    })
+
+    if (event && !isDefault) {
       return <ContainsEvents color={mechanic.color || '#E0E0E0'} />
     }
 

@@ -13,6 +13,8 @@ interface TimePickerByMechanicProps {
   onChange: (selectTime: string, selectMechanic: IUser) => void
   selectTime?: string
   selectMechanic?: IUser
+  defaultValues?: { selectTime: string; selectMechanic: IUser; date: Date }
+  currentDate: Date
 }
 
 const TimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({
@@ -21,6 +23,8 @@ const TimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({
   onChange,
   selectMechanic,
   selectTime,
+  defaultValues,
+  currentDate,
 }) => {
   const length = mechanics.length + 1
 
@@ -48,6 +52,8 @@ const TimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({
               onChange={onChange}
               selectMechanic={selectMechanic}
               selectTime={selectTime}
+              defaultValues={defaultValues}
+              currentDate={currentDate}
             />
           ))}
         </div>
