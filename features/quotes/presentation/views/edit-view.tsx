@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation'
+
 import { ContentLayout } from '@/core/layout/content/content-layout'
 import Spinner from '@/shared/components/spinner'
 import React from 'react'
@@ -7,8 +9,13 @@ import NewEditQuotesForm from '../components/new-edit-quotes-form'
 
 export const QuotesEditView = ({ id }: { id: string }) => {
   const { data: quote, isFetching } = useQuotesByIdQuery(id)
+  const router = useRouter()
 
-  if (isFetching)
+  if (!isFetching && !quote) {
+    router.push('/quotes')
+  }
+
+  if (isFetching || !quote)
     return (
       <ContentLayout title="Citas">
         <div className="h-[calc(100vh_-_150px)]">
