@@ -1,22 +1,15 @@
-import useQuotesQuery from '@/features/quotes/hooks/use-quotes-query'
-import useUsersQuery from '@/features/users/hooks/use-users-query'
-import { UserRole } from '@/features/users/models/IApiUser'
 import { IUser } from '@/features/users/models/IUser'
-import { scheduleMechanic } from '@/shared/constants/schedule-mechanic'
-import { useMediaQuery } from '@/shared/hooks/use-media-query'
-import { IScheduleMechanic } from '@/shared/interfaces/ISchedule'
+import useTimePickerByMechanic from '@/shared/hooks/use-time-picker-by-mechanic'
 import { Ban } from 'lucide-react'
 import * as React from 'react'
-import { useFormContext } from 'react-hook-form'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTrigger } from '@/components/ui/drawer'
 
-import { formatDateTime } from '@/lib/formatDate'
+import { formatDate } from '@/lib/formatDate'
 import { cn } from '@/lib/utils'
 
-import { QuotesAdapter } from '../../../features/quotes/adapters/quotes-adapter'
 import Spinner from '../spinner'
 import TimePickerByMechanic from './time-picker-by-mechanic'
 
@@ -27,52 +20,38 @@ interface TimeSelectionProps {
   selectMechanic?: IUser
 }
 
+interface IsDafaultValuesProps {
+  defaultValues?: { selectTime: string; selectMechanic: IUser; date: Date }
+  selectMechanicCI: string
+  date: Date
+  selectTime: string
+}
+
+export const isDefaultValues = ({ defaultValues, selectMechanicCI, selectTime, date }: IsDafaultValuesProps) => {
+  return (
+    defaultValues?.selectTime === selectTime &&
+    defaultValues?.selectMechanic.ci === selectMechanicCI &&
+    defaultValues?.date.toDateString() === date?.toDateString()
+  )
+}
+
 const TimePickerDialog: React.FC<TimeSelectionProps> = ({ children, onChange, selectMechanic, selectTime }) => {
-  const [events, setEvents] = React.useState<IScheduleMechanic[]>(scheduleMechanic)
-  const { watch } = useFormContext()
-
-  const date = watch('date')
-
-  const [open, setOpen] = React.useState(false)
-  const isDesktop = useMediaQuery('(min-width: 768px)')
-
-  const { data: users, isFetching: isFetchingUsers } = useUsersQuery()
-
-  const { data: quotes, isFetching: isFetchingQuotes } = useQuotesQuery({
-    date1: formatDateTime(date, '00:00'),
-    date2: formatDateTime(date, '23:59'),
-  })
-
-  const mechanics = React.useMemo(() => users?.filter((user) => user.role === UserRole.MECHANIC) || [], [users])
-
-  React.useEffect(() => {
-    if (quotes) {
-      setEvents(QuotesAdapter.quotesMechanicsAdapter(quotes))
-    }
-  }, [quotes])
-
-  const validateSelectTime = React.useCallback(() => {
-    if (selectTime && selectMechanic) {
-      events.forEach((event) => {
-        if (selectTime === event.hour && event.events[selectMechanic.ci]?.events1) {
-          onChange('', { ci: '', firstName: '', lastName: '', role: UserRole.MECHANIC, color: '' })
-        }
-        if (selectTime === `${event.hour.split(':')[0]}:30` && event.events[selectMechanic.ci]?.events2) {
-          onChange(selectTime, selectMechanic)
-        }
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [events, mechanics])
-
-  React.useEffect(() => {
-    validateSelectTime()
-  }, [validateSelectTime])
-
-  const handleOnChange = (selectTime: string, selectMechanic: IUser) => {
-    onChange(selectTime, selectMechanic)
-    setOpen(false)
-  }
+  const {
+    date,
+    defaultValues,
+    mechanicSchedule,
+    isErrorQuotes,
+    isErrorUsers,
+    isFetchingQuotes,
+    isFetchingUsers,
+    isPausedQuotes,
+    isPausedUsers,
+    mechanics,
+    handleOnChange,
+    isDesktop,
+    setOpen,
+    open,
+  } = useTimePickerByMechanic({ onChange, selectMechanic, selectTime })
 
   const renderAlert = ({ title, description }: { title: string; description: string }) => {
     return (
@@ -90,26 +69,38 @@ const TimePickerDialog: React.FC<TimeSelectionProps> = ({ children, onChange, se
         title: 'Selecciona una fecha',
         description: 'Por favor selecciona una fecha para poder ver los horarios disponibles',
       })
-    if (isFetchingUsers) return <Spinner description="Cargando mecánicos ..." />
-    if (isFetchingQuotes) return <Spinner description="Cargando horarios ..." />
+    if (isFetchingUsers || isPausedUsers) return <Spinner description="Cargando mecánicos ..." />
+    if (isFetchingQuotes || isPausedQuotes) return <Spinner description="Cargando horarios ..." />
+    if (isErrorUsers)
+      return renderAlert({
+        title: 'No se logró cargar los mecánicos',
+        description: 'Por favor intenta nuevamente',
+      })
+    if (isErrorQuotes)
+      return renderAlert({
+        title: 'No se logró cargar los horarios',
+        description: 'Por favor intenta nuevamente',
+      })
     if (!mechanics.length)
       return renderAlert({
         title: 'No hay mecánicos disponibles',
         description: 'Por favor contacta al administrador para asignar mecánicos',
       })
-    if (!events.length)
+    if (!mechanicSchedule[formatDate(date)]?.length)
       return renderAlert({
-        title: 'No hay horarios disponibles',
-        description: 'Por favor selecciona otra fecha para ver los horarios disponibles',
+        title: 'No se logró cargar los horarios length',
+        description: 'Por favor intenta nuevamente',
       })
 
     return (
       <TimePickerByMechanic
         mechanics={mechanics}
-        scheduleMechanics={events}
+        scheduleMechanics={mechanicSchedule[formatDate(date)]}
         onChange={handleOnChange}
         selectMechanic={selectMechanic}
         selectTime={selectTime}
+        defaultValues={defaultValues}
+        currentDate={date}
       />
     )
   }

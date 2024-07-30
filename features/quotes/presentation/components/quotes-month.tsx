@@ -7,16 +7,16 @@ import { useEffect, useState } from 'react'
 import { formatDateTime } from '@/lib/formatDate'
 
 import { QuotesAdapter } from '../../adapters/quotes-adapter'
-import useQuotesQuery from '../../hooks/use-quotes-query'
+import useQuotesByFilterQuery from '../../hooks/use-quotes-by-filter-query'
 
 const QuotesMonth = () => {
   const [events, setEvents] = useState<IQuoteEventsMonth>({})
   const updateQueryParam = useUpdateQueryParam()
 
-  const [dates, setDates] = useState<{ date1: string; date2: string }>({ date1: '', date2: '' })
-  const { data } = useQuotesQuery({
-    date1: formatDateTime(dates.date1, '00:00'),
-    date2: formatDateTime(dates.date2, '23:59'),
+  const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
+  const { data } = useQuotesByFilterQuery({
+    startDate: formatDateTime(filters.startDate, '00:00'),
+    endDate: formatDateTime(filters.endDate, '23:59'),
   })
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const QuotesMonth = () => {
   }, [data])
 
   const handleDateChange = (date1: string, date2: string) => {
-    setDates({ date1, date2 })
+    setFilters({ startDate: date1, endDate: date2 })
   }
 
   const handleClick = (date: string) => {

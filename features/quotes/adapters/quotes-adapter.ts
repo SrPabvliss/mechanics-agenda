@@ -2,7 +2,12 @@ import { scheduleDay } from '@/shared/constants/schedule-day'
 import { scheduleMechanic } from '@/shared/constants/schedule-mechanic'
 import { scheduleWeek } from '@/shared/constants/schedule-week'
 import { IQuoteEvent, IQuoteEventsMonth } from '@/shared/interfaces/IEvents'
-import { IDailySchedule, IScheduleMechanic, IScheduleWeek } from '@/shared/interfaces/ISchedule'
+import {
+  IDailySchedule,
+  IScheduleMechanic,
+  IScheduleMechanicRecord,
+  IScheduleWeek,
+} from '@/shared/interfaces/ISchedule'
 
 import { formatDate, formatDateTime } from '@/lib/formatDate'
 import { formatTime } from '@/lib/formatTime'
@@ -104,7 +109,7 @@ export class QuotesAdapter {
       description: data.description,
       date: formatDateTime(data.date, data.timeAndResponsible.time),
       status: 'PENDING',
-      userCI: data.timeAndResponsible.responsible,
+      userCI: data.timeAndResponsible.responsible.ci,
     }
   }
 
@@ -115,18 +120,29 @@ export class QuotesAdapter {
       description: data.description,
       date: formatDateTime(data.date, data.timeAndResponsible.time),
       status: 'PENDING',
-      userCI: data.timeAndResponsible.responsible,
+      userCI: data.timeAndResponsible.responsible.ci,
     }
   }
 
-  static quotesMechanicsAdapter = (data: IApiQuote[]): IScheduleMechanic[] => {
+  static quotesMechanicsAdapter = (data: IApiQuote[], date: string): IScheduleMechanicRecord => {
+    const scheduleRecord: IScheduleMechanicRecord = {}
     const schedule = JSON.parse(JSON.stringify(scheduleMechanic)) as IScheduleMechanic[]
 
+    scheduleRecord[date] = JSON.parse(JSON.stringify(schedule))
+
+    if (!data.length) return scheduleRecord
+
     data.forEach((quote) => {
+      const dateKey = formatDate(quote.date)
+
+      if (!scheduleRecord[dateKey]) {
+        scheduleRecord[dateKey] = JSON.parse(JSON.stringify(schedule))
+      }
+
       const startHour = formatTime(quote.date).split(':')[0] + ':00'
       const startMinutes = parseInt(formatTime(quote.date).split(':')[1])
 
-      const scheduleHour = schedule.find((s) => s.hour === startHour)
+      const scheduleHour = scheduleRecord[dateKey].find((s) => s.hour === startHour)
       if (scheduleHour) {
         if (!scheduleHour.events[quote.user.ci]) {
           scheduleHour.events[quote.user.ci] = { events1: false, events2: false }
@@ -140,6 +156,6 @@ export class QuotesAdapter {
       }
     })
 
-    return schedule
+    return scheduleRecord
   }
 }
