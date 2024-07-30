@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { formatDateTime } from '@/lib/formatDate'
 
 import { QuotesAdapter } from '../../adapters/quotes-adapter'
-import useQuotesQuery from '../../hooks/use-quotes-query'
+import useQuotesByFilterQuery from '../../hooks/use-quotes-by-filter-query'
 
 interface QuotesDayProps {
   date: string
@@ -16,7 +16,7 @@ const QuotesDay = ({ date }: QuotesDayProps) => {
   const [schedule, setSchedule] = useState<IDailySchedule[]>([])
 
   const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
-  const { data } = useQuotesQuery({
+  const { data } = useQuotesByFilterQuery({
     startDate: formatDateTime(filters.startDate, '00:00'),
     endDate: formatDateTime(filters.endDate, '23:59'),
   })

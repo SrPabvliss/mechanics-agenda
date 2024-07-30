@@ -8,11 +8,11 @@ interface IQuotesQuery {
   endDate: string
 }
 
-const useQuotesQuery = ({ startDate, endDate }: IQuotesQuery) => {
+const useQuotesByFilterQuery = ({ startDate, endDate }: IQuotesQuery) => {
   const query = useQuery({
     queryKey: [QUERY_KEY.QUOTES, startDate, endDate],
     queryFn: async () =>
-      QuotesDatasourceImpl.getInstance().getByFilter({
+      await QuotesDatasourceImpl.getInstance().getByFilter({
         startDate: startDate,
         endDate: endDate,
       }),
@@ -22,4 +22,4 @@ const useQuotesQuery = ({ startDate, endDate }: IQuotesQuery) => {
   return query
 }
 
-export default useQuotesQuery
+export default useQuotesByFilterQuery
