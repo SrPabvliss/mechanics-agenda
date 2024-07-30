@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 
 import UseRegisterServiceWorker from '@/core/hooks/use-register-sw'
+import queryClient from '@/core/infrastructure/react-query/query-client'
 import SocketsLayout from '@/core/layout/socket-layout'
 import { ThemeProvider } from '@/core/providers/theme-provider'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'react-hot-toast'
-
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -52,10 +54,13 @@ export default function RootLayout({
       <body className={`${inter.variable} ${inter.className} `}>
         <UseRegisterServiceWorker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SocketsLayout>
-            <Toaster position="bottom-center" />
-            {children}
-          </SocketsLayout>
+          <QueryClientProvider client={queryClient}>
+            <SocketsLayout>
+              <Toaster position="bottom-center" />
+              {children}
+            </SocketsLayout>
+            <ReactQueryDevtools initialIsOpen={true} />
+          </QueryClientProvider>
         </ThemeProvider>
       </body>
     </html>

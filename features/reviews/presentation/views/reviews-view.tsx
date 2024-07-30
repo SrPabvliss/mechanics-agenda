@@ -1,5 +1,6 @@
 import { ContentLayout } from '@/core/layout/content/content-layout'
 import { ViewButtons } from '@/shared/components/views-buttons'
+import { VIEW_TYPES } from '@/shared/constants/view-types'
 import React from 'react'
 
 import { useReviewsView } from '../../hooks/use-reviews-view'
@@ -15,9 +16,9 @@ export const ReviewsView = () => {
       <ContentLayout title="Revisiones">
         <div className="flex flex-col gap-4">
           <ViewButtons view={view} />
-          {view === 'day' && <ReviewDay date={date} type={type} />}
-          {view === 'week' && <ReviewWeek value={date} />}
-          {view === 'month' && <ReviewMonth />}
+          {view === VIEW_TYPES.DAY && <ReviewDay date={date} type={type} />}
+          {view === VIEW_TYPES.WEEK && <ReviewWeek value={date} />}
+          {view === VIEW_TYPES.MONTH && <ReviewMonth />}
         </div>
       </ContentLayout>
     </>

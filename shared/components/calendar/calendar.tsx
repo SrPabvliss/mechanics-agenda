@@ -11,7 +11,7 @@ import CalendarHeader from './calendar-header'
 interface CalendarProps {
   events: IEventsMonth
   onClickDay: (date: string) => void
-  onChangeMonth: (month: number, year: number) => void
+  onChangeMonth: (date1: string, date2: string) => void
 }
 
 const Calendar: React.FC<CalendarProps> = ({ events, onClickDay, onChangeMonth }) => {

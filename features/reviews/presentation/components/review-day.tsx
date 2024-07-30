@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { DatePicker } from './date-picker'
-import { TabList } from './tab-list'
+import { ReviewsTab } from './list/reviews-tab'
 
 const ReviewDay = ({ date, type }: { date: string; type: string }) => {
   return (
     <>
       <DatePicker value={date} />
-      <TabList type={type} />
+      <ReviewsTab type={type} />
     </>
   )
 }

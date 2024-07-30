@@ -1,8 +1,8 @@
 import { IScheduleInterval } from '../interfaces/ISchedule'
 
 export const scheduleInterval: IScheduleInterval = {
-  startTime: '07:00',
-  endTime: '18:00',
+  startTime: '08:00',
+  endTime: '16:59',
 }
 
 export const lunchTime: IScheduleInterval = {

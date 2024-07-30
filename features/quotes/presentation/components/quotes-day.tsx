@@ -1,10 +1,12 @@
 'use client'
 import CalendarDay from '@/shared/components/calendar-day/calendar-day'
 import { IDailySchedule } from '@/shared/interfaces/ISchedule'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { quotesDayAdapter } from '../../adapters/quotes-adapter'
-import { apiQuote } from '../../models/IApiQuote'
+import { formatDateTime } from '@/lib/formatDate'
+
+import { QuotesAdapter } from '../../adapters/quotes-adapter'
+import useQuotesByFilterQuery from '../../hooks/use-quotes-by-filter-query'
 
 interface QuotesDayProps {
   date: string
@@ -12,16 +14,27 @@ interface QuotesDayProps {
 
 const QuotesDay = ({ date }: QuotesDayProps) => {
   const [schedule, setSchedule] = useState<IDailySchedule[]>([])
-  const onChange = async (day: string) => {
-    // Filtrar las revisiones que están en el día seleccionado
-    const filter = apiQuote.filter((quote) => quote.date === day)
-    setSchedule(quotesDayAdapter(filter))
+
+  const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
+  const { data } = useQuotesByFilterQuery({
+    startDate: formatDateTime(filters.startDate, '00:00'),
+    endDate: formatDateTime(filters.endDate, '23:59'),
+  })
+
+  useEffect(() => {
+    if (data) {
+      setSchedule(QuotesAdapter.quotesDayAdapter(data))
+    }
+  }, [data])
+
+  const onChange = (newDate: string) => {
+    setSchedule([])
+    setFilters({ startDate: newDate, endDate: newDate })
   }
 
   const onClick = (id: number) => {
     // eslint-disable-next-line no-console
     console.log(id)
-    // Code here
   }
   return <CalendarDay onChange={onChange} onClick={onClick} schedule={schedule} date={date} />
 }

@@ -1,3 +1,5 @@
+import { REVIEW_STATUS } from './IApiReview'
+
 export interface IReviews {
   [key: string]: IReview[]
 }
@@ -9,5 +11,5 @@ export interface IReview {
   plate: string
   color: string
   hour: string
-  status: 'pending' | 'completed'
+  status: REVIEW_STATUS
 }

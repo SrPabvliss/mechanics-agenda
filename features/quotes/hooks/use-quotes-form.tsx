@@ -1,42 +1,79 @@
+import { useRouter } from 'next/navigation'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
+import { formatTime } from '@/lib/formatTime'
+
+import { QuotesAdapter } from '../adapters/quotes-adapter'
+import { IApiQuote } from '../models/IApiQuote'
+import { QuotesDatasourceImpl } from '../services/datasource'
+
 const timeAndResponsibleSchema = z.object({
   time: z.string().min(1, 'La hora es requerida'),
-  responsible: z.string().min(1, 'El encargado es requerido'),
+  responsible: z.object({
+    ci: z.string().min(1, 'El responsable es requerido'),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    role: z.string().optional(),
+    color: z.string().optional(),
+  }),
 })
 
 const quotesSchema = z.object({
+  id: z.number().optional(),
   date: z.date({ required_error: 'La fecha es requerida' }),
   timeAndResponsible: timeAndResponsibleSchema,
   client: z.string().min(1, 'El cliente es requerido'),
   vehicleType: z.string().min(1, 'El tipo de vehículo es requerido'),
-  plate: z.string().optional(),
   description: z.string().optional(),
 })
 
-type QuotesFormValues = z.infer<typeof quotesSchema>
+export type QuotesFormValues = z.infer<typeof quotesSchema>
 
-export const useQuotesForm = () => {
+interface UseQuotesFormProps {
+  currentQuote?: IApiQuote
+}
+
+export const useQuotesForm = ({ currentQuote }: UseQuotesFormProps) => {
+  const router = useRouter()
+  //const pathname = usePathname()
+
   const methods = useForm<QuotesFormValues>({
     resolver: zodResolver(quotesSchema),
     defaultValues: {
-      date: undefined,
+      id: currentQuote?.id || undefined,
+      date: currentQuote?.date ? new Date(currentQuote.date) : undefined,
       timeAndResponsible: {
-        time: '',
-        responsible: '',
+        time: currentQuote?.date ? formatTime(currentQuote.date) : '',
+        responsible: currentQuote?.user || {
+          ci: '',
+          firstName: '',
+          lastName: '',
+          role: '',
+          color: '',
+        },
       },
-      client: '',
-      vehicleType: '',
-      plate: '',
-      description: '',
+      client: currentQuote?.clientName || '',
+      vehicleType: currentQuote?.vehicleDescription || '',
+      description: currentQuote?.description || '',
     },
   })
 
-  const onSubmit: SubmitHandler<QuotesFormValues> = (data) => {
-    // eslint-disable-next-line no-console
-    alert(JSON.stringify(data, null, 2))
+  const onSubmit: SubmitHandler<QuotesFormValues> = async (data) => {
+    if (currentQuote) {
+      const updateQuote = await QuotesDatasourceImpl.getInstance().update(
+        currentQuote.id,
+        QuotesAdapter.updateQuoteAdapter(data),
+      )
+      if (!updateQuote) return
+      router.push('/quotes')
+    } else {
+      const createQuote = await QuotesDatasourceImpl.getInstance().create(QuotesAdapter.createQuoteAdapter(data))
+      if (!createQuote) return
+      router.push('/quotes')
+    }
   }
 
   return {

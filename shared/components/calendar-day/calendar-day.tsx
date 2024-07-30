@@ -8,7 +8,7 @@ interface ItemHourProps {
   date?: string
   schedule: IDailySchedule[]
   onClick: (id: number) => void
-  onChange: (day: string) => void
+  onChange: (date: string) => void
 }
 
 const CalendarDay = ({
@@ -17,11 +17,16 @@ const CalendarDay = ({
   onClick,
   onChange,
 }: ItemHourProps) => {
-  const { day, setDay, handleClickEvent, schedule } = useCalendarDay({ date, onChange, onClick, scheduleWithEvents })
+  const { day, setCurrentDate, handleClickEvent, schedule } = useCalendarDay({
+    date,
+    onChange,
+    onClick,
+    scheduleWithEvents,
+  })
 
   return (
     <section className="w-full">
-      <CalendarDayHeader day={day} setDay={setDay} />
+      <CalendarDayHeader day={day} setDay={setCurrentDate} />
       <ul className="mt-4 flex flex-col">
         {schedule.map((item) => (
           <ItemDay key={item.hour} schedule={item} onClick={handleClickEvent} />

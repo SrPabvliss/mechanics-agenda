@@ -1,3 +1,5 @@
+import { REVIEW_STATUS } from '@/features/reviews/models/IApiReview'
+
 export interface IEvent {
   id: number
   title: string
@@ -6,15 +8,14 @@ export interface IEvent {
   color: string
 }
 
-export interface IQuoteEvent extends IEvent {
-  endTime: string
-}
+export interface IQuoteEvent extends IEvent {}
 
 export interface IAdminQuoteEvent extends IEvent {}
 
 export interface IReviewEvent extends IEvent {
   endTime: string
-  status: string
+  date?: string
+  status: REVIEW_STATUS
   owner: string
   description?: string
 }
@@ -30,7 +31,7 @@ export interface EventsRecord<T> {
   [key: string]: T
 }
 
-export type IReviewEventsDay = EventsRecord<IReviewEvent[]>
+export type IReviewEventsDay = IReviewEvent[]
 
 export type IEvents = EventsRecord<IEventsHour<IEvent[]>>
 export type IEventsMechanic = EventsRecord<IEventsHour<boolean>>

@@ -16,7 +16,14 @@ export interface IEventSchedule<T> {
   events: T
 }
 
+export interface IScheduleRecord<T> {
+  [key: string]: T
+}
+
 export type IScheduleWeek = IEventSchedule<IEvents>
+
 export type IScheduleMechanic = IEventSchedule<IEventsMechanic>
+
+export type IScheduleMechanicRecord = IScheduleRecord<IScheduleMechanic[]>
 
 export type IDailySchedule = ISchedule<IEvent>

@@ -2,32 +2,41 @@
 import Calendar from '@/shared/components/calendar/calendar'
 import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IQuoteEventsMonth } from '@/shared/interfaces/IEvents'
-import dayjs from 'dayjs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { quotesMonthAdapter } from '../../adapters/quotes-adapter'
-import { apiQuote } from '../../models/IApiQuote'
+import { formatDateTime } from '@/lib/formatDate'
+
+import { QuotesAdapter } from '../../adapters/quotes-adapter'
+import useQuotesByFilterQuery from '../../hooks/use-quotes-by-filter-query'
 
 const QuotesMonth = () => {
   const [events, setEvents] = useState<IQuoteEventsMonth>({})
   const updateQueryParam = useUpdateQueryParam()
 
-  const onChange = async (month: number, year: number) => {
-    const filter = apiQuote.filter((review) => {
-      const reviewDate = dayjs(review.date)
-      return reviewDate.month() + 1 === month && reviewDate.year() === year
-    })
+  const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
+  const { data } = useQuotesByFilterQuery({
+    startDate: formatDateTime(filters.startDate, '00:00'),
+    endDate: formatDateTime(filters.endDate, '23:59'),
+  })
 
-    setEvents(quotesMonthAdapter(filter))
+  useEffect(() => {
+    if (data) {
+      setEvents(QuotesAdapter.quotesMonthAdapter(data))
+    }
+  }, [data])
+
+  const handleDateChange = (date1: string, date2: string) => {
+    setFilters({ startDate: date1, endDate: date2 })
   }
 
-  const onClick = (date: string) => {
+  const handleClick = (date: string) => {
     updateQueryParam([
       { param: 'date', value: date },
       { param: 'view', value: 'day' },
     ])
   }
-  return <Calendar onChangeMonth={onChange} onClickDay={onClick} events={events} />
+
+  return <Calendar onChangeMonth={handleDateChange} onClickDay={handleClick} events={events} />
 }
 
 export default QuotesMonth

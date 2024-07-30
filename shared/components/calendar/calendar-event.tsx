@@ -1,14 +1,12 @@
 import { IEvent } from '@/shared/interfaces/IEvents'
 
-import { cn } from '@/lib/utils'
-
 interface CalendarEventProps {
   event: IEvent
 }
 
 const CalendarEvent = ({ event }: CalendarEventProps) => {
   return (
-    <div className={cn('rounded md:px-1', event.color)}>
+    <div className={'rounded md:px-1'} style={{ background: event.color }}>
       <p className="truncate text-start text-xs text-blue-900 md:text-sm">{event.title}</p>
     </div>
   )

@@ -1,5 +1,5 @@
+import { IUser } from '@/features/users/models/IUser'
 import TimePickerDialog from '@/shared/components/time-selection/time-picker-dialog'
-import { IUser } from '@/shared/interfaces/IUser'
 import { TimerIcon } from 'lucide-react'
 import * as React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -36,13 +36,13 @@ const RHFTimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({ name, la
         name={name}
         control={control}
         render={({ field }) => {
-          const [time, setTime] = React.useState<string | undefined>()
-          const [mechanic, setMechanic] = React.useState<IUser>()
+          const [time, setTime] = React.useState<string | undefined>(field.value.time)
+          const [mechanic, setMechanic] = React.useState<IUser>(field.value.responsible)
 
           const handleChange = (selectTime: string, selectMechanic: IUser) => {
             setTime(selectTime)
             setMechanic(selectMechanic)
-            field.onChange({ time: selectTime, responsible: selectMechanic.ci })
+            field.onChange({ time: selectTime, responsible: selectMechanic })
           }
 
           return (

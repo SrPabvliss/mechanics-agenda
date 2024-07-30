@@ -11,9 +11,14 @@ import RHFTextArea from '@/components/ui/rhf/RHFTextArea'
 import RHFTimePickerByMechanic from '@/components/ui/rhf/RHFTimePickerByMechanic'
 
 import { useQuotesForm } from '../../hooks/use-quotes-form'
+import { IApiQuote } from '../../models/IApiQuote'
 
-const QuotesForm = () => {
-  const { methods, onSubmit, isSubmitting } = useQuotesForm()
+interface NewEditQuotesFormProps {
+  currentQuote?: IApiQuote
+}
+
+const NewEditQuotesForm = ({ currentQuote }: NewEditQuotesFormProps) => {
+  const { methods, onSubmit, isSubmitting } = useQuotesForm({ currentQuote })
 
   const renderDateDetails = () => {
     return (
@@ -30,7 +35,6 @@ const QuotesForm = () => {
         <RHFInput name="client" label="Cliente" />
         <div className="md:flex md:gap-4">
           <RHFInput name="vehicleType" label="Tipo de vehículo" />
-          <RHFInput name="plate" label="Placa" />
         </div>
         <RHFTextArea name="description" label="Descripción" />
       </div>
@@ -58,4 +62,4 @@ const QuotesForm = () => {
   )
 }
 
-export default QuotesForm
+export default NewEditQuotesForm
