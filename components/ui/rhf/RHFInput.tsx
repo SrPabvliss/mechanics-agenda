@@ -5,7 +5,7 @@ import { Label } from '../label'
 
 interface FormInputProps {
   name: string
-  label: string
+  label?: string
   type?: string
   placeholder?: string
 }
@@ -23,9 +23,11 @@ const RHFInput: React.FC<FormInputProps> = ({ name, label, type = 'text', placeh
 
   return (
     <div className="mt-1 w-full">
-      <Label htmlFor={name} className="ml-1 ">
-        {label}
-      </Label>
+      {label && (
+        <Label htmlFor={name} className="ml-1 ">
+          {label}
+        </Label>
+      )}
       <Controller
         name={name}
         control={control}

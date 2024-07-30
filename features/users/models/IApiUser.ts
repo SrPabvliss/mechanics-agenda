@@ -12,10 +12,3 @@ export enum UserRole {
   MECHANIC = 'MECHANIC',
   SECRETARY = 'SECRETARY',
 }
-
-export interface IDecodedToken {
-  sub: string
-  firstName: UserRole
-  iat: number
-  exp: number
-}

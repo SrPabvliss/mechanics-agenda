@@ -1,11 +1,11 @@
+import { IUser } from '@/features/users/models/IUser'
 import { MESSAGES } from '@/shared/constants/messages'
 import toast from 'react-hot-toast'
 import { create, StateCreator } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 import { IAuth } from '../models/IAuth'
-import { IUser } from '../models/IUser'
-import { UserDatasourceImpl } from '../services/Datasource'
+import { AuthDatasourceImpl } from '../services/Datasource'
 
 interface StoreState {
   user: IUser | undefined
@@ -26,14 +26,14 @@ export const UseAccountStore = create<StoreState>(
       loading: false,
       login: async (credentials: IAuth) => {
         set({ loading: true })
-        const user = await UserDatasourceImpl.getInstance().login(credentials)
+        const user = await AuthDatasourceImpl.getInstance().login(credentials)
         if (!user) return
         set({ user })
         set({ loading: false })
       },
       setUser: (user?: IUser) => set({ user }),
       logout: async () => {
-        await UserDatasourceImpl.getInstance().logout()
+        await AuthDatasourceImpl.getInstance().logout()
         toast.success(MESSAGES.AUTH.LOGOUT)
         set({ user: DEFAULT_USER })
       },

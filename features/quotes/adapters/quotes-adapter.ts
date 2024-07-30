@@ -1,95 +1,145 @@
 import { scheduleDay } from '@/shared/constants/schedule-day'
+import { scheduleMechanic } from '@/shared/constants/schedule-mechanic'
 import { scheduleWeek } from '@/shared/constants/schedule-week'
 import { IQuoteEvent, IQuoteEventsMonth } from '@/shared/interfaces/IEvents'
-import { IDailySchedule, IScheduleWeek } from '@/shared/interfaces/ISchedule'
+import { IDailySchedule, IScheduleMechanic, IScheduleWeek } from '@/shared/interfaces/ISchedule'
 
-import { IApiQuote } from '../models/IApiQuote'
+import { formatDate, formatDateTime } from '@/lib/formatDate'
+import { formatTime } from '@/lib/formatTime'
 
-export const quotesDayAdapter = (data: IApiQuote[]): IDailySchedule[] => {
-  const schedule = JSON.parse(JSON.stringify(scheduleDay)) as IDailySchedule[]
+import { QuotesFormValues } from '../hooks/use-quotes-form'
+import { IApiCreateQuote, IApiQuote, IApiUpdateQuote } from '../models/IApiQuote'
 
-  data.forEach((quote) => {
-    const event: IQuoteEvent = {
-      id: parseInt(quote.id),
-      title: quote.car,
-      label: quote.client,
-      startTime: quote.startTime,
-      endTime: quote.endTime,
-      color: quote.color,
-    }
+export class QuotesAdapter {
+  static quotesDayAdapter = (data: IApiQuote[]): IDailySchedule[] => {
+    const schedule = JSON.parse(JSON.stringify(scheduleDay)) as IDailySchedule[]
 
-    const startHour = quote.startTime.split(':')[0] + ':00'
-    const startMinutes = parseInt(quote.startTime.split(':')[1])
-
-    const scheduleHour = schedule.find((s) => s.hour === startHour)
-    if (scheduleHour) {
-      if (startMinutes < 30) {
-        scheduleHour.events1.push(event)
-      } else {
-        scheduleHour.events2.push(event)
-      }
-    }
-  })
-
-  return schedule
-}
-
-export const quotesWeekAdapter = (data: IApiQuote[]): IScheduleWeek[] => {
-  const schedule = JSON.parse(JSON.stringify(scheduleWeek)) as IScheduleWeek[]
-
-  data.forEach((quote) => {
-    const event: IQuoteEvent = {
-      id: parseInt(quote.id),
-      title: quote.car,
-      label: quote.client,
-      startTime: quote.startTime,
-      endTime: quote.endTime,
-      color: quote.color,
-    }
-
-    const startHour = quote.startTime.split(':')[0] + ':00'
-    const startMinutes = parseInt(quote.startTime.split(':')[1])
-
-    const date = quote.date
-
-    const scheduleHour = schedule.find((s) => s.hour === startHour)
-    if (scheduleHour) {
-      if (!scheduleHour.events[date]) {
-        scheduleHour.events[date] = { events1: [], events2: [] }
+    data.forEach((quote) => {
+      const event: IQuoteEvent = {
+        id: quote.id,
+        title: quote.vehicleDescription,
+        label: quote.description || quote.clientName,
+        startTime: formatTime(quote.date),
+        color: quote.user.color || 'bg-gray-200',
       }
 
-      if (startMinutes < 30) {
-        scheduleHour.events[date].events1.push(event)
-      } else {
-        scheduleHour.events[date].events2.push(event)
+      const startHour = event.startTime.split(':')[0] + ':00'
+      const startMinutes = parseInt(event.startTime.split(':')[1])
+
+      const scheduleHour = schedule.find((s) => s.hour === startHour)
+      if (scheduleHour) {
+        if (startMinutes < 30) {
+          scheduleHour.events1.push(event)
+        } else {
+          scheduleHour.events2.push(event)
+        }
       }
+    })
+
+    return schedule
+  }
+
+  static quotesWeekAdapter = (data: IApiQuote[]): IScheduleWeek[] => {
+    const schedule = JSON.parse(JSON.stringify(scheduleWeek)) as IScheduleWeek[]
+
+    data.forEach((quote) => {
+      const event: IQuoteEvent = {
+        id: quote.id,
+        title: quote.vehicleDescription,
+        label: quote.description,
+        startTime: formatTime(quote.date),
+        color: quote.user.color || 'bg-gray-200',
+      }
+
+      const startHour = event.startTime.split(':')[0] + ':00'
+      const startMinutes = parseInt(event.startTime.split(':')[1])
+
+      const date = formatDate(quote.date)
+
+      const scheduleHour = schedule.find((s) => s.hour === startHour)
+      if (scheduleHour) {
+        if (!scheduleHour.events[date]) {
+          scheduleHour.events[date] = { events1: [], events2: [] }
+        }
+
+        if (startMinutes < 30) {
+          scheduleHour.events[date].events1.push(event)
+        } else {
+          scheduleHour.events[date].events2.push(event)
+        }
+      }
+    })
+
+    return schedule
+  }
+
+  static quotesMonthAdapter = (data: IApiQuote[]): IQuoteEventsMonth => {
+    const events: IQuoteEventsMonth = {}
+
+    data.forEach((quote) => {
+      const event: IQuoteEvent = {
+        id: quote.id,
+        title: quote.vehicleDescription,
+        label: quote.description,
+        startTime: formatTime(quote.date),
+        color: quote.user.color || 'bg-gray-200',
+      }
+
+      const date = formatDate(quote.date)
+
+      if (!events[date]) {
+        events[date] = []
+      }
+
+      events[date].push(event)
+    })
+
+    return events
+  }
+
+  static createQuoteAdapter = (data: QuotesFormValues): IApiCreateQuote => {
+    return {
+      clientName: data.client,
+      vehicleDescription: data.vehicleType,
+      description: data.description,
+      date: formatDateTime(data.date, data.timeAndResponsible.time),
+      status: 'PENDING',
+      userCI: data.timeAndResponsible.responsible,
     }
-  })
+  }
 
-  return schedule
-}
-
-export const quotesMonthAdapter = (data: IApiQuote[]): IQuoteEventsMonth => {
-  const events: IQuoteEventsMonth = {}
-
-  data.forEach((review) => {
-    const event: IQuoteEvent = {
-      id: parseInt(review.id),
-      title: review.car,
-      label: review.client,
-      startTime: review.startTime,
-      endTime: review.endTime,
-      color: review.color,
+  static updateQuoteAdapter = (data: QuotesFormValues): IApiUpdateQuote => {
+    return {
+      clientName: data.client,
+      vehicleDescription: data.vehicleType,
+      description: data.description,
+      date: formatDateTime(data.date, data.timeAndResponsible.time),
+      status: 'PENDING',
+      userCI: data.timeAndResponsible.responsible,
     }
+  }
 
-    const date = review.date
+  static quotesMechanicsAdapter = (data: IApiQuote[]): IScheduleMechanic[] => {
+    const schedule = JSON.parse(JSON.stringify(scheduleMechanic)) as IScheduleMechanic[]
 
-    if (!events[date]) {
-      events[date] = []
-    }
+    data.forEach((quote) => {
+      const startHour = formatTime(quote.date).split(':')[0] + ':00'
+      const startMinutes = parseInt(formatTime(quote.date).split(':')[1])
 
-    events[date].push(event)
-  })
+      const scheduleHour = schedule.find((s) => s.hour === startHour)
+      if (scheduleHour) {
+        if (!scheduleHour.events[quote.user.ci]) {
+          scheduleHour.events[quote.user.ci] = { events1: false, events2: false }
+        }
 
-  return events
+        if (startMinutes < 30) {
+          scheduleHour.events[quote.user.ci].events1 = true
+        } else {
+          scheduleHour.events[quote.user.ci].events2 = true
+        }
+      }
+    })
+
+    return schedule
+  }
 }

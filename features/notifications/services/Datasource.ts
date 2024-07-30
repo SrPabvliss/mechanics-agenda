@@ -1,5 +1,5 @@
 import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
-import { IUser } from '@/features/auth/models/IUser'
+import { IUser } from '@/features/users/models/IUser'
 import { API_ROUTES, PUSH_NOTIFICATIONS_IDENTIFIER } from '@/shared/api/api-routes'
 import { setObjectInCookie } from '@/shared/api/cookies-util'
 import { HttpHandler } from '@/shared/api/http-handler'

@@ -1,38 +1,31 @@
 import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
+import { IUser } from '@/features/users/models/IUser'
+import { UserDatasourcesImpl } from '@/features/users/services/datasource'
 import { ACCESS_TOKEN_COOKIE_NAME, API_ROUTES } from '@/shared/api/api-routes'
 import { deleteCookie, setCookie } from '@/shared/api/cookies-util'
 import { HttpHandler } from '@/shared/api/http-handler'
 import { MESSAGES } from '@/shared/constants/messages'
 import { jwtDecode } from 'jwt-decode'
 
-import { UserAdapter } from '../adapters/UserAdapter'
-import { IAPIUser, IDecodedToken } from '../models/IApiUser'
 import { IAuth, ILoginResponse, IValidate } from '../models/IAuth'
-import { IUser } from '../models/IUser'
+import { IDecodedToken } from '../models/IDecodedToken'
 
-interface UserDatasource {
+interface AuthDatasource {
   login(credentials: IAuth): Promise<IUser | undefined>
   logout: () => void
   signup: (user: IUser) => void
-  getUserByCi: (ci: string) => Promise<IUser | undefined>
   validateToken: () => Promise<boolean>
 }
 
-export class UserDatasourceImpl implements UserDatasource {
+export class AuthDatasourceImpl implements AuthDatasource {
   private httpClient: HttpHandler
 
   constructor() {
     this.httpClient = AxiosAdapter.getInstance()
   }
 
-  static getInstance(): UserDatasource {
-    return new UserDatasourceImpl()
-  }
-
-  async getUserByCi(ci: string) {
-    const { data, error } = await this.httpClient.get<IAPIUser>(API_ROUTES.USERS.GET_BY_CI(ci))
-    if (error) return
-    return UserAdapter.toDomain(data!)
+  static getInstance(): AuthDatasource {
+    return new AuthDatasourceImpl()
   }
 
   async login(credentials: IAuth) {
@@ -45,7 +38,7 @@ export class UserDatasourceImpl implements UserDatasource {
     setCookie(ACCESS_TOKEN_COOKIE_NAME, access_token)
     const decodedToken: IDecodedToken = jwtDecode(access_token)
     const { sub } = decodedToken
-    return this.getUserByCi(sub)
+    return UserDatasourcesImpl.getInstance().getByCI(sub)
   }
 
   async logout() {

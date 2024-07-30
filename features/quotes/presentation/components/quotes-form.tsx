@@ -30,7 +30,6 @@ const QuotesForm = () => {
         <RHFInput name="client" label="Cliente" />
         <div className="md:flex md:gap-4">
           <RHFInput name="vehicleType" label="Tipo de vehículo" />
-          <RHFInput name="plate" label="Placa" />
         </div>
         <RHFTextArea name="description" label="Descripción" />
       </div>

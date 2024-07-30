@@ -12,12 +12,13 @@ const AdminQuotesMonth = () => {
   const [events, setEvents] = useState<IAdminQuoteEventsMonth>({})
   const updateQueryParam = useUpdateQueryParam()
 
-  const onChange = async (month: number, year: number) => {
+  const onChange = async (date1: string, date2: string) => {
+    const startDate = dayjs(date1).toDate()
+    const endDate = dayjs(date2).toDate()
     const filter = apiAdminQuotes.filter((adminQuote) => {
-      const adminQuoteDate = dayjs(adminQuote.date)
-      return adminQuoteDate.month() + 1 === month && adminQuoteDate.year() === year
+      const adminQuoteDate = dayjs(adminQuote.date).toDate()
+      return adminQuoteDate >= startDate && adminQuoteDate <= endDate
     })
-
     setEvents(adminQuotesMonthAdapter(filter))
   }
 

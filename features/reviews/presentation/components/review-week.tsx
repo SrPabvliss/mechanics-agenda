@@ -1,37 +1,41 @@
 import CalendarWeek from '@/shared/components/calendar-week/calendar-week'
+import { VIEW_TYPES } from '@/shared/constants/view-types'
 import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { reviewWeekAdapter } from '../../adapters/reviewAdapter'
-import { reviewData } from '../../models/IApiReview'
+import { formatDateTime } from '@/lib/formatDate'
+
+import { ReviewAdapter } from '../../adapters/reviewAdapter'
+import { useReviewsQuery } from '../../hooks/use-reviews-query'
 
 const ReviewWeek = ({}: { value?: string }) => {
-  const [schedule, setSchedule] = useState<IScheduleWeek[]>([])
+  const [events, setEvents] = useState<IScheduleWeek[]>([])
   const updateQueryParam = useUpdateQueryParam()
 
-  const onChange = async (date1: string, date2: string) => {
-    const startDate = new Date(date1)
-    const endDate = new Date(date2)
+  const [dates, setDates] = useState<{ date1: string; date2: string }>({ date1: '', date2: '' })
+  const { data } = useReviewsQuery({
+    date1: formatDateTime(dates.date1, '00:00'),
+    date2: formatDateTime(dates.date2, '23:59'),
+  })
 
-    // Filtrar las revisiones que están entre las dos fechas
-    const filter = reviewData.filter((review) => {
-      const reviewDate = new Date(review.date)
-      return reviewDate >= startDate && reviewDate <= endDate
-    })
+  useEffect(() => {
+    if (data) {
+      setEvents(ReviewAdapter.weekAdapter(data))
+    }
+  }, [data])
 
-    setSchedule(reviewWeekAdapter(filter))
+  const handleDateChange = (date1: string, date2: string) => {
+    setDates({ date1, date2 })
   }
 
-  const onClick = (date: string) => {
+  const handleClick = (date: string) => {
     updateQueryParam([
       { param: 'date', value: date },
-      { param: 'view', value: 'day' },
-      { param: 'type', value: 'pending' },
+      { param: 'view', value: VIEW_TYPES.DAY },
     ])
   }
-
-  return <CalendarWeek onChange={onChange} onClick={onClick} schedule={schedule} />
+  return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={events} />
 }
 
 export default ReviewWeek

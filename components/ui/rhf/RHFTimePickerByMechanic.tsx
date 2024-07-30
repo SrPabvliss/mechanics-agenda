@@ -1,5 +1,5 @@
+import { IUser } from '@/features/users/models/IUser'
 import TimePickerDialog from '@/shared/components/time-selection/time-picker-dialog'
-import { IUser } from '@/shared/interfaces/IUser'
 import { TimerIcon } from 'lucide-react'
 import * as React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'

@@ -1,5 +1,5 @@
+import { IUser } from '@/features/users/models/IUser'
 import { IScheduleMechanic } from '@/shared/interfaces/ISchedule'
-import { IUser } from '@/shared/interfaces/IUser'
 import * as React from 'react'
 
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -35,7 +35,7 @@ const TimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({
           <TPHeader key={index} mechanic={mechanic} />
         ))}
       </div>
-      <ScrollArea className="h-96">
+      <ScrollArea className="h-[calc(100vh-50vh)]">
         <div
           className="grid border-r-[1.5px] border-dashed border-blue-600 dark:border-blue-400"
           style={{ gridTemplateColumns: `repeat(${length}, 1fr)` }}
