@@ -5,5 +5,6 @@ dayjs.extend(timezone)
 dayjs.tz.setDefault('America/Guayaquil')
 
 export const formatTime = (date: string | Date): string => {
+  if (!date) return ''
   return dayjs(date).format('HH:mm')
 }
