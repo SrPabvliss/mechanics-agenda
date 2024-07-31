@@ -1,5 +1,6 @@
 import { ContentLayout } from '@/core/layout/content/content-layout'
 import { JobsListView } from '@/features/jobs/presentation/views/jobs-list-view'
+import Spinner from '@/shared/components/spinner'
 import { Calendar, Car, Clock } from 'lucide-react'
 import React from 'react'
 
@@ -11,11 +12,18 @@ import useEditReviewView from '../../hooks/use-edit-review-view'
 import { REVIEW_STATUS } from '../../models/IApiReview'
 
 export const ReviewsEditView = ({ id }: { id: string }) => {
-  const { review } = useEditReviewView({ id })
+  const { review, isFetching } = useEditReviewView({ id })
 
   const carInfo = review && getPlateAndTitle(review?.title)
 
-  if (!review) return null
+  if (isFetching || !review)
+    return (
+      <ContentLayout title="Citas">
+        <div className="h-[calc(100vh_-_150px)]">
+          <Spinner description={`Cargando la revisión ${id}`}></Spinner>
+        </div>
+      </ContentLayout>
+    )
 
   return (
     <>
