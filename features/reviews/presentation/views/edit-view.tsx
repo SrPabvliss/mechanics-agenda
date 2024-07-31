@@ -12,13 +12,13 @@ import useEditReviewView from '../../hooks/use-edit-review-view'
 import { REVIEW_STATUS } from '../../models/IApiReview'
 
 export const ReviewsEditView = ({ id }: { id: string }) => {
-  const { review, isFetching } = useEditReviewView({ id })
+  const { review, isLoading } = useEditReviewView({ id })
 
   const carInfo = review && getPlateAndTitle(review?.title)
 
-  if (isFetching || !review)
+  if (isLoading || !review)
     return (
-      <ContentLayout title="Citas">
+      <ContentLayout title="Revisiones">
         <div className="h-[calc(100vh_-_150px)]">
           <Spinner description={`Cargando la revisión ${id}`}></Spinner>
         </div>

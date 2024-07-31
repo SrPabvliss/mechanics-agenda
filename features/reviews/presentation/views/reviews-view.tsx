@@ -1,4 +1,5 @@
 import { ContentLayout } from '@/core/layout/content/content-layout'
+import Spinner from '@/shared/components/spinner'
 import { ViewButtons } from '@/shared/components/views-buttons'
 import { VIEW_TYPES } from '@/shared/constants/view-types'
 import React from 'react'
@@ -9,7 +10,17 @@ import ReviewMonth from '../components/review-month'
 import ReviewWeek from '../components/review-week'
 
 export const ReviewsView = () => {
-  const { date, view, type } = useReviewsView()
+  const { date, view, type, isLoading } = useReviewsView()
+
+  if (isLoading) {
+    return (
+      <ContentLayout title="Revisiones">
+        <div className="h-[calc(100vh_-_150px)]">
+          <Spinner description={``}></Spinner>
+        </div>
+      </ContentLayout>
+    )
+  }
 
   return (
     <>

@@ -9,13 +9,17 @@ import { ReviewListItem } from './review-list-item'
 import { ReviewListSkeleton } from './review-list-skeleton'
 
 const List: React.FC = () => {
-  const { data: filteredItems, isLoading } = useReviewsList()
+  const { data: filteredItems, isLoading, isFetching } = useReviewsList()
+
+  if (!filteredItems) {
+    return null
+  }
 
   if (isLoading) {
     return <ReviewListSkeleton />
   }
 
-  if (!filteredItems || filteredItems.length === 0) {
+  if (filteredItems.length === 0 && !isLoading && !isFetching) {
     return (
       <NoContent
         src={ReviewNoContent.src}
