@@ -10,9 +10,10 @@ import { useJobMethods } from '../../hooks/use-job-methods'
 
 interface Props {
   status: REVIEW_STATUS
+  isFetching: boolean
 }
 
-export const ReviewActions = ({ status }: Props) => {
+export const ReviewActions = ({ status, isFetching }: Props) => {
   const router = useRouter()
   const { handleCloseReview } = useJobMethods()
   return (
@@ -25,8 +26,8 @@ export const ReviewActions = ({ status }: Props) => {
         title="Confirmar finalización"
         description="Una vez marcadas como finalizadas, las actividades no podrán ser editadas. ¿Deseas continuar?"
         triggerLabel="Finalizar"
-        disabled={status === REVIEW_STATUS.COMPLETED}
-        disabledLabel="Finalizado"
+        disabled={status === REVIEW_STATUS.COMPLETED || isFetching}
+        disabledLabel={isFetching ? 'Cargando ...' : 'Finalizado'}
       />
     </div>
   )

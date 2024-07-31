@@ -16,7 +16,7 @@ const useReviewsList = () => {
   const status = (searchParams.get('type') as REVIEW_STATUS) || REVIEW_STATUS.PENDING
   const type = searchParams.get('view') || VIEW_TYPES.DAY
 
-  const { data } = useReviewsQuery({
+  const { data, isLoading } = useReviewsQuery({
     date1: formatDateTime(dates.date1, '00:00'),
     date2: formatDateTime(dates.date2, '23:59'),
     status: status.toUpperCase(),
@@ -28,7 +28,10 @@ const useReviewsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
-  return data ? ReviewAdapter.dayAdapter(data) : []
+  return {
+    data: data ? ReviewAdapter.dayAdapter(data) : [],
+    isLoading,
+  }
 }
 
 export default useReviewsList

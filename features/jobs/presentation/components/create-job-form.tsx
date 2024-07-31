@@ -2,12 +2,13 @@ import React from 'react'
 import { FormProvider } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import RHFInput from '@/components/ui/rhf/RHFInput'
 
 import { useJobMethods } from '../../hooks/use-job-methods'
 
 export const CreateJobForm = () => {
-  const { methods, handleSubmit } = useJobMethods()
+  const { methods, handleSubmit, isSubmitting, isValid } = useJobMethods()
 
   return (
     <FormProvider {...methods}>
@@ -19,9 +20,9 @@ export const CreateJobForm = () => {
         }}
       >
         <div className="flex items-end gap-4">
-          <RHFInput name="name" />
-          <Button type="submit" className="flex-1">
-            Agregar
+          <RHFInput name="name" disabled={isSubmitting} />
+          <Button type="submit" className="flex-1" disabled={isSubmitting || !isValid}>
+            {isSubmitting ? <LoadingSpinner /> : 'Agregar'}
           </Button>
         </div>
       </form>

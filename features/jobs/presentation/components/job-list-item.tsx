@@ -13,9 +13,10 @@ import { EditFormDialog } from './edit-job-form'
 interface Props {
   job: IJob
   status: REVIEW_STATUS
+  isFetching: boolean
 }
 
-export const JobListItem = ({ job, status }: Props) => {
+export const JobListItem = ({ job, status, isFetching }: Props) => {
   const { handleToggleStatus, handleDeleteJob } = useJobMethods()
 
   return (
@@ -26,7 +27,7 @@ export const JobListItem = ({ job, status }: Props) => {
         }`}
       ></div>
       <span className="ml-4 flex-1">{job.name}</span>
-      {status === REVIEW_STATUS.PENDING && (
+      {status === REVIEW_STATUS.PENDING && !isFetching && (
         <div className="flex items-center gap-1">
           <Button variant="outline" size={'icon'} onClick={() => handleToggleStatus(job.id, job.status)}>
             {job.status === 'COMPLETED' ? <CircleDashed size={20} /> : <CircleCheck size={20} />}
