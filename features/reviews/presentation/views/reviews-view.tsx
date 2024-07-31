@@ -14,7 +14,7 @@ export const ReviewsView = () => {
 
   if (isLoading) {
     return (
-      <ContentLayout title="Citas">
+      <ContentLayout title="Revisiones">
         <div className="h-[calc(100vh_-_150px)]">
           <Spinner description={``}></Spinner>
         </div>
