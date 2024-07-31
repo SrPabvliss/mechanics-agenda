@@ -1,37 +1,44 @@
 'use client'
 
 import CalendarWeek from '@/shared/components/calendar-week/calendar-week'
+import { scheduleWeekFull } from '@/shared/constants/schedule-week'
 import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
-import dayjs from 'dayjs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { adminQuotesWeekAdapter } from '../../adapters/admin-quotes-adapter'
-import { apiAdminQuotes } from '../../models/IApiAdminQuotes'
+import { formatDateTime } from '@/lib/formatDate'
+
+import { AdminQuotesAdapter } from '../../adapters/admin-quotes-adapter'
+import { useAdminQuotesByFilterQuery } from '../../hooks/use-admin-quotes-query'
 
 const AdminQuotesWeek = () => {
-  const [schedule, setSchedule] = useState<IScheduleWeek[]>([])
+  const [schedule, setSchedule] = useState<IScheduleWeek[]>(scheduleWeekFull)
   const updateQueryParam = useUpdateQueryParam()
 
-  const onChange = async (date1: string, date2: string) => {
-    const startDate = dayjs(date1).toDate()
-    const endDate = dayjs(date2).toDate()
+  const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
+  const { data } = useAdminQuotesByFilterQuery({
+    startDate: formatDateTime(filters.startDate, '00:00'),
+    endDate: formatDateTime(filters.endDate, '23:59'),
+  })
 
-    const filter = apiAdminQuotes.filter((adminQuote) => {
-      const adminQuoteDate = dayjs(adminQuote.date).toDate()
-      return adminQuoteDate >= startDate && adminQuoteDate <= endDate
-    })
+  useEffect(() => {
+    if (data) {
+      setSchedule(AdminQuotesAdapter.adminQuotesWeekAdapter(data))
+    }
+  }, [data])
 
-    setSchedule(adminQuotesWeekAdapter(filter))
+  const handleDateChange = (date1: string, date2: string) => {
+    setSchedule(scheduleWeekFull)
+    setFilters({ startDate: date1, endDate: date2 })
   }
 
-  const onClick = (date: string) => {
+  const handleClick = (date: string) => {
     updateQueryParam([
       { param: 'date', value: date },
       { param: 'view', value: 'day' },
     ])
   }
-  return <CalendarWeek onChange={onChange} onClick={onClick} schedule={schedule} />
+  return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={schedule} />
 }
 
 export default AdminQuotesWeek
