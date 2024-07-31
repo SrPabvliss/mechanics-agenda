@@ -9,3 +9,11 @@ export const colorOptions = [
   { value: '#A52A2A', label: 'Brown' },
   { value: '#808080', label: 'Gray' },
 ]
+
+export const colorAdminQuotesOptions = [
+  { value: '#cbd8f2', label: 'Azul' },
+  { value: '#aceec9', label: 'Verde' },
+  { value: '#fcc9ac', label: 'Naranja' },
+  { value: '#ffc0c0', label: 'Rojo' },
+  { value: '#d1d1d1', label: 'Gris' },
+]

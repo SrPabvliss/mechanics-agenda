@@ -1,6 +1,6 @@
 import { generateScheduleMechanic } from '@/lib/generateScheduleMechanic'
 
 import { IScheduleMechanic } from '../interfaces/ISchedule'
-import { scheduleInterval } from './schedule'
+import { workingHours } from './schedule'
 
-export const scheduleMechanic: IScheduleMechanic[] = generateScheduleMechanic(scheduleInterval)
+export const scheduleMechanic: IScheduleMechanic[] = generateScheduleMechanic(workingHours)

@@ -23,7 +23,7 @@ const RHFSelect: React.FC<RHFSelectProps> = ({ name, label, options, placeholder
   }
 
   return (
-    <div className="mt-2 w-full">
+    <div className="mt-2 w-full md:mt-0">
       <Label htmlFor={name} className="ml-1">
         {label}
       </Label>
@@ -31,9 +31,9 @@ const RHFSelect: React.FC<RHFSelectProps> = ({ name, label, options, placeholder
         name={name}
         control={control}
         render={({ field }) => (
-          <>
+          <div className="mt-1 w-full">
             <Select value={field.value} onValueChange={(value) => field.onChange(value)}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
               <SelectContent className="max-h-40 overflow-auto">
@@ -47,7 +47,7 @@ const RHFSelect: React.FC<RHFSelectProps> = ({ name, label, options, placeholder
               </SelectContent>
             </Select>
             {getErrorMessage(name) && <p className="mt-1 text-sm text-red-500">{getErrorMessage(name)}</p>}
-          </>
+          </div>
         )}
       />
     </div>

@@ -24,3 +24,53 @@ export const formatDateTime = (date: string | Date, time: string): string => {
   }
   return formatDate(date) + ' ' + time + ':00-05'
 }
+
+interface Time12HourFormat {
+  hour: string
+  min: string
+  period: string
+}
+
+export const convert24HourTo12Hour = (time: string): Time12HourFormat => {
+  if (!time) {
+    return {
+      hour: '',
+      min: '',
+      period: '',
+    }
+  }
+  const [hourStr, min] = time.split(':')
+  let hour = parseInt(hourStr, 10)
+  const period = hour >= 12 ? 'PM' : 'AM'
+
+  if (hour === 0) {
+    hour = 12
+  } else if (hour > 12) {
+    hour -= 12
+  }
+
+  return {
+    hour: hour.toString(),
+    min,
+    period,
+  }
+}
+
+export const convert12HourTo24Hour = (time: Time12HourFormat): string => {
+  if (!time.hour || !time.min || !time.period) {
+    return ''
+  }
+
+  const hour = parseInt(time.hour, 10)
+  const period = time.period
+
+  if (period === 'AM' && hour === 12) {
+    return `00:${time.min}`
+  }
+
+  if (period === 'PM' && hour < 12) {
+    return `${hour + 12}:${time.min}`
+  }
+
+  return `${hour}:${time.min}`
+}

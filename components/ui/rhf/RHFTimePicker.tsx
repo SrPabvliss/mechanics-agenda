@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
+import { convert12HourTo24Hour, convert24HourTo12Hour } from '@/lib/formatDate'
 
 import { Label } from '../label'
 
@@ -26,7 +28,7 @@ const TimePickerSelect: React.FC<TimePickerSelectProps> = ({ name, label }) => {
   }
 
   return (
-    <div className="mt-2 w-full md:mt-0">
+    <div className="mt-2 w-fit md:mt-0">
       <Label htmlFor={name} className="ml-1">
         {label}
       </Label>
@@ -34,13 +36,13 @@ const TimePickerSelect: React.FC<TimePickerSelectProps> = ({ name, label }) => {
         name={name}
         control={control}
         render={({ field }) => {
-          const [hour, setHour] = React.useState<string>('10')
-          const [minute, setMinute] = React.useState<string>('00')
-          const [period, setPeriod] = React.useState<string>('AM')
+          const [hour, setHour] = React.useState<string>(convert24HourTo12Hour(field.value).hour)
+          const [minute, setMinute] = React.useState<string>(convert24HourTo12Hour(field.value).min)
+          const [period, setPeriod] = React.useState<string>(convert24HourTo12Hour(field.value).period)
 
-          const handleChange = () => {
-            field.onChange(`${hour}:${minute} ${period}`)
-          }
+          useEffect(() => {
+            field.onChange(convert12HourTo24Hour({ hour, min: minute, period }))
+          }, [field, hour, minute, period])
 
           return (
             <>
@@ -49,10 +51,9 @@ const TimePickerSelect: React.FC<TimePickerSelectProps> = ({ name, label }) => {
                   value={hour}
                   onValueChange={(value) => {
                     setHour(value)
-                    handleChange()
                   }}
                 >
-                  <SelectTrigger className="w-16">
+                  <SelectTrigger className="max-w-fit">
                     <SelectValue placeholder="Hora" />
                   </SelectTrigger>
                   <SelectContent className="max-h-1/2 overflow-auto">
@@ -70,11 +71,10 @@ const TimePickerSelect: React.FC<TimePickerSelectProps> = ({ name, label }) => {
                   value={minute}
                   onValueChange={(value) => {
                     setMinute(value)
-                    handleChange()
                   }}
                 >
-                  <SelectTrigger className="w-16">
-                    <SelectValue placeholder="Minuto" />
+                  <SelectTrigger className="max-w-fit">
+                    <SelectValue placeholder="Min" />
                   </SelectTrigger>
                   <SelectContent className="max-h-24 overflow-auto">
                     <SelectGroup>
@@ -90,10 +90,9 @@ const TimePickerSelect: React.FC<TimePickerSelectProps> = ({ name, label }) => {
                   value={period}
                   onValueChange={(value) => {
                     setPeriod(value)
-                    handleChange()
                   }}
                 >
-                  <SelectTrigger className="w-20">
+                  <SelectTrigger className="max-w-fit">
                     <SelectValue placeholder="AM/PM" />
                   </SelectTrigger>
                   <SelectContent className="max-h-24 overflow-auto">
