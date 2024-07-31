@@ -20,7 +20,7 @@ const List: React.FC = () => {
       <NoContent
         src={ReviewNoContent.src}
         title="No hay revisiones disponibles"
-        subtitle="Parece que no se han agendado revisiones para el día de hoy."
+        subtitle="Parece que no se han agendado revisiones para este día."
       />
     )
   }
