@@ -1,5 +1,5 @@
-import { UseAccountStore } from '@/features/auth/context/use-account-store'
 import { ISubscription } from '@/features/notifications/models/ISubscription'
+import { fetchToken } from '@/firebase'
 import { PUSH_NOTIFICATIONS_IDENTIFIER } from '@/shared/api/api-routes'
 import { getObjectFromCookie } from '@/shared/api/cookies-util'
 import { Bell } from 'lucide-react'
@@ -8,10 +8,7 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 
-import { handleUserSubscription } from '@/lib/pushNotifications'
-
 export function NotificationToggle() {
-  const { user } = UseAccountStore()
   const [isRed, setIsRed] = useState(true)
 
   useEffect(() => {
@@ -26,7 +23,7 @@ export function NotificationToggle() {
 
   const toggleColor = async () => {
     setIsRed(!isRed)
-    await handleUserSubscription(user as any)
+    await fetchToken()
   }
 
   return (

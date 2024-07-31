@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 
-import UseRegisterServiceWorker from '@/core/hooks/use-register-sw'
 import queryClient from '@/core/infrastructure/react-query/query-client'
 import SocketsLayout from '@/core/layout/socket-layout'
 import { ThemeProvider } from '@/core/providers/theme-provider'
@@ -52,7 +51,6 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} ${inter.className} `}>
-        <UseRegisterServiceWorker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryClientProvider client={queryClient}>
             <SocketsLayout>
