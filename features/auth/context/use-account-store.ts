@@ -10,7 +10,7 @@ import { AuthDatasourceImpl } from '../services/Datasource'
 interface StoreState {
   user: IUser | undefined
   loading: boolean
-  login: (credentials: IAuth) => void
+  login: (credentials: IAuth) => Promise<boolean>
   setUser: (user?: IUser) => void
   logout: () => void
 }
@@ -27,9 +27,10 @@ export const UseAccountStore = create<StoreState>(
       login: async (credentials: IAuth) => {
         set({ loading: true })
         const user = await AuthDatasourceImpl.getInstance().login(credentials)
-        if (!user) return
+        if (!user) return false
         set({ user })
         set({ loading: false })
+        return true
       },
       setUser: (user?: IUser) => set({ user }),
       logout: async () => {
