@@ -1,7 +1,5 @@
-import { ISubscription } from '@/features/notifications/models/ISubscription'
-import { fetchToken } from '@/firebase'
-import { PUSH_NOTIFICATIONS_IDENTIFIER } from '@/shared/api/api-routes'
-import { getObjectFromCookie } from '@/shared/api/cookies-util'
+import { UseAccountStore } from '@/features/auth/context/use-account-store'
+import { fetchToken, shouldAskPermission } from '@/firebase'
 import { Bell } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
@@ -9,21 +7,29 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 
 export function NotificationToggle() {
-  const [isRed, setIsRed] = useState(true)
+  const [isPermissionGranted, setPermissionState] = useState(false)
+  const { user } = UseAccountStore()
+
+  const checkPermission = async () => {
+    const shouldAsk = await shouldAskPermission()
+    setPermissionState(shouldAsk)
+  }
 
   useEffect(() => {
-    const fetchCookieData = async () => {
-      const cookieData: ISubscription = await getObjectFromCookie(PUSH_NOTIFICATIONS_IDENTIFIER)
-      if (cookieData) {
-        setIsRed(!cookieData.available)
-      }
-    }
-    fetchCookieData()
+    checkPermission()
   }, [])
 
-  const toggleColor = async () => {
-    setIsRed(!isRed)
-    await fetchToken()
+  const enableNotifications = async () => {
+    if (!user) {
+      console.error('User not found')
+      return
+    }
+    const token = await fetchToken(user)
+    if (token) setPermissionState(false)
+  }
+
+  if (!isPermissionGranted) {
+    return null
   }
 
   return (
@@ -34,16 +40,12 @@ export function NotificationToggle() {
             className="h-8 w-auto rounded-full bg-background px-2"
             variant={'outline'}
             size={'sm'}
-            onClick={toggleColor}
+            onClick={enableNotifications}
           >
-            <div className="flex items-center gap-1">
-              <Bell className="h-[1.2rem] w-[1.2rem]  transition-transform duration-500 ease-in-out dark:rotate-0 dark:scale-100" />
-              <div className={`mx-1 h-2 w-2 rounded-full ${isRed ? 'bg-red-500' : 'bg-green-500'}`} />
-            </div>
-            <span className="sr-only">Recibir notificaciones</span>
+            <Bell height={20} width={20} />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="bottom">Recibir notificaciones</TooltipContent>
+        <TooltipContent>Enable Notifications</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   )

@@ -5,24 +5,19 @@ importScripts(
 
 // Replace these with your own Firebase config keys
 const firebaseConfig = {
-  apiKey: "AIzaSyDtsbkDutJZrEGMMJUcJ6jXHlqbEnW8ouw",
-  authDomain: "schedule-gab-motors-test.firebaseapp.com",
-  projectId: "schedule-gab-motors-test",
-  storageBucket: "schedule-gab-motors-test.appspot.com",
-  messagingSenderId: "851887950403",
-  appId: "1:851887950403:web:0232362278f9acbed5a2f6"
+  apiKey: "AIzaSyBOmV1DVRRbDD037cGwGGpaUVsdn1hm-AQ",
+  authDomain: "push-test-87cdb.firebaseapp.com",
+  projectId: "push-test-87cdb",
+  storageBucket: "push-test-87cdb.appspot.com",
+  messagingSenderId: "80244541010",
+  appId: "1:80244541010:web:bd8d0e96641d185acf018b"
 };
-
 
 firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log(
-    "[firebase-messaging-sw.js] Received background message ",
-    payload
-  );
 
   // payload.fcmOptions?.link comes from our backend API route handle
   // payload.data.link comes from the Firebase Console where link is the 'key'
