@@ -5,12 +5,12 @@ importScripts(
 
 // Replace these with your own Firebase config keys
 const firebaseConfig = {
-  apiKey: "AIzaSyBOmV1DVRRbDD037cGwGGpaUVsdn1hm-AQ",
-  authDomain: "push-test-87cdb.firebaseapp.com",
-  projectId: "push-test-87cdb",
-  storageBucket: "push-test-87cdb.appspot.com",
-  messagingSenderId: "80244541010",
-  appId: "1:80244541010:web:bd8d0e96641d185acf018b"
+  apiKey: "AIzaSyCWvzupAokC9YREnP8JIHTNZL44Z1DSQxs",
+  authDomain: "mechanics-schedule.firebaseapp.com",
+  projectId: "mechanics-schedule",
+  storageBucket: "mechanics-schedule.appspot.com",
+  messagingSenderId: "195865247278",
+  appId: "1:195865247278:web:2a9fbadaad21b0e066a9bf"
 };
 
 firebase.initializeApp(firebaseConfig);

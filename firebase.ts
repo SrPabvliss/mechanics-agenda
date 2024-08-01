@@ -5,13 +5,14 @@ import { NotificationDataSourceImpl } from './features/notifications/services/Da
 import { IUser } from './features/users/models/IUser'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBOmV1DVRRbDD037cGwGGpaUVsdn1hm-AQ',
-  authDomain: 'push-test-87cdb.firebaseapp.com',
-  projectId: 'push-test-87cdb',
-  storageBucket: 'push-test-87cdb.appspot.com',
-  messagingSenderId: '80244541010',
-  appId: '1:80244541010:web:bd8d0e96641d185acf018b',
+  apiKey: 'AIzaSyCWvzupAokC9YREnP8JIHTNZL44Z1DSQxs',
+  authDomain: 'mechanics-schedule.firebaseapp.com',
+  projectId: 'mechanics-schedule',
+  storageBucket: 'mechanics-schedule.appspot.com',
+  messagingSenderId: '195865247278',
+  appId: '1:195865247278:web:2a9fbadaad21b0e066a9bf',
 }
+
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
 
 const messaging = async () => {
@@ -24,8 +25,9 @@ export const fetchToken = async (user: IUser) => {
     const fcmMessaging = await messaging()
     if (fcmMessaging) {
       const token = await getToken(fcmMessaging, {
-        vapidKey: `${process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY}`,
+        vapidKey: `${process.env.NEXT_PUBLIC_FIREBASE_FCM_VAPID_KEY}`,
       })
+      console.log('Token:', token)
       if (token) {
         const data = await NotificationDataSourceImpl.getInstance().suscribeUser(token, user)
         if (data) {
