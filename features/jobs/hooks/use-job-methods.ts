@@ -1,8 +1,9 @@
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 import { REVIEW_STATUS } from '@/features/reviews/models/IApiReview'
 import { ReviewDatasourceImpl } from '@/features/reviews/services/datasource'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -23,11 +24,15 @@ export const useJobMethods = (currentJob?: Partial<JobFormValues>, id?: number) 
   })
 
   const { id: inspectionId } = useParams()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter()
 
   const handleSubmit = async (data: JobFormValues) => {
+    setIsSubmitting(true)
     const response = id
       ? await JobDatasourceImpl.getInstance().update(id, data)
       : await JobDatasourceImpl.getInstance().create({ ...data, inspectionId: +inspectionId })
+    setIsSubmitting(false)
     if (!response) return
     methods.reset()
   }
@@ -46,6 +51,7 @@ export const useJobMethods = (currentJob?: Partial<JobFormValues>, id?: number) 
   const handleCloseReview = async () => {
     const response = await ReviewDatasourceImpl.getInstance().update(+inspectionId, { status: REVIEW_STATUS.COMPLETED })
     if (!response) return
+    router.push('/reviews')
   }
 
   return {
@@ -54,5 +60,7 @@ export const useJobMethods = (currentJob?: Partial<JobFormValues>, id?: number) 
     handleToggleStatus,
     handleDeleteJob,
     handleCloseReview,
+    isSubmitting: isSubmitting,
+    isValid: methods.formState.isValid,
   }
 }

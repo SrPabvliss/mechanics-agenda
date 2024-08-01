@@ -1,7 +1,8 @@
 // import { useQueryClient } from '@tanstack/react-query'
-import { IAdminQuoteEvent } from '@/shared/interfaces/IEvents'
+import { QUERY_KEY } from '@/shared/api/query-key'
 import React, { createContext, useContext, useEffect } from 'react'
 
+import queryClient from '../infrastructure/react-query/query-client'
 import { joinChannel, leaveChannel, SOCKET_CHANNEL, socketClient } from '../infrastructure/sockets/socket-client'
 
 interface Props {
@@ -13,25 +14,19 @@ const AdminQuotesContext = createContext(null)
 export const useAdminQuotes = () => useContext(AdminQuotesContext)
 
 const AdminQuotesProvider: React.FC<Props> = ({ children }) => {
-  // const queryClient = useQueryClient()
-
   useEffect(
     () => {
       joinChannel(SOCKET_CHANNEL.ADMINS)
 
-      const handleNewReminder = (data: IAdminQuoteEvent | null) => {
-        if (data) {
-          // queryClient.invalidateQueries(['admin-quotes'])
-          // esto es lo que se debería hacer para actualizar la lista de citas administrativas
-        }
-        console.log('new-reminder', data)
+      const handleNewReminder = () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REMINDERS] })
       }
 
-      socketClient.on('new-reminder', handleNewReminder)
+      socketClient.on('reminders-change', handleNewReminder)
 
       return () => {
         leaveChannel(SOCKET_CHANNEL.ADMINS)
-        socketClient.off('new-reminder', handleNewReminder)
+        socketClient.off('reminders-change', handleNewReminder)
       }
     },
     [

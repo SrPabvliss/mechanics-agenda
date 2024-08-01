@@ -2,7 +2,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { VIEW_TYPES } from '@/shared/constants/view-types'
 import { format } from 'date-fns'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { REVIEW_STATUS } from '../models/IApiReview'
 
@@ -13,6 +13,7 @@ export const useReviewsView = () => {
   const date = searchParams.get('date') || format(new Date(), 'yyyy-MM-dd')
   const view = searchParams.get('view') || VIEW_TYPES.DAY
   const type = searchParams.get('type') || REVIEW_STATUS.PENDING
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const params = new URLSearchParams(Array.from(searchParams.entries()))
@@ -31,8 +32,10 @@ export const useReviewsView = () => {
 
     if (!searchParams.get('date') || !searchParams.get('view') || !searchParams.get('type')) {
       router.replace(`${pathname}?${params.toString()}`)
+    } else {
+      setIsLoading(false)
     }
   }, [searchParams, router, pathname, date, view, type])
 
-  return { date, view, type }
+  return { date, view, type, isLoading }
 }

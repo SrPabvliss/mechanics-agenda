@@ -1,31 +1,41 @@
 'use client'
 import CalendarDay from '@/shared/components/calendar-day/calendar-day'
+import { scheduleDayFull } from '@/shared/constants/schedule-day'
 import { IDailySchedule } from '@/shared/interfaces/ISchedule'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { adminQuotesDayAdapter } from '../../adapters/admin-quotes-adapter'
-import { apiAdminQuotes } from '../../models/IApiAdminQuotes'
+import { formatDateTime } from '@/lib/formatDate'
+
+import { AdminQuotesAdapter } from '../../adapters/admin-quotes-adapter'
+import { useAdminQuotesByFilterQuery } from '../../hooks/use-admin-quotes-query'
 
 interface QuotesDayProps {
   date: string
 }
 
 const AdminQuotesDay = ({ date }: QuotesDayProps) => {
-  const [schedule, setSchedule] = useState<IDailySchedule[]>([])
-  const onChange = async (day: string) => {
-    // Filtrar las revisiones que están en el día seleccionado
-    const filter = apiAdminQuotes.filter((quote) => quote.date === day)
-    setSchedule(adminQuotesDayAdapter(filter))
-    // las 2 líneas anteriores simulan lo que el endpoint debería retornar, las revisiones un una determinada fecha
-    // es aquí donde podría mandarlo al context de tanstack con un "hook" de useCache pero estaría ubicada en context
-    // el hook recibiría tanto la key como la función que se ejecutaría en caso de que no exista la key
-    // const { data, loading } = useCache(['quotes', {day}], () => AdminQotesDatasource.getQuotes(day))
+  const [schedule, setSchedule] = useState<IDailySchedule[]>(scheduleDayFull)
+
+  const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
+  const { data } = useAdminQuotesByFilterQuery({
+    startDate: formatDateTime(filters.startDate, '00:00'),
+    endDate: formatDateTime(filters.endDate, '23:59'),
+  })
+
+  useEffect(() => {
+    if (data) {
+      setSchedule(AdminQuotesAdapter.adminQuotesDayAdapter(data))
+    }
+  }, [data])
+
+  const onChange = (newDate: string) => {
+    setSchedule(scheduleDayFull)
+    setFilters({ startDate: newDate, endDate: newDate })
   }
 
   const onClick = (id: number) => {
     // eslint-disable-next-line no-console
     console.log(id)
-    // Code here
   }
   return (
     <>

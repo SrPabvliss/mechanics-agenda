@@ -26,7 +26,8 @@ export function useAuth() {
   })
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    await login(data)
+    const isLogged = await login(data)
+    if (!isLogged) return
     router.push('/quotes')
   }
 

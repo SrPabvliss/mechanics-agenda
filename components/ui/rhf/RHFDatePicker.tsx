@@ -56,7 +56,13 @@ const RHFDatePicker: React.FC<RHFDatePickerProps> = ({ name, label }) => {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                  <Calendar mode="single" selected={date} onSelect={handleDateChange} initialFocus />
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={handleDateChange}
+                    initialFocus
+                    fromDate={new Date()}
+                  />
                 </PopoverContent>
               </Popover>
               {getErrorMessage(name) && <p className="mt-1 max-w-52 text-sm text-red-500">{getErrorMessage(name)}</p>}

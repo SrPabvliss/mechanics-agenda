@@ -16,27 +16,38 @@ export function DatePicker({ value }: { value?: string }) {
   const updateQueryParam = useUpdateQueryParam()
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant={'outline'}
-          className={cn(' justify-start text-left font-normal', !date && 'text-muted-foreground')}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, 'dd-MM-yyyy') : <span>Selecciona una fecha</span>}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={(value) => {
-            setDate(value)
-            value && updateQueryParam([{ param: 'date', value: format(value, 'yyyy-MM-dd') }])
-          }}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
+    <div className="flex gap-2">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant={'outline'}
+            className={cn('w-3/4 justify-start text-left font-normal', !date && 'text-muted-foreground')}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date ? format(date, 'dd-MM-yyyy') : <span>Selecciona una fecha</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(value) => {
+              setDate(value)
+              value && updateQueryParam([{ param: 'date', value: format(value, 'yyyy-MM-dd') }])
+            }}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+      <Button
+        onClick={() => {
+          setDate(new Date())
+          updateQueryParam([{ param: 'date', value: format(new Date(), 'yyyy-MM-dd') }])
+        }}
+        className="w-1/4"
+      >
+        Hoy
+      </Button>
+    </div>
   )
 }

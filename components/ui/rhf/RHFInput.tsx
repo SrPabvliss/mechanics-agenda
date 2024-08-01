@@ -8,9 +8,10 @@ interface FormInputProps {
   label?: string
   type?: string
   placeholder?: string
+  disabled?: boolean
 }
 
-const RHFInput: React.FC<FormInputProps> = ({ name, label, type = 'text', placeholder }) => {
+const RHFInput: React.FC<FormInputProps> = ({ name, label, type = 'text', placeholder, disabled = false }) => {
   const {
     control,
     formState: { errors },
@@ -31,7 +32,9 @@ const RHFInput: React.FC<FormInputProps> = ({ name, label, type = 'text', placeh
       <Controller
         name={name}
         control={control}
-        render={({ field }) => <Input {...field} id={name} type={type} placeholder={placeholder} className="mt-1" />}
+        render={({ field }) => (
+          <Input {...field} id={name} type={type} placeholder={placeholder} className="mt-1" disabled={disabled} />
+        )}
       />
       {getErrorMessage(name) && <p className="mt-1 max-w-52 text-sm text-red-500">{getErrorMessage(name)}</p>}
     </div>
