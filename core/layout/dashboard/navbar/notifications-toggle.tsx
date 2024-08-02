@@ -1,36 +1,45 @@
 import { UseAccountStore } from '@/features/auth/context/use-account-store'
-import { fetchToken } from '@/firebase'
+import ConfirmationDialog from '@/shared/components/confirmation-dialog'
+import useFcmToken from '@/shared/hooks/use-fcm-token'
 import { Bell } from 'lucide-react'
+import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 
-import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 
 export function NotificationToggle() {
   const { user } = UseAccountStore()
-  const enableNotifications = async () => {
+  const { enableNotifications, cleanup } = useFcmToken(user!)
+
+  useEffect(() => {
+    return () => {
+      cleanup()
+    }
+  }, [cleanup])
+
+  const handleEnableNotifications = async () => {
     if (!user) {
-      console.error('User not found')
+      toast.error('User not found')
       return
     }
-    const { isValid, type } = await fetchToken(user)
-    if (!isValid && type === 'service-worker-not-registered') {
-      toast.error('Error al registrarte. Recarga la página e intenta de nuevo')
-    }
+    await enableNotifications()
   }
 
   return (
     <TooltipProvider disableHoverableContent>
       <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>
-          <Button
-            className="h-8 w-auto rounded-full bg-background px-2"
+          <ConfirmationDialog
+            onConfirm={handleEnableNotifications}
+            title="Habilitar notificaciones"
+            description="¿Estás seguro que deseas habilitar las notificaciones?"
+            triggerLabel={<Bell height={20} width={20} />}
+            confirmLabel="Habilitar"
+            cancelLabel="Cancelar"
+            size={'icon'}
             variant={'outline'}
-            size={'sm'}
-            onClick={enableNotifications}
-          >
-            <Bell height={20} width={20} />
-          </Button>
+            roundedFull
+          />
         </TooltipTrigger>
         <TooltipContent>Enable Notifications</TooltipContent>
       </Tooltip>
