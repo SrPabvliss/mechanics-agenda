@@ -3,15 +3,7 @@ import { getMessaging, getToken, isSupported } from 'firebase/messaging'
 
 import { NotificationDataSourceImpl } from './features/notifications/services/Datasource'
 import { IUser } from './features/users/models/IUser'
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyCWvzupAokC9YREnP8JIHTNZL44Z1DSQxs',
-  authDomain: 'mechanics-schedule.firebaseapp.com',
-  projectId: 'mechanics-schedule',
-  storageBucket: 'mechanics-schedule.appspot.com',
-  messagingSenderId: '195865247278',
-  appId: '1:195865247278:web:2a9fbadaad21b0e066a9bf',
-}
+import { firebaseConfig } from './shared/constants/firebase-config'
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
 
@@ -20,25 +12,50 @@ const messaging = async () => {
   return supported ? getMessaging(app) : null
 }
 
-export const fetchToken = async (user: IUser) => {
+export const fetchToken = async (
+  user: IUser,
+): Promise<{
+  isValid: boolean
+  type: 'success' | 'service-worker-not-registered' | 'unsupported' | 'server-error'
+}> => {
+  const serviceWorker = '/firebase-messaging-sw.js'
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register(serviceWorker)
+  }
+
+  if (!navigator.serviceWorker.getRegistration(serviceWorker)) {
+    return {
+      isValid: false,
+      type: 'service-worker-not-registered',
+    }
+  }
+
   try {
     const fcmMessaging = await messaging()
     if (fcmMessaging) {
       const token = await getToken(fcmMessaging, {
         vapidKey: `${process.env.NEXT_PUBLIC_FIREBASE_FCM_VAPID_KEY}`,
       })
-      console.log('Token:', token)
       if (token) {
         const data = await NotificationDataSourceImpl.getInstance().suscribeUser(token, user)
         if (data) {
-          return token
+          return {
+            isValid: true,
+            type: 'success',
+          }
         }
       }
     }
-    return null
+    return {
+      isValid: false,
+      type: 'server-error',
+    }
   } catch (err) {
-    console.error('An error occurred while fetching the token:', err)
-    return null
+    return {
+      isValid: false,
+      type: 'server-error',
+    }
   }
 }
 

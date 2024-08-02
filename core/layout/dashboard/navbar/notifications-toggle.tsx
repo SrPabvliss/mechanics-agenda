@@ -1,35 +1,22 @@
 import { UseAccountStore } from '@/features/auth/context/use-account-store'
-import { fetchToken, shouldAskPermission } from '@/firebase'
+import { fetchToken } from '@/firebase'
 import { Bell } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 
 export function NotificationToggle() {
-  const [isPermissionGranted, setPermissionState] = useState(false)
   const { user } = UseAccountStore()
-
-  const checkPermission = async () => {
-    const shouldAsk = await shouldAskPermission()
-    setPermissionState(shouldAsk)
-  }
-
-  useEffect(() => {
-    checkPermission()
-  }, [])
-
   const enableNotifications = async () => {
     if (!user) {
       console.error('User not found')
       return
     }
-    const token = await fetchToken(user)
-    if (token) setPermissionState(false)
-  }
-
-  if (!isPermissionGranted) {
-    return null
+    const { isValid, type } = await fetchToken(user)
+    if (!isValid && type === 'service-worker-not-registered') {
+      toast.error('Error al registrarte. Recarga la página e intenta de nuevo')
+    }
   }
 
   return (
