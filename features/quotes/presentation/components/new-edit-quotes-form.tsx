@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
 import React from 'react'
 import { FormProvider } from 'react-hook-form'
 
@@ -19,6 +21,8 @@ interface NewEditQuotesFormProps {
 
 const NewEditQuotesForm = ({ currentQuote }: NewEditQuotesFormProps) => {
   const { methods, onSubmit, isSubmitting } = useQuotesForm({ currentQuote })
+
+  const router = useRouter()
 
   const renderDateDetails = () => {
     return (
@@ -41,6 +45,8 @@ const NewEditQuotesForm = ({ currentQuote }: NewEditQuotesFormProps) => {
     )
   }
 
+  const isEdit = !!currentQuote
+
   return (
     <FormProvider {...methods}>
       <form className="mt-2 flex flex-col gap-2" onSubmit={onSubmit}>
@@ -54,9 +60,14 @@ const NewEditQuotesForm = ({ currentQuote }: NewEditQuotesFormProps) => {
           <p className="font-sm mt-1 text-xs">Ingresa la información del cliente, vehículo y descripción de la cita.</p>
         </div>
         {renderDetails()}
-        <Button disabled={isSubmitting} type="submit">
-          {isSubmitting ? <LoadingSpinner /> : 'Guardar'}
-        </Button>
+        <div className="mt-4 flex gap-4">
+          <Button variant="outline" onClick={() => router.back()} type="button">
+            Regresar
+          </Button>
+          <Button disabled={isSubmitting} type="submit">
+            {isSubmitting ? <LoadingSpinner /> : isEdit ? 'Actualizar' : 'Crear'}
+          </Button>
+        </div>
       </form>
     </FormProvider>
   )

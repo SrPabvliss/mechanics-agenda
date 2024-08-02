@@ -12,9 +12,10 @@ import { Label } from '../label'
 interface TimePickerByMechanicProps {
   name: string
   label: string
+  placeholder?: string
 }
 
-const RHFTimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({ name, label }) => {
+const RHFTimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({ name, label, placeholder }) => {
   const {
     control,
     formState: { errors },
@@ -22,11 +23,10 @@ const RHFTimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({ name, la
 
   const getErrorMessage = (fieldPath: string): string | undefined => {
     const keys = fieldPath.split('.')
-    const error = errors[keys[0]]
-    if (error) {
-      return (error as any)[keys[1]]?.message
-    }
+    const error = keys.reduce((acc, key) => acc && acc[key], errors as any)
+    return error?.message
   }
+
   return (
     <div className="w-full">
       <Label htmlFor={name} className="mb-1 ml-1 ">
@@ -53,14 +53,14 @@ const RHFTimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({ name, la
                     className={cn(
                       buttonVariants({ variant: 'outline', size: 'default' }),
                       ' w-full cursor-pointer justify-start text-left font-normal',
-                      !time && !mechanic && 'text-muted-foreground',
+                      !time && !mechanic.ci && 'text-muted-foreground',
                     )}
                   >
                     <TimerIcon className="mr-2 h-4 w-4" />
                     {time && mechanic ? (
                       `${time} - ${mechanic.firstName} ${mechanic.lastName}`
                     ) : (
-                      <span>Selecciona una hora</span>
+                      <span>{placeholder || 'Seleciona una hora y encargado disponible'}</span>
                     )}
                   </div>
                 </div>
@@ -69,8 +69,8 @@ const RHFTimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({ name, la
               {getErrorMessage(`${name}.time`) && (
                 <p className="mt-1 max-w-52 text-sm text-red-500">{getErrorMessage(`${name}.time`)}</p>
               )}
-              {getErrorMessage(`${name}.responsible`) && (
-                <p className="max-w-52 text-sm text-red-500">{getErrorMessage(`${name}.responsible`)}</p>
+              {getErrorMessage(`${name}.responsible.ci`) && (
+                <p className="max-w-52 text-sm text-red-500">{getErrorMessage(`${name}.responsible.ci`)}</p>
               )}
             </>
           )

@@ -15,7 +15,7 @@ const QuotesWeek = () => {
   const updateQueryParam = useUpdateQueryParam()
 
   const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
-  const { data } = useQuotesByFilterQuery({
+  const { data, isFetching } = useQuotesByFilterQuery({
     startDate: formatDateTime(filters.startDate, '00:00'),
     endDate: formatDateTime(filters.endDate, '23:59'),
   })
@@ -36,7 +36,7 @@ const QuotesWeek = () => {
       { param: 'view', value: 'day' },
     ])
   }
-  return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={events} />
+  return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={events} isLoading={isFetching} />
 }
 
 export default QuotesWeek

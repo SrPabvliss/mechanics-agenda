@@ -58,7 +58,7 @@ const AdminQuoteEventDetails: React.FC<ReviewEventDetailsProps<IAdminQuoteEvent>
         <Clock size={24} />
         <span>{event.startTime}</span>
       </div>
-      <AutosizeTextarea value={event.label} disabled />
+      <AutosizeTextarea value={event.label} disabled className="disabled:cursor-auto disabled:opacity-100" />
 
       <div className="mt-4 flex justify-end gap-2">
         <Button variant="outline" onClick={onClose}>
@@ -102,7 +102,7 @@ const ReviewEventDetails: React.FC<ReviewEventDetailsProps<IReviewEvent>> = ({ e
             <span>{event.startTime}</span>
           </div>
         </div>
-        <AutosizeTextarea value={event.description} disabled />
+        <AutosizeTextarea value={event.description} disabled className="disabled:cursor-auto disabled:opacity-100" />
         <div className="mt-4 flex justify-end gap-2">
           <Button variant="outline" onClick={onClose}>
             Regresar

@@ -14,7 +14,7 @@ const ReviewWeek = ({}: { value?: string }) => {
   const updateQueryParam = useUpdateQueryParam()
 
   const [dates, setDates] = useState<{ date1: string; date2: string }>({ date1: '', date2: '' })
-  const { data } = useReviewsQuery({
+  const { data, isFetching } = useReviewsQuery({
     date1: formatDateTime(dates.date1, '00:00'),
     date2: formatDateTime(dates.date2, '23:59'),
   })
@@ -35,7 +35,7 @@ const ReviewWeek = ({}: { value?: string }) => {
       { param: 'view', value: VIEW_TYPES.DAY },
     ])
   }
-  return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={events} />
+  return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={events} isLoading={isFetching} />
 }
 
 export default ReviewWeek

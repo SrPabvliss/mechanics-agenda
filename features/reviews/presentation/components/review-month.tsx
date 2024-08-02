@@ -14,7 +14,7 @@ const ReviewMonth = () => {
   const updateQueryParam = useUpdateQueryParam()
 
   const [dates, setDates] = useState<{ date1: string; date2: string }>({ date1: '', date2: '' })
-  const { data } = useReviewsQuery({
+  const { data, isFetching } = useReviewsQuery({
     date1: formatDateTime(dates.date1, '00:00'),
     date2: formatDateTime(dates.date2, '23:59'),
   })
@@ -36,7 +36,7 @@ const ReviewMonth = () => {
     ])
   }
 
-  return <Calendar events={events} onChangeMonth={handleDateChange} onClickDay={handleClick} />
+  return <Calendar events={events} onChangeMonth={handleDateChange} onClickDay={handleClick} isLoading={isFetching} />
 }
 
 export default ReviewMonth

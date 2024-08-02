@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 
 import { UseAccountStore } from '@/features/auth/context/use-account-store'
-import { colorAdminQuotesOptions } from '@/shared/constants/color-options'
+import { agendaColorOptions } from '@/shared/constants/color-options'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -39,7 +39,7 @@ export const useAdminQuotesForm = ({ currentAdminQuote }: UseAdminQuotesForm) =>
       time: currentAdminQuote?.reminderDate ? formatTime(currentAdminQuote.reminderDate) : '',
       title: currentAdminQuote?.title || '',
       description: currentAdminQuote?.description || '',
-      color: currentAdminQuote?.color ? currentAdminQuote.color : colorAdminQuotesOptions[0].value,
+      color: currentAdminQuote?.color ? currentAdminQuote.color : agendaColorOptions[0].value,
       notificationMinutesBefore: currentAdminQuote?.notificationMinutesBefore?.toString() || '10',
       userCI: user?.ci || '',
     },

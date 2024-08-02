@@ -14,7 +14,7 @@ interface CalendarDayHeaderProps {
 
 const CalendarDayHeader = ({ day, setDay }: CalendarDayHeaderProps) => {
   return (
-    <div className="flex items-center text-blue-900 dark:text-white">
+    <div className="mb-2 flex items-center text-blue-900 dark:text-white">
       <h2 className="w-full text-lg font-medium lg:text-xl">{formatLongDate(day)}</h2>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

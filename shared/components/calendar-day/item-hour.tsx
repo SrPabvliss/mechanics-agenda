@@ -11,7 +11,7 @@ const ItemHour = ({ event, event: { id, color, label, startTime, title }, onClic
   return (
     <DetailsDialog item={event}>
       <li
-        className={`flex h-full w-full flex-col rounded-md p-1`}
+        className={`flex h-full w-full cursor-pointer flex-col rounded-md p-1`}
         style={{ background: color }}
         onClick={() => onClick(id)}
       >

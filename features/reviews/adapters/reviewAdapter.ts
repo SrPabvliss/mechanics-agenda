@@ -1,3 +1,4 @@
+import { agendaColorOptions } from '@/shared/constants/color-options'
 import { IReviewEvent, IReviewEventsDay } from '@/shared/interfaces/IEvents'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
 
@@ -19,7 +20,7 @@ export class ReviewAdapter {
         label: review.appointment?.description || review.appointment?.clientName,
         startTime: formatTime(review.startDate),
         endTime: review.endDate ? formatTime(review.endDate) : '',
-        color: review.appointment.user.color || 'bg-gray-200',
+        color: review.appointment.user.color || agendaColorOptions[0].value,
         status: review.status,
         owner: review.appointment?.clientName,
         description: review.appointment?.description || '',
@@ -57,7 +58,7 @@ export class ReviewAdapter {
         label: review.appointment?.clientName,
         startTime: formatDate(review.startDate),
         endTime: review.endDate ? formatDate(review.endDate) : '',
-        color: review.appointment.user.color || 'bg-gray-200',
+        color: review.appointment.user.color || agendaColorOptions[0].value,
         status: review.status,
         owner: review.appointment?.clientName,
         description: review.appointment?.description || '',
@@ -95,7 +96,7 @@ export class ReviewAdapter {
       label: data.appointment?.clientName,
       startTime: formatTime(data.startDate),
       endTime: data.endDate ? formatTime(data.endDate) : '',
-      color: data.appointment.user.color || 'bg-gray-200',
+      color: data.appointment.user.color || agendaColorOptions[0].value,
       status: data.status,
       owner: data.appointment?.clientName,
       description: data.appointment?.description || '',

@@ -16,7 +16,7 @@ const AdminQuotesWeek = () => {
   const updateQueryParam = useUpdateQueryParam()
 
   const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
-  const { data } = useAdminQuotesByFilterQuery({
+  const { data, isFetching } = useAdminQuotesByFilterQuery({
     startDate: formatDateTime(filters.startDate, '00:00'),
     endDate: formatDateTime(filters.endDate, '23:59'),
   })
@@ -28,7 +28,6 @@ const AdminQuotesWeek = () => {
   }, [data])
 
   const handleDateChange = (date1: string, date2: string) => {
-    setSchedule(scheduleWeekFull)
     setFilters({ startDate: date1, endDate: date2 })
   }
 
@@ -38,7 +37,7 @@ const AdminQuotesWeek = () => {
       { param: 'view', value: 'day' },
     ])
   }
-  return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={schedule} />
+  return <CalendarWeek onChange={handleDateChange} onClick={handleClick} schedule={schedule} isLoading={isFetching} />
 }
 
 export default AdminQuotesWeek
