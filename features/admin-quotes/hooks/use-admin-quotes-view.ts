@@ -22,7 +22,7 @@ const useAdminQuotesView = () => {
     }
 
     if (!searchParams.get('date') || !searchParams.get('view')) {
-      router.replace(`${pathname}?${params.toString()}`)
+      router.push(`${pathname}?${params.toString()}`)
     }
   }, [searchParams, router, pathname, date, view])
 

@@ -15,7 +15,7 @@ export const useUpdateQueryParam = () => {
     params.forEach((param) => {
       paramsUpdated.set(param.param, param.value)
     })
-    router.replace(`${pathname}?${paramsUpdated.toString()}`)
+    router.push(`${pathname}?${paramsUpdated.toString()}`)
   }
 
   return updateQueryParam
