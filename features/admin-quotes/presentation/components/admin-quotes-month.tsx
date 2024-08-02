@@ -14,7 +14,7 @@ const AdminQuotesMonth = () => {
   const updateQueryParam = useUpdateQueryParam()
 
   const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
-  const { data } = useAdminQuotesByFilterQuery({
+  const { data, isFetching } = useAdminQuotesByFilterQuery({
     startDate: formatDateTime(filters.startDate, '00:00'),
     endDate: formatDateTime(filters.endDate, '23:59'),
   })
@@ -35,7 +35,7 @@ const AdminQuotesMonth = () => {
       { param: 'view', value: 'day' },
     ])
   }
-  return <Calendar onChangeMonth={handleDateChange} onClickDay={handleClick} events={events} />
+  return <Calendar onChangeMonth={handleDateChange} onClickDay={handleClick} events={events} isLoading={isFetching} />
 }
 
 export default AdminQuotesMonth

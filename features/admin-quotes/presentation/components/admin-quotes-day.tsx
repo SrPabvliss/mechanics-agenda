@@ -17,7 +17,7 @@ const AdminQuotesDay = ({ date }: QuotesDayProps) => {
   const [schedule, setSchedule] = useState<IDailySchedule[]>(scheduleDayFull)
 
   const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
-  const { data } = useAdminQuotesByFilterQuery({
+  const { data, isFetching } = useAdminQuotesByFilterQuery({
     startDate: formatDateTime(filters.startDate, '00:00'),
     endDate: formatDateTime(filters.endDate, '23:59'),
   })
@@ -39,7 +39,7 @@ const AdminQuotesDay = ({ date }: QuotesDayProps) => {
   }
   return (
     <>
-      <CalendarDay onChange={onChange} onClick={onClick} schedule={schedule} date={date} />
+      <CalendarDay onChange={onChange} onClick={onClick} schedule={schedule} date={date} isLoading={isFetching} />
     </>
   )
 }
