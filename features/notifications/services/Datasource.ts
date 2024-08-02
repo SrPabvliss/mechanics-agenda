@@ -7,7 +7,7 @@ import { HttpHandler } from '@/shared/api/http-handler'
 import { ISubscription } from '../models/ISubscription'
 
 interface NotificationDatasource {
-  suscribeUser: (subscription: PushSubscription, user: IUser) => Promise<ISubscription | undefined>
+  suscribeUser: (token: string, user: IUser) => Promise<ISubscription | undefined>
   updateSubscription: (susbscription: ISubscription) => Promise<ISubscription | undefined>
 }
 
@@ -22,10 +22,10 @@ export class NotificationDataSourceImpl implements NotificationDatasource {
     return new NotificationDataSourceImpl()
   }
 
-  async suscribeUser(subscription: PushSubscription, user: IUser) {
+  async suscribeUser(token: string, user: IUser) {
     const { ci } = user
     const objectSubscription = {
-      subscription,
+      token,
       userCI: ci,
     }
 
