@@ -1,0 +1,32 @@
+.loader {
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 10px;
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+}
+
+.loader .loaderBar {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  bottom: 0;
+  width: 100%;
+  animation: borealisBar 1.5s linear infinite;
+}
+
+@keyframes borealisBar {
+  0% {
+    left: -100%;
+    width: 0;
+  }
+  50% {
+    left: 0%;
+    width: 100%;
+  }
+  100% {
+    left: 100%;
+    width: 0;
+  }
+}
