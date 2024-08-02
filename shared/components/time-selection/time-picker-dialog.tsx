@@ -74,22 +74,22 @@ const TimePickerDialog: React.FC<TimeSelectionProps> = ({ children, onChange, se
     if (isErrorUsers)
       return renderAlert({
         title: 'No se logró cargar los mecánicos',
-        description: 'Por favor intenta nuevamente',
+        description: 'Por favor intenta nuevamente o contacta a soporte',
       })
     if (isErrorQuotes)
       return renderAlert({
         title: 'No se logró cargar los horarios',
-        description: 'Por favor intenta nuevamente',
+        description: 'Por favor intenta nuevamente o contacta a soporte',
       })
     if (!mechanics.length)
       return renderAlert({
         title: 'No hay mecánicos disponibles',
-        description: 'Por favor contacta al administrador para asignar mecánicos',
+        description: 'Por favor intenta nuevamente o contacta a soporte',
       })
     if (!mechanicSchedule[formatDate(date)]?.length)
       return renderAlert({
-        title: 'No se logró cargar los horarios length',
-        description: 'Por favor intenta nuevamente',
+        title: 'No se logró cargar los horarios',
+        description: 'Por favor intenta nuevamente o contacta a soporte',
       })
 
     return (

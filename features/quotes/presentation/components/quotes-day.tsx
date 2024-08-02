@@ -16,7 +16,7 @@ const QuotesDay = ({ date }: QuotesDayProps) => {
   const [schedule, setSchedule] = useState<IDailySchedule[]>([])
 
   const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
-  const { data } = useQuotesByFilterQuery({
+  const { data, isFetching } = useQuotesByFilterQuery({
     startDate: formatDateTime(filters.startDate, '00:00'),
     endDate: formatDateTime(filters.endDate, '23:59'),
   })
@@ -36,7 +36,7 @@ const QuotesDay = ({ date }: QuotesDayProps) => {
     // eslint-disable-next-line no-console
     console.log(id)
   }
-  return <CalendarDay onChange={onChange} onClick={onClick} schedule={schedule} date={date} />
+  return <CalendarDay onChange={onChange} onClick={onClick} schedule={schedule} date={date} isLoading={isFetching} />
 }
 
 export default QuotesDay

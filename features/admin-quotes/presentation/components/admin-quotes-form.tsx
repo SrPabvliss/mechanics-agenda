@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation'
 
-import { colorAdminQuotesOptions } from '@/shared/constants/color-options'
+import { agendaColorOptions } from '@/shared/constants/color-options'
 import { reminderOptions } from '@/shared/constants/reminder-options'
 import React from 'react'
 import { FormProvider } from 'react-hook-form'
@@ -42,12 +42,7 @@ const AdminQuotesForm: React.FC<AdminQuotesFormProps> = ({ currentAdminQuote }) 
       <div className="mb-2">
         <div className="mb-2 md:flex md:gap-4">
           <RHFInput name="title" label="Título" />
-          <RHFColorSelect
-            name="color"
-            label="Color"
-            options={colorAdminQuotesOptions}
-            placeholder="Seleciona el color"
-          />
+          <RHFColorSelect name="color" label="Color" options={agendaColorOptions} placeholder="Seleciona el color" />
         </div>
         <RHFTextArea name="description" label="Descripción" />
       </div>

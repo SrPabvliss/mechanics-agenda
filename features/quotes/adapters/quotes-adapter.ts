@@ -1,3 +1,4 @@
+import { agendaColorOptions } from '@/shared/constants/color-options'
 import { scheduleDay } from '@/shared/constants/schedule-day'
 import { scheduleMechanic } from '@/shared/constants/schedule-mechanic'
 import { scheduleWeek } from '@/shared/constants/schedule-week'
@@ -25,7 +26,7 @@ export class QuotesAdapter {
         title: quote.vehicleDescription,
         label: quote.description || quote.clientName,
         startTime: formatTime(quote.date),
-        color: quote.user.color || 'bg-gray-200',
+        color: quote.user.color || agendaColorOptions[0].value,
       }
 
       const startHour = event.startTime.split(':')[0] + ':00'
@@ -53,7 +54,7 @@ export class QuotesAdapter {
         title: quote.vehicleDescription,
         label: quote.description,
         startTime: formatTime(quote.date),
-        color: quote.user.color || 'bg-gray-200',
+        color: quote.user.color || agendaColorOptions[0].value,
       }
 
       const startHour = event.startTime.split(':')[0] + ':00'
@@ -87,7 +88,7 @@ export class QuotesAdapter {
         title: quote.vehicleDescription,
         label: quote.description,
         startTime: formatTime(quote.date),
-        color: quote.user.color || 'bg-gray-200',
+        color: quote.user.color || agendaColorOptions[0].value,
       }
 
       const date = formatDate(quote.date)

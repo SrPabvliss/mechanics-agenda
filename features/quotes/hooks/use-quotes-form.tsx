@@ -68,11 +68,11 @@ export const useQuotesForm = ({ currentQuote }: UseQuotesFormProps) => {
         QuotesAdapter.updateQuoteAdapter(data),
       )
       if (!updateQuote) return
-      router.push('/quotes')
+      router.back()
     } else {
       const createQuote = await QuotesDatasourceImpl.getInstance().create(QuotesAdapter.createQuoteAdapter(data))
       if (!createQuote) return
-      router.push('/quotes')
+      router.back()
     }
   }
 
