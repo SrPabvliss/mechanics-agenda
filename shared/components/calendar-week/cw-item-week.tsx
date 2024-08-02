@@ -12,7 +12,7 @@ interface CWItemWeekProps {
 const CWItemWeek = ({ week, schedule, onClick }: CWItemWeekProps) => {
   return (
     <>
-      <span className="-mt-[8px] w-full text-center text-xs text-blue-900 dark:text-white md:-mt-[10px] md:text-sm">
+      <span id={schedule.hour} className="w-full text-center text-xs text-blue-900 dark:text-white md:text-sm">
         {schedule.hour}
       </span>
       {week.map((day) => (
