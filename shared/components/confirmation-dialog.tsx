@@ -17,47 +17,68 @@ interface ConfirmationDialogProps {
   description: string
   confirmLabel?: string
   cancelLabel?: string
-  triggerLabel: string
+  triggerLabel: React.ReactNode
   disabled?: boolean
   disabledLabel?: string
+  variant?: 'link' | 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | null | undefined
+  size?: 'default' | 'sm' | 'lg' | 'icon' | null | undefined
+  roundedFull?: boolean
 }
 
-export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
-  onConfirm,
-  title,
-  description,
-  confirmLabel = 'Confirmar',
-  cancelLabel = 'Cancelar',
-  triggerLabel,
-  disabled = false,
-  disabledLabel,
-}) => {
-  const [open, setOpen] = React.useState(false)
+const ConfirmationDialog = React.forwardRef<HTMLButtonElement, ConfirmationDialogProps>(
+  (
+    {
+      onConfirm,
+      title,
+      description,
+      confirmLabel = 'Confirmar',
+      cancelLabel = 'Cancelar',
+      triggerLabel,
+      disabled = false,
+      disabledLabel,
+      variant = 'default',
+      size = 'default',
+      roundedFull: r = false,
+    },
+    ref,
+  ) => {
+    const [open, setOpen] = React.useState(false)
 
-  const handleConfirm = () => {
-    setOpen(false)
-    onConfirm()
-  }
+    const handleConfirm = () => {
+      setOpen(false)
+      onConfirm()
+    }
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button disabled={disabled}>{disabled ? disabledLabel : triggerLabel}</Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-80 md:max-w-96">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="flex gap-2">
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            {cancelLabel}
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button
+            ref={ref}
+            disabled={disabled}
+            variant={variant}
+            size={size}
+            className={`${r ? 'rounded-full' : 'rounded-md'}`}
+          >
+            {disabled ? disabledLabel : triggerLabel}
           </Button>
-          <Button onClick={handleConfirm}>{confirmLabel}</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
+        </DialogTrigger>
+        <DialogContent className="max-w-80 md:max-w-96">
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-2">
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              {cancelLabel}
+            </Button>
+            <Button onClick={handleConfirm}>{confirmLabel}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    )
+  },
+)
+
+ConfirmationDialog.displayName = 'ConfirmationDialog'
 
 export default ConfirmationDialog
