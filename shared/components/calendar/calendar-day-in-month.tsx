@@ -38,8 +38,8 @@ const CalendarDayInMonth = ({ currentDate, dayInMonth, events, handleDayClick }:
         className={cn(
           'mx-auto flex h-8 w-8 items-center justify-center rounded-full p-1 text-blue-900 dark:text-white',
           dayInMonth.day === new Date().getDate() &&
-            currentDate.getMonth() === new Date().getMonth() &&
-            currentDate.getFullYear() === new Date().getFullYear() &&
+            dayInMonth.month === new Date().getMonth() &&
+            dayInMonth.year === new Date().getFullYear() &&
             'bg-blue-500 text-white',
         )}
       >
