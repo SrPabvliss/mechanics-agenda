@@ -10,7 +10,7 @@ export const colorOptions = [
   { value: '#808080', label: 'Gray' },
 ]
 
-export const colorAdminQuotesOptions = [
+export const agendaColorOptions = [
   { value: '#cbd8f2', label: 'Azul' },
   { value: '#aceec9', label: 'Verde' },
   { value: '#fcc9ac', label: 'Naranja' },
