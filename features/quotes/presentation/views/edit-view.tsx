@@ -25,12 +25,10 @@ export const QuotesEditView = ({ id }: { id: string }) => {
     )
 
   return (
-    <>
-      <ContentLayout title="Citas">
-        <h1 className="text-2xl font-semibold">Nueva cita</h1>
-        <NewEditQuotesForm currentQuote={quote} />
-      </ContentLayout>
-    </>
+    <ContentLayout title="Citas">
+      <h1 className="text-2xl font-semibold">Editar cita</h1>
+      <NewEditQuotesForm currentQuote={quote} />
+    </ContentLayout>
   )
 }
 

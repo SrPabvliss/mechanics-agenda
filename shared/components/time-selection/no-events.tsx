@@ -1,5 +1,4 @@
 import { IUser } from '@/features/users/models/IUser'
-
 import Color from 'color'
 import { Plus } from 'lucide-react'
 import React from 'react'

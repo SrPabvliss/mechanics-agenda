@@ -1,8 +1,12 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
+import { Ban } from 'lucide-react'
 import React from 'react'
 import { FormProvider } from 'react-hook-form'
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import RHFDatePicker from '@/components/ui/rhf/RHFDatePicker'
@@ -19,6 +23,8 @@ interface NewEditQuotesFormProps {
 
 const NewEditQuotesForm = ({ currentQuote }: NewEditQuotesFormProps) => {
   const { methods, onSubmit, isSubmitting } = useQuotesForm({ currentQuote })
+
+  const router = useRouter()
 
   const renderDateDetails = () => {
     return (
@@ -41,6 +47,18 @@ const NewEditQuotesForm = ({ currentQuote }: NewEditQuotesFormProps) => {
     )
   }
 
+  const renderAlertErrors = () => {
+    return (
+      <Alert variant={'destructive'}>
+        <Ban className="h-4 w-4" />
+        <AlertTitle>Errores en el formulario</AlertTitle>
+        <AlertDescription>Intenta nuevamente o contacta a soporte.</AlertDescription>
+      </Alert>
+    )
+  }
+
+  const isEdit = !!currentQuote
+
   return (
     <FormProvider {...methods}>
       <form className="mt-2 flex flex-col gap-2" onSubmit={onSubmit}>
@@ -54,9 +72,15 @@ const NewEditQuotesForm = ({ currentQuote }: NewEditQuotesFormProps) => {
           <p className="font-sm mt-1 text-xs">Ingresa la información del cliente, vehículo y descripción de la cita.</p>
         </div>
         {renderDetails()}
-        <Button disabled={isSubmitting} type="submit">
-          {isSubmitting ? <LoadingSpinner /> : 'Guardar'}
-        </Button>
+        {methods.formState.errors && renderAlertErrors()}
+        <div className="mt-4 flex gap-4">
+          <Button variant="outline" onClick={() => router.back()} type="button">
+            Regresar
+          </Button>
+          <Button disabled={isSubmitting} type="submit">
+            {isSubmitting ? <LoadingSpinner /> : isEdit ? 'Actualizar' : 'Crear'}
+          </Button>
+        </div>
       </form>
     </FormProvider>
   )
