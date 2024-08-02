@@ -31,7 +31,7 @@ export const useReviewsView = () => {
     }
 
     if (!searchParams.get('date') || !searchParams.get('view') || !searchParams.get('type')) {
-      router.push(`${pathname}?${params.toString()}`)
+      router.replace(`${pathname}?${params.toString()}`)
     } else {
       setIsLoading(false)
     }
