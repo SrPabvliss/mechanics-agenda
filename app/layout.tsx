@@ -57,7 +57,7 @@ export default function RootLayout({
               <Toaster position="top-center" />
               {children}
             </SocketsLayout>
-            <ReactQueryDevtools initialIsOpen={true} />
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </ThemeProvider>
       </body>
