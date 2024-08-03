@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { UseAccountStore } from '@/features/auth/context/use-account-store'
+import { spanishUserRole } from '@/shared/constants/spanish-user-role'
 import { LogOut, User } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -20,13 +21,15 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 
 export function UserNav() {
-  const { logout } = UseAccountStore()
+  const { logout, user } = UseAccountStore()
   const router = useRouter()
 
   const onLogout = async () => {
     await logout()
     router.push('/login')
   }
+
+  const role = user?.role && user?.role in spanishUserRole ? spanishUserRole[user.role] : ''
 
   return (
     <DropdownMenu>
@@ -37,7 +40,9 @@ export function UserNav() {
               <Button variant="outline" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="#" alt="Avatar" />
-                  <AvatarFallback className="bg-transparent">JD</AvatarFallback>
+                  <AvatarFallback className="bg-transparent">
+                    {`${user?.firstName?.[0]}${user?.lastName?.[0]}`.toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -49,8 +54,8 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">John Doe</p>
-            <p className="text-xs leading-none text-muted-foreground">johndoe@example.com</p>
+            <p className="text-sm font-medium leading-none">{`${user?.firstName} ${user?.lastName}`}</p>
+            <p className="text-xs leading-none text-muted-foreground">{role}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
