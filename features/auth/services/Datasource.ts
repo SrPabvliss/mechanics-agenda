@@ -5,6 +5,7 @@ import { ACCESS_TOKEN_COOKIE_NAME, API_ROUTES } from '@/shared/api/api-routes'
 import { deleteCookie, setCookie } from '@/shared/api/cookies-util'
 import { HttpHandler } from '@/shared/api/http-handler'
 import { MESSAGES } from '@/shared/constants/messages'
+import { deleteToken, getMessaging } from 'firebase/messaging'
 import { jwtDecode } from 'jwt-decode'
 
 import { IAuth, ILoginResponse, IValidate } from '../models/IAuth'
@@ -38,7 +39,8 @@ export class AuthDatasourceImpl implements AuthDatasource {
     setCookie(ACCESS_TOKEN_COOKIE_NAME, access_token)
     const decodedToken: IDecodedToken = jwtDecode(access_token)
     const { sub } = decodedToken
-    return UserDatasourcesImpl.getInstance().getByCI(sub)
+    const user = await UserDatasourcesImpl.getInstance().getByCI(sub)
+    return user
   }
 
   async logout() {
@@ -46,6 +48,14 @@ export class AuthDatasourceImpl implements AuthDatasource {
     if (error) return
     await this.httpClient.setAccessToken(null)
     await deleteCookie(ACCESS_TOKEN_COOKIE_NAME)
+    const messaging = getMessaging()
+    deleteToken(messaging)
+      .then(() => {
+        console.log('Token deleted.')
+      })
+      .catch((err) => {
+        console.log('Unable to delete token. ', err)
+      })
   }
 
   async signup(user: IUser) {
