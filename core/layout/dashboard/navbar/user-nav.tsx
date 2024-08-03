@@ -1,27 +1,26 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { UseAccountStore } from '@/features/auth/context/use-account-store'
 import { spanishUserRole } from '@/shared/constants/spanish-user-role'
-import { LogOut, User } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 
 export function UserNav() {
-  const { logout, user } = UseAccountStore()
+  const { logout, user, loading } = UseAccountStore()
   const router = useRouter()
 
   const onLogout = async () => {
@@ -59,19 +58,17 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/account" className="flex items-center">
-              <User className="mr-3 h-4 w-4 text-muted-foreground" />
-              Account
-            </Link>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
         <DropdownMenuItem className="hover:cursor-pointer">
-          <Link href="/login" className="flex items-center" onClick={() => onLogout()}>
-            <LogOut className="mr-3 h-4 w-4 text-muted-foreground" />
-            Cerrar sesión
-          </Link>
+          <Button variant={'ghost'} className="flex items-center" onClick={() => onLogout()}>
+            {loading ? (
+              <LoadingSpinner className="text-center" />
+            ) : (
+              <>
+                <LogOut className="mr-3 h-4 w-4 text-muted-foreground" />
+                Cerrar sesión
+              </>
+            )}
+          </Button>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,6 +1,5 @@
 import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
 import { IUser } from '@/features/users/models/IUser'
-import { UserDatasourcesImpl } from '@/features/users/services/datasource'
 import { ACCESS_TOKEN_COOKIE_NAME, API_ROUTES } from '@/shared/api/api-routes'
 import { deleteCookie, setCookie } from '@/shared/api/cookies-util'
 import { HttpHandler } from '@/shared/api/http-handler'
@@ -13,7 +12,7 @@ import { IDecodedToken } from '../models/IDecodedToken'
 
 interface AuthDatasource {
   login(credentials: IAuth): Promise<IUser | undefined>
-  logout: () => void
+  logout: () => Promise<boolean>
   signup: (user: IUser) => void
   validateToken: () => Promise<boolean>
 }
@@ -38,24 +37,19 @@ export class AuthDatasourceImpl implements AuthDatasource {
     this.httpClient.setAccessToken(access_token)
     setCookie(ACCESS_TOKEN_COOKIE_NAME, access_token)
     const decodedToken: IDecodedToken = jwtDecode(access_token)
-    const { sub } = decodedToken
-    const user = await UserDatasourcesImpl.getInstance().getByCI(sub)
+    const { sub, firstName, lastName, role } = decodedToken
+    const user: IUser = { ci: sub, firstName, lastName, role }
     return user
   }
 
   async logout() {
     const { error } = await this.httpClient.get(API_ROUTES.AUTH.LOGOUT)
-    if (error) return
+    if (error) return false
     await this.httpClient.setAccessToken(null)
     await deleteCookie(ACCESS_TOKEN_COOKIE_NAME)
     const messaging = getMessaging()
     deleteToken(messaging)
-      .then(() => {
-        console.log('Token deleted.')
-      })
-      .catch((err) => {
-        console.log('Unable to delete token. ', err)
-      })
+    return true
   }
 
   async signup(user: IUser) {

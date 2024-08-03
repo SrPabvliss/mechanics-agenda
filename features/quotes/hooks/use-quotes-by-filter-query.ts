@@ -1,5 +1,7 @@
+import queryClient from '@/core/infrastructure/react-query/query-client'
 import { QUERY_KEY } from '@/shared/api/query-key'
 import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 
 import { QuotesDatasourceImpl } from '../services/datasource'
 
@@ -18,6 +20,15 @@ const useQuotesByFilterQuery = ({ startDate, endDate }: IQuotesQuery) => {
       }),
     enabled: !!startDate && !!endDate,
   })
+
+  useEffect(() => {
+    return () => {
+      const unsubscribe = async () => {
+        await queryClient.cancelQueries({ queryKey: [QUERY_KEY.QUOTES, startDate, endDate] })
+      }
+      unsubscribe()
+    }
+  }, [endDate, startDate])
 
   return query
 }

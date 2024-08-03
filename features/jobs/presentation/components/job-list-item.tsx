@@ -20,7 +20,7 @@ export const JobListItem = ({ job, status, isFetching }: Props) => {
   const { handleToggleStatus, handleDeleteJob } = useJobMethods()
 
   return (
-    <Card key={job.id} className="relative mt-3 flex items-center gap-4 p-4">
+    <Card key={job.id} className="relative mt-3 flex h-16 items-center gap-4 p-4">
       <div
         className={`absolute left-0 top-0 h-full w-5 rounded-l-lg ${
           job.status === 'COMPLETED' ? 'bg-green-500' : 'bg-red-500'

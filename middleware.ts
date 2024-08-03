@@ -27,11 +27,11 @@ export async function middleware(req: NextRequest) {
 
   if (!isValid) {
     const response = NextResponse.next()
-    deleteCookie(ACCESS_TOKEN_COOKIE_NAME, response)
-    return response
+    await deleteCookie(ACCESS_TOKEN_COOKIE_NAME, response)
+    return NextResponse.redirect(new URL('/login', req.url))
   }
 
-  if (!token || !isValid) {
+  if (!token) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
@@ -39,9 +39,7 @@ export async function middleware(req: NextRequest) {
 
   const isAllowed = isRoleAllowed(pathname, role)
 
-  console.log(req.url)
-
-  if (!isAllowed && pathname !== '/403') {
+  if (!isAllowed) {
     return NextResponse.redirect(new URL('/403', req.url))
   }
 
@@ -49,5 +47,17 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)', '/login', '/:slug', '/'],
+  matcher: [
+    '/quotes',
+    '/quotes/edit/:id*',
+    '/quotes/create',
+    '/admin-quotes',
+    '/admin-quotes/edit/:id*',
+    '/admin-quotes/create',
+    '/reviews',
+    '/reviews/edit/:id*',
+    '/reviews/create',
+    '/',
+    '/login',
+  ],
 }
