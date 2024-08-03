@@ -26,7 +26,7 @@ const Page: FC = () => {
   return (
     <div>
       <SelectedView />
-      <AddButton />
+      {module !== 'reviews' && <AddButton />}
     </div>
   )
 }

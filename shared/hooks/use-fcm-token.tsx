@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import { NotificationDataSourceImpl } from '@/features/notifications/services/Datasource'
 import { IUser } from '@/features/users/models/IUser'
 import { fetchToken, messaging } from '@/firebase'
@@ -32,7 +30,6 @@ async function getNotificationPermissionAndToken(user: IUser | null) {
 }
 
 const useFcmToken = (user: IUser | null): any => {
-  const router = useRouter()
   const [notificationPermissionStatus, setNotificationPermissionStatus] = useState<NotificationPermission | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const retryLoadToken = useRef(0)
@@ -74,22 +71,7 @@ const useFcmToken = (user: IUser | null): any => {
     if (!m) return
 
     unsubscribe = onMessage(m, (payload) => {
-      if (Notification.permission !== 'granted') return
-
-      const link = payload.fcmOptions?.link || payload.data?.link
-
-      const n = new Notification(payload.notification?.title || 'New message', {
-        body: payload.notification?.body || 'This is a new message',
-        data: link ? { url: link } : undefined,
-      })
-
-      n.onclick = (event) => {
-        event.preventDefault()
-        const link = (event.target as any)?.data?.url
-        if (link) {
-          router.push(link)
-        }
-      }
+      toast(`Nuevo evento generado ${JSON.stringify(payload)}`, { icon: '🔔' })
     })
   }
 
