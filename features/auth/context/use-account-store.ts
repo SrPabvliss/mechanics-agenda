@@ -34,14 +34,20 @@ export const UseAccountStore = create<StoreState>(
       },
       setUser: (user?: IUser) => set({ user }),
       logout: async () => {
-        await AuthDatasourceImpl.getInstance().logout()
+        set({ loading: true })
+        const isLogout = await AuthDatasourceImpl.getInstance().logout()
+        if (!isLogout) {
+          set({ loading: false })
+          return
+        }
         toast.success(MESSAGES.AUTH.LOGOUT)
+        set({ loading: false })
         set({ user: DEFAULT_USER })
       },
     }),
     {
       name: STORE_NAME,
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     },
   ) as StateCreator<StoreState>,
 )
