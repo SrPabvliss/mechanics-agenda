@@ -16,10 +16,10 @@ firebase.initializeApp(firebaseConfig);
 
 class CustomPushEvent extends Event {
   constructor(data) {
-      super('push');
+    super('push');
 
-      Object.assign(this, data);
-      this.custom = true;
+    Object.assign(this, data);
+    this.custom = true;
   }
 }
 
@@ -38,19 +38,19 @@ self.addEventListener('push', (e) => {
   // Create a new event to dispatch, pull values from notification key and put it in data key,
   // and then remove notification key
   const newEvent = new CustomPushEvent({
-      data: {
-          ehheh: oldData.json(),
-          json() {
-              const newData = oldData.json();
-              newData.data = {
-                  ...newData.data,
-                  ...newData.notification,
-              };
-              delete newData.notification;
-              return newData;
-          },
+    data: {
+      ehheh: oldData.json(),
+      json() {
+        const newData = oldData.json();
+        newData.data = {
+          ...newData.data,
+          ...newData.notification,
+        };
+        delete newData.notification;
+        return newData;
       },
-      waitUntil: e.waitUntil.bind(e),
+    },
+    waitUntil: e.waitUntil.bind(e),
   });
 
   // Stop event propagation
@@ -68,18 +68,31 @@ messaging.onBackgroundMessage((payload) => {
 
   const { title, body, image, ...restPayload } = payload.data;
   const notificationOptions = {
-      body,
-      icon: image || '/icons/firebase-logo.png', // path to your "fallback" firebase notification logo
-      data: restPayload,
-  };s
+    body,
+    icon: image || '/icons/firebase-logo.png', // path to your "fallback" firebase notification logo
+    data: restPayload,
+  }; s
   return self.registration.showNotification(title, notificationOptions);
 });
 
 self.addEventListener('notificationclick', (event) => {
   if (event?.notification?.data && event?.notification?.data?.link) {
-      self.clients.openWindow(event.notification.data.link);
+    self.clients.openWindow(event.notification.data.link);
   }
 
   // close notification after click
   event.notification.close();
+});
+
+self.addEventListener('push', function (event) {
+  console.log('[Service Worker] Push Received.');
+  const payload = event.data.json();
+  const link = payload.fcmOptions?.link || payload.data?.link;
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: "./logo.png",
+    data: { url: link },
+  };
+  event.waitUntil(self.registration.showNotification(notificationTitle, notificationOptions));
 });
