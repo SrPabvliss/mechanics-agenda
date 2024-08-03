@@ -53,10 +53,8 @@ export default function RootLayout({
       <body className={`${inter.variable} ${inter.className} `}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryClientProvider client={queryClient}>
-            <SocketsLayout>
-              <Toaster position="top-center" />
-              {children}
-            </SocketsLayout>
+            <Toaster position="bottom-center" />
+            <SocketsLayout>{children}</SocketsLayout>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </ThemeProvider>
