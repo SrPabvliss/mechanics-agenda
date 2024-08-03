@@ -74,6 +74,7 @@ const useFcmToken = (user: IUser | null): any => {
     if (!m) return
 
     unsubscribe = onMessage(m, (payload) => {
+      console.log('New notification', payload)
       if (Notification.permission !== 'granted') return
 
       const link = payload.fcmOptions?.link || payload.data?.link
@@ -83,7 +84,7 @@ const useFcmToken = (user: IUser | null): any => {
         data: link ? { url: link } : undefined,
       })
 
-      toast(`Nuevo evento generado ${payload.data}`, { icon: '🔔' })
+      toast(`Nuevo evento generado ${payload}`, { icon: '🔔' })
 
       n.onclick = (event) => {
         event.preventDefault()
