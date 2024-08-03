@@ -6,7 +6,7 @@ import { NotificationDataSourceImpl } from '@/features/notifications/services/Da
 import { IUser } from '@/features/users/models/IUser'
 import { fetchToken, messaging } from '@/firebase'
 import { onMessage, Unsubscribe } from 'firebase/messaging'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
 async function getNotificationPermissionAndToken(user: IUser | null) {
@@ -70,37 +70,45 @@ const useFcmToken = (user: IUser | null): any => {
     setToken(token)
     isLoading.current = false
 
-    const m = await messaging()
-    if (!m) return
+    const fcmMessaging = await messaging()
 
-    unsubscribe = onMessage(m, (payload) => {
-      console.log('New notification', payload)
-      if (Notification.permission !== 'granted') return
+    if (!fcmMessaging) return
 
+    unsubscribe = onMessage(fcmMessaging, (payload) => {
       const link = payload.fcmOptions?.link || payload.data?.link
 
-      const n = new Notification(payload.notification?.title || 'New message', {
-        body: payload.notification?.body || 'This is a new message',
-        data: link ? { url: link } : undefined,
-      })
+      const notificationTitle = payload.notification?.title || 'Nuevo mensaje'
+      const notificationOptions = {
+        body: payload.notification?.body || 'Este es un nuevo mensaje',
+        icon: './logo.png',
+        data: { url: link },
+      }
 
-      toast(`Nuevo evento generado ${payload}`, { icon: '🔔' })
-
-      n.onclick = (event) => {
-        event.preventDefault()
-        const link = (event.target as any)?.data?.url
-        if (link) {
-          router.push(link)
+      if (Notification.permission === 'granted') {
+        const notification = new Notification(notificationTitle, notificationOptions)
+        notification.onclick = (event) => {
+          event.preventDefault()
+          const url = (event.target as any)?.data?.url
+          if (url) {
+            router.push(url)
+          }
         }
       }
+
+      toast(`Nuevo evento generado: ${payload.notification?.body || payload.data}, { icon: '🔔' }`)
     })
   }
 
-  const cleanup = () => {
-    unsubscribe?.()
-  }
+  useEffect(() => {
+    loadToken()
+    return () => {
+      if (unsubscribe) {
+        unsubscribe()
+      }
+    }
+  }, [user])
 
-  return { token, notificationPermissionStatus, enableNotifications: loadToken, cleanup }
+  return { token, notificationPermissionStatus, enableNotifications: loadToken }
 }
 
 export default useFcmToken
