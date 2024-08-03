@@ -54,10 +54,10 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryClientProvider client={queryClient}>
             <SocketsLayout>
-              <Toaster position="bottom-center" />
+              <Toaster position="top-center" />
               {children}
             </SocketsLayout>
-            <ReactQueryDevtools initialIsOpen={true} />
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </ThemeProvider>
       </body>

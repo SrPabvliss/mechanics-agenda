@@ -1,8 +1,8 @@
 import { REVIEW_STATUS } from '@/features/reviews/models/IApiReview'
 import JobsNoContent from '@/public/jobs-no-content.webp'
 import NoContent from '@/shared/components/no-content'
-import Spinner from '@/shared/components/spinner'
 
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 import useJobsView from '../../hooks/use-jobs-view'
@@ -20,10 +20,25 @@ export const JobsListView = ({ reviewStatus }: Props) => {
 
   const header = (
     <div>
-      <h2 className="font-semibold">Actividades</h2>
-      <p className="font-sm mt-1 text-xs">Gestiona las actividades que se realizarán en la revisión.</p>
+      <div className="flex items-center gap-8">
+        <h2 className="font-semibold">Actividades</h2>
+      </div>
+
+      <div className="mb-0 mt-1 flex items-center gap-1">
+        {isFetching ? (
+          <>
+            <LoadingSpinner />
+            <span className="text-xs font-thin">Actualizando las actividades ...</span>
+          </>
+        ) : (
+          <div className="h-6">
+            <p className="font-sm mt-1 text-xs">Gestiona las actividades que se realizarán en la revisión.</p>
+          </div>
+        )}
+      </div>
     </div>
   )
+
   if (isLoading || !jobs) {
     return (
       <>
@@ -36,8 +51,7 @@ export const JobsListView = ({ reviewStatus }: Props) => {
   return (
     <div className="flex flex-col gap-4">
       {header}
-      {isFetching && <Spinner description="Actualizando las actividades ..."></Spinner>}
-      {reviewStatus === REVIEW_STATUS.PENDING && !isFetching && <CreateJobForm />}
+      {reviewStatus === REVIEW_STATUS.PENDING && <CreateJobForm isFetching={isFetching || false} />}
 
       {jobs.length > 0 ? (
         <ScrollArea className="flex flex-col gap-4">
@@ -53,7 +67,7 @@ export const JobsListView = ({ reviewStatus }: Props) => {
         />
       )}
 
-      {!isFetching && <ReviewActions status={reviewStatus} isFetching={isFetching || false} />}
+      <ReviewActions status={reviewStatus} isFetching={isFetching || false} />
     </div>
   )
 }
