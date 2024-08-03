@@ -6,7 +6,7 @@ import { NotificationDataSourceImpl } from '@/features/notifications/services/Da
 import { IUser } from '@/features/users/models/IUser'
 import { fetchToken, messaging } from '@/firebase'
 import { onMessage, Unsubscribe } from 'firebase/messaging'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
 async function getNotificationPermissionAndToken(user: IUser | null) {
@@ -99,16 +99,11 @@ const useFcmToken = (user: IUser | null): any => {
     })
   }
 
-  useEffect(() => {
-    loadToken()
-    return () => {
-      if (unsubscribe) {
-        unsubscribe()
-      }
-    }
-  }, [user])
+  const cleanup = () => {
+    unsubscribe?.()
+  }
 
-  return { token, notificationPermissionStatus, enableNotifications: loadToken }
+  return { token, notificationPermissionStatus, enableNotifications: loadToken, cleanup }
 }
 
 export default useFcmToken
