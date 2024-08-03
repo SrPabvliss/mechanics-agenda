@@ -71,7 +71,6 @@ const useFcmToken = (user: IUser | null): any => {
     if (!m) return
 
     unsubscribe = onMessage(m, (payload) => {
-      console.log('New notification', payload)
       toast(`Nuevo evento generado ${JSON.stringify(payload)}`, { icon: '🔔' })
     })
   }
