@@ -22,8 +22,7 @@ type Group = {
   menus: Menu[]
 }
 
-export function getMenuList(pathname: string, role?: UserRoleType): Group[] {
-  if (!role) return []
+const getAllMenuList = (pathname: string) => {
   const allMenus: Group[] = [
     {
       groupLabel: 'Módulos',
@@ -41,7 +40,7 @@ export function getMenuList(pathname: string, role?: UserRoleType): Group[] {
           label: 'Citas Administrativas',
           active: pathname.includes('/admin-quotes'),
           icon: Bookmark,
-          roles: [UserRole.ADMIN],
+          roles: [UserRole.ADMIN, UserRole.SECRETARY],
           submenus: [],
         },
         {
@@ -55,6 +54,13 @@ export function getMenuList(pathname: string, role?: UserRoleType): Group[] {
       ],
     },
   ]
+  return allMenus
+}
+
+export function getMenuList(pathname: string, role?: UserRoleType): Group[] {
+  if (!role) return []
+
+  const allMenus = getAllMenuList(pathname)
 
   return allMenus
     .map((group) => ({
@@ -69,21 +75,18 @@ export function getMenuList(pathname: string, role?: UserRoleType): Group[] {
     .filter((group) => group.menus.length > 0) // Filtrar grupos vacíos
 }
 
+interface RoutePermission {
+  path: RegExp
+  roles: UserRoleType[]
+}
+export const permissionRoutes: RoutePermission[] = [
+  { path: /^\/quotes(?:\/edit\/[^/]+|\/create)?$/, roles: ['ADMIN', 'MECHANIC', 'SECRETARY'] },
+  { path: /^\/admin-quotes(?:\/edit\/[^/]+|\/create)?$/, roles: ['ADMIN', 'SECRETARY'] },
+  { path: /^\/reviews(?:\/edit\/[^/]+|\/create)?$/, roles: ['ADMIN', 'MECHANIC', 'SECRETARY'] },
+]
+
 export function isRoleAllowed(path: string, role?: UserRoleType): boolean {
-  console.log('path', path)
   if (!role) return false
-  const menuList = getMenuList(path, role)
-  for (const group of menuList) {
-    for (const menu of group.menus) {
-      if (menu.href === path) {
-        return menu.roles.includes(role)
-      }
-      for (const submenu of menu.submenus) {
-        if (submenu.href === path) {
-          return menu.roles.includes(role)
-        }
-      }
-    }
-  }
-  return true
+  const route = permissionRoutes.find((route) => route.path.test(path))
+  return route ? route.roles.includes(role) : false
 }

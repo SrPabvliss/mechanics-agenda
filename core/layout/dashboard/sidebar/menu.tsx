@@ -8,6 +8,7 @@ import useAuth from '@/shared/hooks/use-auth'
 import { Ellipsis, LogOut } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
 
@@ -23,9 +24,9 @@ interface MenuProps {
 export function Menu({ isOpen }: MenuProps) {
   useAuth()
   const pathname = usePathname()
-  const { logout, user } = UseAccountStore()
-  const menuList = getMenuList(pathname, user?.role)
   const router = useRouter()
+  const { logout, user, loading } = UseAccountStore()
+  const menuList = getMenuList(pathname, user?.role)
 
   const onLogout = async () => {
     await logout()
@@ -100,16 +101,20 @@ export function Menu({ isOpen }: MenuProps) {
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <Link href={'/login'} className="mt-5 h-10 w-full justify-center">
-                    <Button variant="outline" onClick={() => onLogout()}>
-                      <span className={cn(isOpen === false ? '' : 'mr-4')}>
-                        <LogOut size={18} />
-                      </span>
-                      <p className={cn('whitespace-nowrap', isOpen === false ? 'hidden opacity-0' : 'opacity-100')}>
-                        Cerrar sesión
-                      </p>
-                    </Button>
-                  </Link>
+                  <Button variant="outline" onClick={() => onLogout()} className="mt-5 h-10 w-full justify-center">
+                    {loading ? (
+                      <LoadingSpinner className="text-center" />
+                    ) : (
+                      <>
+                        <span className={cn(isOpen === false ? '' : 'mr-4')}>
+                          <LogOut size={18} />
+                        </span>
+                        <p className={cn('whitespace-nowrap', isOpen === false ? 'hidden opacity-0' : 'opacity-100')}>
+                          Cerrar sesión
+                        </p>
+                      </>
+                    )}
+                  </Button>
                 </TooltipTrigger>
                 {isOpen === false && <TooltipContent side="right">Cerrar sesión</TooltipContent>}
               </Tooltip>
