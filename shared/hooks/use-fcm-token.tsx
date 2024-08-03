@@ -83,6 +83,8 @@ const useFcmToken = (user: IUser | null): any => {
         data: link ? { url: link } : undefined,
       })
 
+      toast(`Nuevo evento generado ${payload.data}`, { icon: '🔔' })
+
       n.onclick = (event) => {
         event.preventDefault()
         const link = (event.target as any)?.data?.url

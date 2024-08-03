@@ -29,6 +29,18 @@ messaging.onBackgroundMessage((payload) => {
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
+messaging.onMessage((payload) => {
+  const link = payload.fcmOptions?.link || payload.data?.link;
+
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: "./logo.png",
+    data: { url: link },
+  };
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
 self.addEventListener("notificationclick", function (event) {
   console.log("[firebase-messaging-sw.js] Notification click received.");
 
