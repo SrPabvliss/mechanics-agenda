@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation'
 
+import { agendaColorOptions } from '@/shared/constants/color-options'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
@@ -47,12 +48,12 @@ export const useQuotesForm = ({ currentQuote }: UseQuotesFormProps) => {
       date: currentQuote?.date ? new Date(currentQuote.date) : undefined,
       timeAndResponsible: {
         time: currentQuote?.date ? formatTime(currentQuote.date) : '',
-        responsible: currentQuote?.user || {
-          ci: '',
-          firstName: '',
-          lastName: '',
-          role: '',
-          color: '',
+        responsible: {
+          ci: currentQuote?.user?.ci || '',
+          firstName: currentQuote?.user?.firstName || '',
+          lastName: currentQuote?.user?.lastName || '',
+          role: currentQuote?.user?.role || '',
+          color: currentQuote?.user?.color || agendaColorOptions[0].value,
         },
       },
       client: currentQuote?.clientName || '',

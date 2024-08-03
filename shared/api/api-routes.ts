@@ -1,6 +1,7 @@
 import { IAdminQuoteFilter, IQuoteFilter, IReviewFilter } from '../interfaces/IFilters'
 
 export const ACCESS_TOKEN_COOKIE_NAME = 'access_token'
+export const ROLE_COOKIE_NAME = 'role'
 export const PUSH_NOTIFICATIONS_IDENTIFIER = 'push_identifier'
 
 export const API_ROUTES = {

@@ -12,3 +12,5 @@ export enum UserRole {
   MECHANIC = 'MECHANIC',
   SECRETARY = 'SECRETARY',
 }
+
+export type UserRoleType = keyof typeof UserRole
