@@ -83,16 +83,3 @@ self.addEventListener('notificationclick', (event) => {
   // close notification after click
   event.notification.close();
 });
-
-self.addEventListener('push', function (event) {
-  console.log('[Service Worker] Push Received.');
-  const payload = event.data.json();
-  const link = payload.fcmOptions?.link || payload.data?.link;
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: "./logo.png",
-    data: { url: link },
-  };
-  self.registration.showNotification(notificationTitle, notificationOptions)
-});

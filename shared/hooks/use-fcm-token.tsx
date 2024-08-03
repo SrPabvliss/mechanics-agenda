@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import { NotificationDataSourceImpl } from '@/features/notifications/services/Datasource'
 import { IUser } from '@/features/users/models/IUser'
 import { fetchToken, messaging } from '@/firebase'
@@ -32,7 +30,6 @@ async function getNotificationPermissionAndToken(user: IUser | null) {
 }
 
 const useFcmToken = (user: IUser | null): any => {
-  const router = useRouter()
   const [notificationPermissionStatus, setNotificationPermissionStatus] = useState<NotificationPermission | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const retryLoadToken = useRef(0)
@@ -70,32 +67,12 @@ const useFcmToken = (user: IUser | null): any => {
     setToken(token)
     isLoading.current = false
 
-    const fcmMessaging = await messaging()
+    const m = await messaging()
+    if (!m) return
 
-    if (!fcmMessaging) return
-
-    unsubscribe = onMessage(fcmMessaging, (payload) => {
-      const link = payload.fcmOptions?.link || payload.data?.link
-
-      const notificationTitle = payload.notification?.title || 'Nuevo mensaje'
-      const notificationOptions = {
-        body: payload.notification?.body || 'Este es un nuevo mensaje',
-        icon: './logo.png',
-        data: { url: link },
-      }
-
-      if (Notification.permission === 'granted') {
-        const notification = new Notification(notificationTitle, notificationOptions)
-        notification.onclick = (event) => {
-          event.preventDefault()
-          const url = (event.target as any)?.data?.url
-          if (url) {
-            router.push(url)
-          }
-        }
-      }
-
-      toast(`Nuevo evento generado: ${payload.notification?.body || payload.data}, { icon: '🔔' }`)
+    unsubscribe = onMessage(m, (payload) => {
+      console.log('New notification', payload)
+      toast(`Nuevo evento generado ${JSON.stringify(payload)}`, { icon: '🔔' })
     })
   }
 
