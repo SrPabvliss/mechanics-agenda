@@ -59,7 +59,7 @@ const ConfirmationDialog = React.forwardRef<HTMLButtonElement, ConfirmationDialo
             size={size}
             className={`${r ? 'rounded-full' : 'rounded-md'}`}
           >
-            {disabled ? disabledLabel : triggerLabel}
+            {disabled && disabledLabel ? disabledLabel : triggerLabel}
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-80 md:max-w-96">

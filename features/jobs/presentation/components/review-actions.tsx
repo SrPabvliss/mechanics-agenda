@@ -15,7 +15,7 @@ interface Props {
 
 export const ReviewActions = ({ status, isFetching }: Props) => {
   const router = useRouter()
-  const { handleCloseReview } = useJobMethods()
+  const { handleCloseReview, isSubmitting } = useJobMethods()
   return (
     <div className="mt-4 flex gap-4">
       <Button variant="outline" onClick={() => router.back()}>
@@ -26,8 +26,7 @@ export const ReviewActions = ({ status, isFetching }: Props) => {
         title="Confirmar finalización"
         description="Una vez marcadas como finalizadas, los trabajos no podrán ser editadas. ¿Deseas continuar?"
         triggerLabel="Finalizar"
-        disabled={status === REVIEW_STATUS.COMPLETED || isFetching}
-        disabledLabel={isFetching ? 'Cargando ...' : 'Finalizado'}
+        disabled={status === REVIEW_STATUS.COMPLETED || isFetching || isSubmitting}
       />
     </div>
   )

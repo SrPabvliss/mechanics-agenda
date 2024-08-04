@@ -6,11 +6,12 @@ interface NoContentProps {
   src: string
   title: string
   subtitle?: string
+  className?: string
 }
 
-const NoContent: React.FC<NoContentProps> = ({ src, title, subtitle }) => {
+const NoContent: React.FC<NoContentProps> = ({ src, title, subtitle, className }) => {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg p-8 shadow-md">
+    <div className={`flex flex-col items-center justify-center rounded-lg p-8 shadow-md ${className}`}>
       {src && (
         <Image
           src={src}
