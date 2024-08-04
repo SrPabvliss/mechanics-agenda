@@ -15,7 +15,7 @@ const List: React.FC = () => {
     return null
   }
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <ReviewListSkeleton />
   }
 
