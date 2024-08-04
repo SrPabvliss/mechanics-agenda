@@ -11,7 +11,7 @@ const useNotificationContent = (title: string, body: string) => {
           <div style={notificationStyles.item}>{parts[0]}</div>
           <div style={notificationStyles.item}>
             <span style={notificationStyles.label}>Fecha:</span>
-            <span>{new Date(parts[1]).toLocaleString()}</span>
+            <span>{parts[1]}</span>
           </div>
         </>
       )}
@@ -27,7 +27,7 @@ const useNotificationContent = (title: string, body: string) => {
           </div>
           <div style={notificationStyles.item}>
             <span style={notificationStyles.label}>Fecha:</span>
-            <span>{new Date(parts[2]).toLocaleString()}</span>
+            <span>{parts[2]}</span>
           </div>
         </>
       )}
