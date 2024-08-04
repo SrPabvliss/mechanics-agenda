@@ -22,7 +22,12 @@ const QuoteEventDetails: React.FC<ReviewEventDetailsProps<IQuoteEvent>> = ({ eve
         <p className="text-lg font-bold">{event.title}</p>
       </DialogTitle>
     </DialogHeader>
-    <div className={`mb-4 h-2 w-full rounded-full ${event.color}`}></div>
+    <div
+      className={`mb-4 h-2 w-full rounded-full`}
+      style={{
+        backgroundColor: event.color,
+      }}
+    ></div>
     <div className="mt-1 flex flex-col gap-4">
       <div className="flex gap-4">
         <div className="flex flex-1 items-center gap-2">
@@ -52,7 +57,12 @@ const AdminQuoteEventDetails: React.FC<ReviewEventDetailsProps<IAdminQuoteEvent>
         <p className="text-lg font-bold">{event.title}</p>
       </DialogTitle>
     </DialogHeader>
-    <div className={`mb-4 h-2 w-full rounded-full ${event.color}`}></div>
+    <div
+      className={`mb-4 h-2 w-full rounded-full`}
+      style={{
+        backgroundColor: event.color,
+      }}
+    ></div>
     <div className="mt-1 flex flex-col gap-4">
       <div className="flex flex-1 items-center gap-2">
         <Clock size={24} />
@@ -90,7 +100,12 @@ const ReviewEventDetails: React.FC<ReviewEventDetailsProps<IReviewEvent>> = ({ e
           </div>
         </DialogTitle>
       </DialogHeader>
-      <div className={`mb-4 h-2 w-full rounded-full ${event.color}`}></div>
+      <div
+        className={`mb-4 h-2 w-full rounded-full`}
+        style={{
+          backgroundColor: event.color,
+        }}
+      ></div>
       <div className="mt-1 flex flex-col gap-4">
         <div className="flex gap-4">
           <div className="flex flex-1 items-center gap-2">
