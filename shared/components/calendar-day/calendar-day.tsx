@@ -12,7 +12,7 @@ interface ItemHourProps {
   date?: string
   schedule: IDailySchedule[]
   isLoading?: boolean
-  onClick: (id: number) => void
+  onDelete: (id: number) => void
   onChange: (date: string) => void
 }
 
@@ -20,13 +20,13 @@ const CalendarDay = ({
   schedule: scheduleWithEvents,
   isLoading,
   date = new Date().toISOString(),
-  onClick,
+  onDelete,
   onChange,
 }: ItemHourProps) => {
-  const { day, setCurrentDate, handleClickEvent, schedule } = useCalendarDay({
+  const { day, setCurrentDate, schedule } = useCalendarDay({
     date,
     onChange,
-    onClick,
+    onDelete,
     scheduleWithEvents,
   })
 
@@ -42,7 +42,7 @@ const CalendarDay = ({
       )}
       <ul className="scrollbar-hide flex h-full flex-col overflow-auto">
         {schedule.map((item) => (
-          <ItemDay key={item.hour} schedule={item} onClick={handleClickEvent} />
+          <ItemDay key={item.hour} schedule={item} onDelete={onDelete} />
         ))}
       </ul>
     </div>
