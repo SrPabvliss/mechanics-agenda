@@ -7,6 +7,7 @@ import { formatDateTimeEC } from '@/lib/formatDate'
 
 import { QuotesAdapter } from '../../adapters/quotes-adapter'
 import useQuotesByFilterQuery from '../../hooks/use-quotes-by-filter-query'
+import { useDeleteQuote } from '../../hooks/use-quotes-by-id-query'
 
 interface QuotesDayProps {
   date: string
@@ -32,11 +33,11 @@ const QuotesDay = ({ date }: QuotesDayProps) => {
     setFilters({ startDate: newDate, endDate: newDate })
   }
 
-  const onClick = (id: number) => {
-    // eslint-disable-next-line no-console
-    console.log(id)
+  const onDelete = (id: number) => {
+    useDeleteQuote(id)
   }
-  return <CalendarDay onChange={onChange} onClick={onClick} schedule={schedule} date={date} isLoading={isFetching} />
+
+  return <CalendarDay onChange={onChange} onDelete={onDelete} schedule={schedule} date={date} isLoading={isFetching} />
 }
 
 export default QuotesDay

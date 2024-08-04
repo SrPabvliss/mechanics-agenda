@@ -11,10 +11,11 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerTrigger } from '@/compo
 
 interface DetailsDialogProps {
   item: IEvent
+  onDelete?: (id: number) => void
   children: React.ReactNode
 }
 
-export const DetailsDialog: React.FC<DetailsDialogProps> = ({ item, children }) => {
+export const DetailsDialog: React.FC<DetailsDialogProps> = ({ item, children, onDelete }) => {
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const router = useRouter()
@@ -23,6 +24,7 @@ export const DetailsDialog: React.FC<DetailsDialogProps> = ({ item, children }) 
   const eventDetailsComponent = getEventDetailsComponent(item, {
     onClose: () => setOpen(false),
     onEdit: (id: number) => router.push(`${pathname}/edit/${id}`),
+    onDelete: onDelete,
   })
 
   if (isDesktop) {

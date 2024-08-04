@@ -1,6 +1,6 @@
 import { QuotesAdapter } from '@/features/quotes/adapters/quotes-adapter'
 import useQuotesByFilterQuery from '@/features/quotes/hooks/use-quotes-by-filter-query'
-import useQuotesByIdQuery from '@/features/quotes/hooks/use-quotes-by-id-query'
+import { useQuotesByIdQuery } from '@/features/quotes/hooks/use-quotes-by-id-query'
 import useUsersQuery from '@/features/users/hooks/use-users-query'
 import { UserRole } from '@/features/users/models/IApiUser'
 import { IUser } from '@/features/users/models/IUser'

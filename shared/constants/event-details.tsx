@@ -9,13 +9,16 @@ import { DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 import { getPlateAndTitle } from '@/lib/get-plate-title'
 
+import ConfirmationDialog from '../components/confirmation-dialog'
+
 interface ReviewEventDetailsProps<T extends IEvent = IEvent> {
   event: T
   onClose: () => void
   onEdit: (id: number) => void
+  onDelete?: (id: number) => void
 }
 
-const QuoteEventDetails: React.FC<ReviewEventDetailsProps<IQuoteEvent>> = ({ event, onClose, onEdit }) => (
+const QuoteEventDetails: React.FC<ReviewEventDetailsProps<IQuoteEvent>> = ({ event, onClose, onEdit, onDelete }) => (
   <>
     <DialogHeader className="mb-4">
       <DialogTitle className="text-start">
@@ -41,16 +44,36 @@ const QuoteEventDetails: React.FC<ReviewEventDetailsProps<IQuoteEvent>> = ({ eve
       </div>
 
       <div className="mt-4 flex justify-end gap-2">
-        <Button variant="outline" onClick={onClose}>
-          Regresar
-        </Button>
+        {onDelete ? (
+          <ConfirmationDialog
+            onConfirm={() => {
+              onDelete(event.id)
+              onClose()
+            }}
+            title="Eliminar Cita"
+            description="¿Estás seguro que deseas eliminar esta cita?"
+            triggerLabel={'Eliminar'}
+            confirmLabel="Eliminar"
+            cancelLabel="Cancelar"
+            variant="outline"
+          />
+        ) : (
+          <Button variant="outline" onClick={onClose}>
+            Regresar
+          </Button>
+        )}
         <Button onClick={() => onEdit(event.id)}>Editar</Button>
       </div>
     </div>
   </>
 )
 
-const AdminQuoteEventDetails: React.FC<ReviewEventDetailsProps<IAdminQuoteEvent>> = ({ event, onClose, onEdit }) => (
+const AdminQuoteEventDetails: React.FC<ReviewEventDetailsProps<IAdminQuoteEvent>> = ({
+  event,
+  onClose,
+  onEdit,
+  onDelete,
+}) => (
   <>
     <DialogHeader className="mb-4">
       <DialogTitle className="text-start">
@@ -71,9 +94,24 @@ const AdminQuoteEventDetails: React.FC<ReviewEventDetailsProps<IAdminQuoteEvent>
       <AutosizeTextarea value={event.label} disabled className="disabled:cursor-auto disabled:opacity-100" />
 
       <div className="mt-4 flex justify-end gap-2">
-        <Button variant="outline" onClick={onClose}>
-          Regresar
-        </Button>
+        {onDelete ? (
+          <ConfirmationDialog
+            onConfirm={() => {
+              onDelete(event.id)
+              onClose()
+            }}
+            title="Eliminar Cita Administrativa"
+            description="¿Estás seguro que deseas eliminar esta cita administrativa?"
+            triggerLabel={'Eliminar'}
+            confirmLabel="Eliminar"
+            cancelLabel="Cancelar"
+            variant="outline"
+          />
+        ) : (
+          <Button variant="outline" onClick={onClose}>
+            Regresar
+          </Button>
+        )}
         <Button onClick={() => onEdit(event.id)}>Editar</Button>
       </div>
     </div>
@@ -119,6 +157,7 @@ const ReviewEventDetails: React.FC<ReviewEventDetailsProps<IReviewEvent>> = ({ e
         </div>
         <AutosizeTextarea value={event.description} disabled className="disabled:cursor-auto disabled:opacity-100" />
         <div className="mt-4 flex justify-end gap-2">
+          {}
           <Button variant="outline" onClick={onClose}>
             Regresar
           </Button>

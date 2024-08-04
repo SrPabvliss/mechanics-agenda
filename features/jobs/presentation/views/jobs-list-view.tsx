@@ -49,12 +49,12 @@ export const JobsListView = ({ reviewStatus }: Props) => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 ">
       {header}
       {reviewStatus === REVIEW_STATUS.PENDING && <CreateJobForm isFetching={isFetching || false} />}
 
       {jobs.length > 0 ? (
-        <ScrollArea className="flex flex-col gap-4">
+        <ScrollArea className={`flex h-[calc(65vh_-_206px)] flex-col gap-4`}>
           {jobs.map((job) => (
             <JobListItem key={job.id} job={job} status={reviewStatus} isFetching={isFetching || false} />
           ))}
@@ -64,6 +64,7 @@ export const JobsListView = ({ reviewStatus }: Props) => {
           src={JobsNoContent.src}
           title="No hay trabajos disponibles"
           subtitle="Aquí se mostrarán los trabajos que se han agendado."
+          className="h-[calc(65vh_-_206px)]"
         />
       )}
 

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { formatDateTimeEC } from '@/lib/formatDate'
 
 import { AdminQuotesAdapter } from '../../adapters/admin-quotes-adapter'
-import { useAdminQuotesByFilterQuery } from '../../hooks/use-admin-quotes-query'
+import { useAdminQuotesByFilterQuery, useDeleteAdminQuote } from '../../hooks/use-admin-quotes-query'
 
 interface QuotesDayProps {
   date: string
@@ -33,13 +33,13 @@ const AdminQuotesDay = ({ date }: QuotesDayProps) => {
     setFilters({ startDate: newDate, endDate: newDate })
   }
 
-  const onClick = (id: number) => {
-    // eslint-disable-next-line no-console
-    console.log(id)
+  const onDelete = async (id: number) => {
+    useDeleteAdminQuote(id)
   }
+
   return (
     <>
-      <CalendarDay onChange={onChange} onClick={onClick} schedule={schedule} date={date} isLoading={isFetching} />
+      <CalendarDay onChange={onChange} onDelete={onDelete} schedule={schedule} date={date} isLoading={isFetching} />
     </>
   )
 }
