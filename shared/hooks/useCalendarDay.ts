@@ -10,11 +10,11 @@ import { useUpdateQueryParam } from './update-query-param'
 interface IUseCalendarDay {
   date: string
   onChange: (date: string) => void
-  onClick: (id: number) => void
+  onDelete: (id: number) => void
   scheduleWithEvents: IDailySchedule[]
 }
 
-const useCalendarDay = ({ date, onChange, onClick, scheduleWithEvents }: IUseCalendarDay) => {
+const useCalendarDay = ({ date, onChange, onDelete, scheduleWithEvents }: IUseCalendarDay) => {
   const [currentDate, setCurrentDate] = useState<string>(date)
   const updateQueryParam = useUpdateQueryParam()
   const [schedule, setSchedule] = useState<IDailySchedule[]>(
@@ -35,14 +35,14 @@ const useCalendarDay = ({ date, onChange, onClick, scheduleWithEvents }: IUseCal
     onChange(date)
   }
 
-  const handleClickEvent = (id: number) => {
-    onClick(id)
+  const handleDeleteEvent = (id: number) => {
+    onDelete(id)
   }
 
   return {
     day: currentDate,
     setCurrentDate,
-    handleClickEvent,
+    handleDeleteEvent,
     schedule,
   }
 }

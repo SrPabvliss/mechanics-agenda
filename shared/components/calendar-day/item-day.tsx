@@ -6,10 +6,10 @@ import ItemHour from './item-hour'
 
 interface ItemDayProps {
   schedule: IDailySchedule
-  onClick: (id: number) => void
+  onDelete: (id: number) => void
 }
 
-const ItemDay = ({ schedule, onClick }: ItemDayProps) => {
+const ItemDay = ({ schedule, onDelete }: ItemDayProps) => {
   return (
     <li id={schedule.hour} className="flex gap-0.5">
       <span className=" w-12 text-sm text-blue-900 dark:text-white">{schedule.hour}</span>
@@ -18,7 +18,7 @@ const ItemDay = ({ schedule, onClick }: ItemDayProps) => {
         <ScrollArea className="h-14 text-blue-900">
           <ul className="flex gap-1 px-1">
             {schedule.events1.map((event) => (
-              <ItemHour key={event.id} event={event} onClick={onClick} />
+              <ItemHour key={event.id} event={event} onDelete={onDelete} />
             ))}
           </ul>
           <ScrollBar orientation="horizontal" />
@@ -27,7 +27,7 @@ const ItemDay = ({ schedule, onClick }: ItemDayProps) => {
         <ScrollArea className="h-14 text-blue-900">
           <ul className="flex gap-1 px-1">
             {schedule.events2.map((event) => (
-              <ItemHour key={event.id} event={event} onClick={onClick} />
+              <ItemHour key={event.id} event={event} onDelete={onDelete} />
             ))}
           </ul>
           <ScrollBar orientation="horizontal" />

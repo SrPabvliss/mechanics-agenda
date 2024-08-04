@@ -1,6 +1,7 @@
 import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
 import { API_ROUTES } from '@/shared/api/api-routes'
 import { HttpHandler } from '@/shared/api/http-handler'
+import { MESSAGES } from '@/shared/constants/messages'
 import { IQuoteFilter } from '@/shared/interfaces/IFilters'
 
 import { IApiCreateQuote, IApiQuote, IApiUpdateQuote } from '../models/IApiQuote'
@@ -44,7 +45,9 @@ export class QuotesDatasourceImpl implements QuoteDatasource {
   }
 
   async delete(id: number) {
-    const { data, error } = await this.httpClient.delete<IApiQuote>(API_ROUTES.APPOINTMENTS.DELETE(id))
+    const { data, error } = await this.httpClient.delete<IApiQuote>(API_ROUTES.APPOINTMENTS.DELETE(id), {
+      successMessage: MESSAGES.QUOTES.DELETE,
+    })
     if (error) return
     return data
   }

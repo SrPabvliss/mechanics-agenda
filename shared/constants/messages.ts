@@ -16,4 +16,14 @@ export const MESSAGES = {
     UPDATE: 'Actividad actualizada con éxito',
     DELETE: 'Actividad eliminada con éxito',
   },
+  QUOTES: {
+    CREATE: 'Cita creada con éxito',
+    UPDATE: 'Cita actualizada con éxito',
+    DELETE: 'Cita eliminada con éxito',
+  },
+  ADMIN_QUOTES: {
+    CREATE: 'Cita administrativa creada con éxito',
+    UPDATE: 'Cita administrativa actualizada con éxito',
+    DELETE: 'Cita administrativa eliminada con éxito',
+  },
 }
