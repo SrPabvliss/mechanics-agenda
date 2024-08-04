@@ -15,7 +15,7 @@ export const QuotesEditView = ({ id }: { id: string }) => {
     router.push('/quotes')
   }
 
-  if (isFetching || !quote)
+  if (isFetching)
     return (
       <ContentLayout title="Citas">
         <div className="h-[calc(100vh_-_150px)]">
