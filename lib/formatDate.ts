@@ -18,11 +18,18 @@ export const formatDate = (date: string | Date): string => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
-export const formatDateTime = (date: string | Date, time: string): string => {
+export const formatDateTimeEC = (date: string | Date, time: string): string => {
   if (!date || !time) {
     return ''
   }
   return formatDate(date) + ' ' + time + ':00-05'
+}
+
+export const formatDateTime = (date: string | Date): string => {
+  if (!date) {
+    return ''
+  }
+  return formatDate(date) + ' ' + dayjs(date).format('HH:mm:ss') + '-05'
 }
 
 interface Time12HourFormat {

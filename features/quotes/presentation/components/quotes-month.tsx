@@ -4,7 +4,7 @@ import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IQuoteEventsMonth } from '@/shared/interfaces/IEvents'
 import { useEffect, useState } from 'react'
 
-import { formatDateTime } from '@/lib/formatDate'
+import { formatDateTimeEC } from '@/lib/formatDate'
 
 import { QuotesAdapter } from '../../adapters/quotes-adapter'
 import useQuotesByFilterQuery from '../../hooks/use-quotes-by-filter-query'
@@ -15,8 +15,8 @@ const QuotesMonth = () => {
 
   const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
   const { data, isFetching } = useQuotesByFilterQuery({
-    startDate: formatDateTime(filters.startDate, '00:00'),
-    endDate: formatDateTime(filters.endDate, '23:59'),
+    startDate: formatDateTimeEC(filters.startDate, '00:00'),
+    endDate: formatDateTimeEC(filters.endDate, '23:59'),
   })
 
   useEffect(() => {

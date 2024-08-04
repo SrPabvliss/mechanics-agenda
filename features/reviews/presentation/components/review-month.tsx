@@ -4,7 +4,7 @@ import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IReviewEventsMonth } from '@/shared/interfaces/IEvents'
 import { useEffect, useState } from 'react'
 
-import { formatDateTime } from '@/lib/formatDate'
+import { formatDateTimeEC } from '@/lib/formatDate'
 
 import { ReviewAdapter } from '../../adapters/reviewAdapter'
 import { useReviewsQuery } from '../../hooks/use-reviews-query'
@@ -15,8 +15,8 @@ const ReviewMonth = () => {
 
   const [dates, setDates] = useState<{ date1: string; date2: string }>({ date1: '', date2: '' })
   const { data, isFetching } = useReviewsQuery({
-    date1: formatDateTime(dates.date1, '00:00'),
-    date2: formatDateTime(dates.date2, '23:59'),
+    date1: formatDateTimeEC(dates.date1, '00:00'),
+    date2: formatDateTimeEC(dates.date2, '23:59'),
   })
 
   useEffect(() => {

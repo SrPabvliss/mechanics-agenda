@@ -2,8 +2,6 @@ import useScrollById from '@/shared/hooks/use-scroll-by-id'
 import useCalendarDay from '@/shared/hooks/useCalendarDay'
 import { IDailySchedule } from '@/shared/interfaces/ISchedule'
 
-import { ScrollArea } from '@/components/ui/scroll-area'
-
 import { getCurrentHour } from '@/lib/getCurrentHour'
 
 import LoadingBar from '../loading-bar/loading-bar'
@@ -42,13 +40,11 @@ const CalendarDay = ({
           <LoadingBar />
         </div>
       )}
-      <ScrollArea className="h-full">
-        <ul className="flex flex-col">
-          {schedule.map((item) => (
-            <ItemDay key={item.hour} schedule={item} onClick={handleClickEvent} />
-          ))}
-        </ul>
-      </ScrollArea>
+      <ul className="scrollbar-hide flex h-full flex-col overflow-auto">
+        {schedule.map((item) => (
+          <ItemDay key={item.hour} schedule={item} onClick={handleClickEvent} />
+        ))}
+      </ul>
     </div>
   )
 }
