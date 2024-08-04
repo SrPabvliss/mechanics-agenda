@@ -10,7 +10,7 @@ import {
   IScheduleWeek,
 } from '@/shared/interfaces/ISchedule'
 
-import { formatDate, formatDateTime } from '@/lib/formatDate'
+import { formatDate, formatDateTimeEC } from '@/lib/formatDate'
 import { formatTime } from '@/lib/formatTime'
 
 import { QuotesFormValues } from '../hooks/use-quotes-form'
@@ -108,7 +108,7 @@ export class QuotesAdapter {
       clientName: data.client,
       vehicleDescription: data.vehicleType,
       description: data.description,
-      date: formatDateTime(data.date, data.timeAndResponsible.time),
+      date: formatDateTimeEC(data.date, data.timeAndResponsible.time),
       status: 'PENDING',
       userCI: data.timeAndResponsible.responsible.ci,
     }
@@ -119,7 +119,7 @@ export class QuotesAdapter {
       clientName: data.client,
       vehicleDescription: data.vehicleType,
       description: data.description,
-      date: formatDateTime(data.date, data.timeAndResponsible.time),
+      date: formatDateTimeEC(data.date, data.timeAndResponsible.time),
       status: 'PENDING',
       userCI: data.timeAndResponsible.responsible.ci,
     }

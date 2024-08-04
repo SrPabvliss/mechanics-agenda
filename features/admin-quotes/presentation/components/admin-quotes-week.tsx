@@ -6,7 +6,7 @@ import { useUpdateQueryParam } from '@/shared/hooks/update-query-param'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
 import { useEffect, useState } from 'react'
 
-import { formatDateTime } from '@/lib/formatDate'
+import { formatDateTimeEC } from '@/lib/formatDate'
 
 import { AdminQuotesAdapter } from '../../adapters/admin-quotes-adapter'
 import { useAdminQuotesByFilterQuery } from '../../hooks/use-admin-quotes-query'
@@ -17,8 +17,8 @@ const AdminQuotesWeek = () => {
 
   const [filters, setFilters] = useState<{ startDate: string; endDate: string }>({ startDate: '', endDate: '' })
   const { data, isFetching } = useAdminQuotesByFilterQuery({
-    startDate: formatDateTime(filters.startDate, '00:00'),
-    endDate: formatDateTime(filters.endDate, '23:59'),
+    startDate: formatDateTimeEC(filters.startDate, '00:00'),
+    endDate: formatDateTimeEC(filters.endDate, '23:59'),
   })
 
   useEffect(() => {
