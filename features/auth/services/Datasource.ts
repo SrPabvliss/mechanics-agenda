@@ -48,7 +48,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
     await this.httpClient.setAccessToken(null)
     await deleteCookie(ACCESS_TOKEN_COOKIE_NAME)
     const messaging = getMessaging()
-    deleteToken(messaging)
+    await deleteToken(messaging)
     return true
   }
 
