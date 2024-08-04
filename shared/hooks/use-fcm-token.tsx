@@ -39,6 +39,8 @@ const useFcmToken = (user: IUser | null): any => {
   const loadToken = async () => {
     if (isLoading.current || !user) return
 
+    const settingUp = toast.loading('Activando notificaciones...', { icon: '🔔' })
+
     isLoading.current = true
     const token = await getNotificationPermissionAndToken(user)
 
@@ -64,6 +66,7 @@ const useFcmToken = (user: IUser | null): any => {
 
     setNotificationPermissionStatus(Notification.permission)
     await NotificationDataSourceImpl.getInstance().suscribeUser(token, user)
+    toast.dismiss(settingUp)
     setToken(token)
     isLoading.current = false
 
