@@ -22,7 +22,11 @@ export function NotificationToggle() {
       toast.error('User not found')
       return
     }
+    const settingUp = toast.loading('Activando notificaciones...', { icon: '🔔' })
+
     await enableNotifications()
+
+    toast.dismiss(settingUp)
   }
 
   return (

@@ -7,6 +7,8 @@ import { onMessage, Unsubscribe } from 'firebase/messaging'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
+import useNotificationContent from './use-notification-content'
+
 async function getNotificationPermissionAndToken(user: IUser | null) {
   if (!('Notification' in window)) {
     toast('Las notificaciones no están soportadas en este navegador', { icon: '🔔' })
@@ -39,8 +41,6 @@ const useFcmToken = (user: IUser | null): any => {
   const loadToken = async () => {
     if (isLoading.current || !user) return
 
-    const settingUp = toast.loading('Activando notificaciones...', { icon: '🔔' })
-
     isLoading.current = true
     const token = await getNotificationPermissionAndToken(user)
 
@@ -66,7 +66,6 @@ const useFcmToken = (user: IUser | null): any => {
 
     setNotificationPermissionStatus(Notification.permission)
     await NotificationDataSourceImpl.getInstance().suscribeUser(token, user)
-    toast.dismiss(settingUp)
     setToken(token)
     isLoading.current = false
 
@@ -74,50 +73,9 @@ const useFcmToken = (user: IUser | null): any => {
     if (!m) return
 
     unsubscribe = onMessage(m, (payload) => {
-      const { title, body } = payload.notification || {}
+      const { title = '', body = '' } = payload.notification || {}
 
-      const [cliente, asignado, fecha] = body ? body.split(' - ') : ['', '', '']
-
-      const notificationStyles = {
-        container: {
-          padding: '10px',
-          paddingRight: '15px',
-          paddingLeft: '15px',
-          border: '1px solid #ccc',
-          borderRadius: '5px',
-          backgroundColor: '#f9f9f9',
-        },
-        title: {
-          fontSize: '18px',
-          fontWeight: 'bold',
-          marginBottom: '8px',
-        },
-        item: {
-          marginBottom: '6px',
-        },
-        label: {
-          fontWeight: 'bold',
-          fontSize: '16px',
-        },
-      }
-
-      const NotificationContent = () => (
-        <div style={notificationStyles.container}>
-          <div style={notificationStyles.title}>{title}</div>
-          <div style={notificationStyles.item}>
-            <span style={notificationStyles.label}>{cliente.split(':')[0]}:</span>
-            {cliente.split(':')[1]}
-          </div>
-          <div style={notificationStyles.item}>
-            <span style={notificationStyles.label}>{asignado.split(':')[0]}:</span>
-            {asignado.split(':')[1]}
-          </div>
-          <div style={notificationStyles.item}>
-            <span style={notificationStyles.label}>Fecha:</span>
-            <span>{new Date(fecha).toLocaleString()}</span>
-          </div>
-        </div>
-      )
+      const NotificationContent = useNotificationContent(title, body)
 
       toast(<NotificationContent />, {
         icon: '🔔',

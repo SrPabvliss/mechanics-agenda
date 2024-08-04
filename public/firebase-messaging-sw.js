@@ -18,11 +18,12 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
 
+  if (payload.notification) return;
+  
   const link = payload.fcmOptions?.link || payload.data?.link;
-
-  const notificationTitle = payload.notification.title;
+  const notificationTitle = payload.data.title;
   const notificationOptions = {
-    body: payload.notification.body,
+    body: payload.data.body,
     icon: "./logo.png",
     data: { url: link },
   };
@@ -30,7 +31,6 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 self.addEventListener("notificationclick", function (event) {
-  console.log("[firebase-messaging-sw.js] Notification click received.");
 
   event.notification.close();
 
@@ -49,7 +49,6 @@ self.addEventListener("notificationclick", function (event) {
         }
 
         if (clients.openWindow) {
-          console.log("OPENWINDOW ON CLIENT");
           return clients.openWindow(url);
         }
       })

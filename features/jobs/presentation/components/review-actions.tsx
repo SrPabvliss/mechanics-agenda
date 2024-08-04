@@ -24,7 +24,7 @@ export const ReviewActions = ({ status, isFetching }: Props) => {
       <ConfirmationDialog
         onConfirm={handleCloseReview}
         title="Confirmar finalización"
-        description="Una vez marcadas como finalizadas, las actividades no podrán ser editadas. ¿Deseas continuar?"
+        description="Una vez marcadas como finalizadas, los trabajos no podrán ser editadas. ¿Deseas continuar?"
         triggerLabel="Finalizar"
         disabled={status === REVIEW_STATUS.COMPLETED || isFetching}
         disabledLabel={isFetching ? 'Cargando ...' : 'Finalizado'}
