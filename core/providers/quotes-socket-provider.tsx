@@ -18,17 +18,14 @@ const QuotesProvider: React.FC<Props> = ({ children }) => {
 
     const handleNewAppointment = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.QUOTES] })
-      showNotification('Nuevo evento creado', 'Se ha creado una nueva cita.')
     }
 
     const handleInspectionChange = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] })
-      showNotification('Cambio en inspección', 'Una inspección ha cambiado.')
     }
 
     const handleJobChange = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.JOBS] })
-      showNotification('Cambio en trabajo', 'Un trabajo ha cambiado.')
     }
 
     socketClient.on('appointments-change', handleNewAppointment)
@@ -42,22 +39,6 @@ const QuotesProvider: React.FC<Props> = ({ children }) => {
       socketClient.off('inspections-change', handleInspectionChange)
     }
   }, [])
-
-  const showNotification = (title: any, body: any) => {
-    if (Notification.permission === 'granted') {
-      navigator.serviceWorker.ready.then((registration) => {
-        registration.active?.postMessage({
-          type: 'PUSH_NOTIFICATION',
-          payload: {
-            title,
-            body,
-            icon: './logo.png',
-            url: '/some-url',
-          },
-        })
-      })
-    }
-  }
 
   return <QuotesContext.Provider value={null}>{children}</QuotesContext.Provider>
 }

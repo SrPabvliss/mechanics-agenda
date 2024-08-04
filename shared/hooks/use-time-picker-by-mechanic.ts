@@ -7,7 +7,7 @@ import { IUser } from '@/features/users/models/IUser'
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { formatDate, formatDateTime } from '@/lib/formatDate'
+import { formatDate, formatDateTimeEC } from '@/lib/formatDate'
 import { formatTime } from '@/lib/formatTime'
 
 import { isDefaultValues } from '../components/time-selection/time-picker-dialog'
@@ -36,8 +36,8 @@ const useTimePickerByMechanic = ({ onChange, selectMechanic, selectTime }: UseTi
     isError: isErrorQuotes,
     isPaused: isPausedQuotes,
   } = useQuotesByFilterQuery({
-    startDate: formatDateTime(date, '00:00'),
-    endDate: formatDateTime(date, '23:59'),
+    startDate: formatDateTimeEC(date, '00:00'),
+    endDate: formatDateTimeEC(date, '23:59'),
   })
   const mechanics = React.useMemo(() => users?.filter((user) => user.role === UserRole.MECHANIC) || [], [users])
 

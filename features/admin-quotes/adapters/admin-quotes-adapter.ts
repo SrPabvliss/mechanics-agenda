@@ -3,7 +3,7 @@ import { scheduleWeekFull } from '@/shared/constants/schedule-week'
 import { IAdminQuoteEvent, IAdminQuoteEventsMonth } from '@/shared/interfaces/IEvents'
 import { IDailySchedule, IScheduleWeek } from '@/shared/interfaces/ISchedule'
 
-import { formatDate, formatDateTime } from '@/lib/formatDate'
+import { formatDate, formatDateTimeEC } from '@/lib/formatDate'
 import { formatTime } from '@/lib/formatTime'
 
 import { AdminQuotesFormValues } from '../hooks/use-admin-quotes-form'
@@ -99,7 +99,7 @@ export class AdminQuotesAdapter {
     return {
       title: data.title,
       description: data.description,
-      reminderDate: formatDateTime(data.date, data.time),
+      reminderDate: formatDateTimeEC(data.date, data.time),
       color: data.color,
       notificationMinutesBefore: Number(data.notificationMinutesBefore),
       userCI: data.userCI,
@@ -110,7 +110,7 @@ export class AdminQuotesAdapter {
     return {
       title: data.title,
       description: data.description,
-      reminderDate: formatDateTime(data.date, data.time),
+      reminderDate: formatDateTimeEC(data.date, data.time),
       color: data.color,
       notificationMinutesBefore: Number(data.notificationMinutesBefore),
       userCI: data.userCI,
