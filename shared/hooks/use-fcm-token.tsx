@@ -7,6 +7,8 @@ import { onMessage, Unsubscribe } from 'firebase/messaging'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
+import useNotificationContent from './use-notification-content'
+
 async function getNotificationPermissionAndToken(user: IUser | null) {
   if (!('Notification' in window)) {
     toast('Las notificaciones no están soportadas en este navegador', { icon: '🔔' })
@@ -71,7 +73,13 @@ const useFcmToken = (user: IUser | null): any => {
     if (!m) return
 
     unsubscribe = onMessage(m, (payload) => {
-      toast(`Nuevo evento generado ${JSON.stringify(payload)}`, { icon: '🔔' })
+      const { title = '', body = '' } = payload.notification || {}
+
+      const NotificationContent = useNotificationContent(title, body)
+
+      toast(<NotificationContent />, {
+        icon: '🔔',
+      })
     })
   }
 
