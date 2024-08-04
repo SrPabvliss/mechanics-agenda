@@ -13,7 +13,7 @@ interface TimePickerSelectProps {
 }
 
 const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString())
-const minutes = ['00', '30']
+const minutes = ['00', '15', '30', '45']
 const periods = ['AM', 'PM']
 
 const TimePickerSelect: React.FC<TimePickerSelectProps> = ({ name, label }) => {
@@ -76,7 +76,7 @@ const TimePickerSelect: React.FC<TimePickerSelectProps> = ({ name, label }) => {
                   <SelectTrigger className="max-w-fit">
                     <SelectValue placeholder="Min" />
                   </SelectTrigger>
-                  <SelectContent className="max-h-24 overflow-auto">
+                  <SelectContent className="overflow-auto">
                     <SelectGroup>
                       {minutes.map((m) => (
                         <SelectItem key={m} value={m}>
