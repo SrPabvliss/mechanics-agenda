@@ -24,7 +24,7 @@ function handleResponseError(error: AxiosError): void {
     return
   }
 
-  toast.error(`Error: ${status} ${(data as any)?.message || error.message}`)
+  toast.error(`${(data as any)?.message || error.message}`)
 }
 
 export function handleError(error: AxiosError): void {
