@@ -3,7 +3,7 @@ import { useSearchParams } from 'next/navigation'
 import { VIEW_TYPES } from '@/shared/constants/view-types'
 import { useEffect, useState } from 'react'
 
-import { formatDateTime } from '@/lib/formatDate'
+import { formatDateTimeEC } from '@/lib/formatDate'
 
 import { ReviewAdapter } from '../adapters/reviewAdapter'
 import { REVIEW_STATUS } from '../models/IApiReview'
@@ -17,8 +17,8 @@ const useReviewsList = () => {
   const type = searchParams.get('view') || VIEW_TYPES.DAY
 
   const { data, isLoading, isFetching } = useReviewsQuery({
-    date1: formatDateTime(dates.date1, '00:00'),
-    date2: formatDateTime(dates.date2, '23:59'),
+    date1: formatDateTimeEC(dates.date1, '00:00'),
+    date2: formatDateTimeEC(dates.date2, '23:59'),
     status: status.toUpperCase(),
     type,
   })

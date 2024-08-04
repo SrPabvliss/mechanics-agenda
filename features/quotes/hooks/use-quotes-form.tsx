@@ -3,8 +3,10 @@ import { useRouter } from 'next/navigation'
 import { agendaColorOptions } from '@/shared/constants/color-options'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { z } from 'zod'
 
+import { formatDateTime } from '@/lib/formatDate'
 import { formatTime } from '@/lib/formatTime'
 
 import { QuotesAdapter } from '../adapters/quotes-adapter'
@@ -36,10 +38,29 @@ export type QuotesFormValues = z.infer<typeof quotesSchema>
 interface UseQuotesFormProps {
   currentQuote?: IApiQuote
 }
+const changedFields = (currentQuote: IApiQuote, updateQuote: Partial<IApiQuote>): Partial<IApiQuote> => {
+  //change fields
+  const changedFields: Partial<IApiQuote> = {}
+  if (formatDateTime(currentQuote.date) !== updateQuote.date) {
+    changedFields.date = updateQuote.date
+  }
+  if (currentQuote.clientName !== updateQuote.clientName) {
+    changedFields.clientName = updateQuote.clientName
+  }
+  if (currentQuote.vehicleDescription !== updateQuote.vehicleDescription) {
+    changedFields.vehicleDescription = updateQuote.vehicleDescription
+  }
+  if (currentQuote.description !== updateQuote.description) {
+    changedFields.description = updateQuote.description
+  }
+  if (currentQuote.userCI !== updateQuote.userCI) {
+    changedFields.userCI = updateQuote.userCI
+  }
+  return changedFields
+}
 
 export const useQuotesForm = ({ currentQuote }: UseQuotesFormProps) => {
   const router = useRouter()
-  //const pathname = usePathname()
 
   const methods = useForm<QuotesFormValues>({
     resolver: zodResolver(quotesSchema),
@@ -64,10 +85,13 @@ export const useQuotesForm = ({ currentQuote }: UseQuotesFormProps) => {
 
   const onSubmit: SubmitHandler<QuotesFormValues> = async (data) => {
     if (currentQuote) {
-      const updateQuote = await QuotesDatasourceImpl.getInstance().update(
-        currentQuote.id,
-        QuotesAdapter.updateQuoteAdapter(data),
-      )
+      const updateQuoteAdapter = QuotesAdapter.updateQuoteAdapter(data)
+      const fields = changedFields(currentQuote, updateQuoteAdapter)
+      if (Object.keys(fields).length === 0) {
+        toast.error('No se ha modificado ningún campo')
+        return
+      }
+      const updateQuote = await QuotesDatasourceImpl.getInstance().update(currentQuote.id, fields)
       if (!updateQuote) return
       router.back()
     } else {
