@@ -55,7 +55,7 @@ const QuoteEventDetails: React.FC<ReviewEventDetailsProps<IQuoteEvent>> = ({ eve
             triggerLabel={'Eliminar'}
             confirmLabel="Eliminar"
             cancelLabel="Cancelar"
-            variant="outline"
+            variant="destructive"
           />
         ) : (
           <Button variant="outline" onClick={onClose}>
@@ -105,7 +105,7 @@ const AdminQuoteEventDetails: React.FC<ReviewEventDetailsProps<IAdminQuoteEvent>
             triggerLabel={'Eliminar'}
             confirmLabel="Eliminar"
             cancelLabel="Cancelar"
-            variant="outline"
+            variant="destructive"
           />
         ) : (
           <Button variant="outline" onClick={onClose}>
