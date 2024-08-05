@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { formatDateTimeEC } from '@/lib/formatDate'
 
 import { QuotesAdapter } from '../../adapters/quotes-adapter'
-import useQuotesByFilterQuery from '../../hooks/use-quotes-by-filter-query'
+import { useQuotesByFilterQuery } from '../../hooks/use-quotes-query'
 
 const QuotesMonth = () => {
   const [events, setEvents] = useState<IQuoteEventsMonth>({})

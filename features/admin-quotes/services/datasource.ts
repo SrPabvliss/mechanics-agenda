@@ -1,6 +1,7 @@
 import { AxiosAdapter } from '@/core/infrastructure/http/axios-adapter'
 import { API_ROUTES } from '@/shared/api/api-routes'
 import { HttpHandler } from '@/shared/api/http-handler'
+import { MESSAGES } from '@/shared/constants/messages'
 import { IAdminQuoteFilter } from '@/shared/interfaces/IFilters'
 
 import { IApiAdminQuote, IApiCreateAdminQuote, IApiUpdateAdminQuote } from '../models/IApiAdminQuotes'
@@ -44,7 +45,9 @@ export class AdminQuotesDatasourceImpl implements AdminQuoteDatasource {
   }
 
   async delete(id: number) {
-    const { data, error } = await this.httpClient.delete<IApiAdminQuote>(API_ROUTES.REMINDERS.DELETE(id))
+    const { data, error } = await this.httpClient.delete<IApiAdminQuote>(API_ROUTES.REMINDERS.DELETE(id), {
+      successMessage: MESSAGES.ADMIN_QUOTES.DELETE,
+    })
     if (error) return
     return data
   }

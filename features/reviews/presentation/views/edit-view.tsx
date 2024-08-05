@@ -57,7 +57,7 @@ export const ReviewsEditView = ({ id }: { id: string }) => {
 
           <div>
             <h2 className="font-semibold">Descripción</h2>
-            <p className="mt-2 text-sm font-light">{review?.description}</p>
+            <p className="mt-2 text-sm font-light">{review?.description || `No hay detalles adicionales`}</p>
           </div>
 
           <JobsListView reviewStatus={review?.status} />

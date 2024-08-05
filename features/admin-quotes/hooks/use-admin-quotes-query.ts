@@ -47,3 +47,9 @@ export const useAdminQuoteByIdQuery = (id: string) => {
 
   return query
 }
+
+export const useDeleteAdminQuote = async (id: number) => {
+  const data = await AdminQuotesDatasourceImpl.getInstance().delete(id)
+  if (!data) return
+  queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REMINDERS] })
+}

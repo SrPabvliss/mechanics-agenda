@@ -49,7 +49,9 @@ export const useJobMethods = (currentJob?: Partial<JobFormValues>, id?: number) 
   }
 
   const handleCloseReview = async () => {
+    setIsSubmitting(true)
     const response = await ReviewDatasourceImpl.getInstance().update(+inspectionId, { status: REVIEW_STATUS.COMPLETED })
+    setIsSubmitting(false)
     if (!response) return
     router.push('/reviews')
   }
