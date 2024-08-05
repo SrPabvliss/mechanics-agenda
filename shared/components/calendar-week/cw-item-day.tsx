@@ -19,10 +19,10 @@ const CWItemDay = ({ day, schedule, onClick }: CWItemDayProps) => {
   return (
     <div
       className={cn(
-        'flex w-full flex-col gap-0.5 border-dashed border-blue-400 bg-blue-50 py-0.5 dark:bg-blue-950 md:gap-1 md:py-1',
+        'flex w-full flex-col gap-0.5 bg-blue-50 py-0.5 dark:bg-blue-950 md:gap-1 md:py-1',
         containsEvents && 'cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900',
       )}
-      style={{ borderLeft: '1px dashed blue', borderTop: '1px dashed blue' }}
+      style={{ borderLeft: '1px dashed', borderTop: '1px dashed' }}
       onClick={handleClick}
     >
       <ul className="flex h-10 w-full gap-0.5 px-0.5 md:gap-1 md:px-1">

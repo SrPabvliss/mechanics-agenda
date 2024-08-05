@@ -32,7 +32,7 @@ const CalendarWeek = ({ onChange, onClick, schedule: scheduleWithEvents, isLoadi
   return (
     <div className="h-[calc(100vh_-_256px)] w-full">
       <CWHeader date={date} setDate={setDate} />
-      <div className="mt-2 grid grid-cols-8 border-dashed border-blue-400" style={{ borderRight: '1px dashed blue' }}>
+      <div className="mt-2 grid grid-cols-8" style={{ borderRight: '1px dashed' }}>
         <div></div>
         {daysOfWeek.map((day, index) => (
           <CWItemDayHead key={day} day={day} index={index} week={week} />
@@ -47,7 +47,7 @@ const CalendarWeek = ({ onChange, onClick, schedule: scheduleWithEvents, isLoadi
         )}
       </div>
       <ScrollArea className="h-full">
-        <ul className="grid grid-cols-8 border-dashed border-blue-400" style={{ borderRight: '1px dashed blue' }}>
+        <ul className="grid grid-cols-8" style={{ borderRight: '1px dashed' }}>
           {schedule.map((item) => (
             <CWItemWeek key={item.hour} week={week} schedule={item} onClick={handleClickEvent} />
           ))}

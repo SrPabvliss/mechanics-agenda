@@ -27,7 +27,7 @@ const Calendar: React.FC<CalendarProps> = ({ events, onClickDay, onChangeMonth, 
   return (
     <div className="h-[calc(100vh_-_226px)] w-full">
       <CalendarHeader currentDate={currentDate} handleNextMonth={handleNextMonth} handlePrevMonth={handlePrevMonth} />
-      <div className="grid grid-cols-7 border-r-[1.5px] border-dashed border-blue-400">
+      <div className="grid grid-cols-7" style={{ borderRight: '1px dashed' }}>
         <CalendarDaysOfWeek />
         {isLoading && (
           <div className="z-50 col-span-7 -mb-1">
@@ -36,7 +36,7 @@ const Calendar: React.FC<CalendarProps> = ({ events, onClickDay, onChangeMonth, 
         )}
       </div>
       <ScrollArea className="h-full">
-        <div className="grid grid-cols-7 border-b-[1.5px] border-r-[1.5px] border-dashed border-blue-400">
+        <div className="grid grid-cols-7" style={{ borderBottom: '1px dashed', borderRight: '1px dashed' }}>
           {daysInMonth.map((dayInMonth, index) => (
             <CalendarDayInMonth
               key={index}

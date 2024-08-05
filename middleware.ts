@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { jwtDecode } from 'jwt-decode'
 
 import { IDecodedToken } from './features/auth/models/IDecodedToken'
-import { AuthDatasourceImpl } from './features/auth/services/Datasource'
 import { isRoleAllowed } from './lib/menu-list'
 import { ACCESS_TOKEN_COOKIE_NAME } from './shared/api/api-routes'
 import { deleteCookie } from './shared/api/cookies-util'
@@ -12,7 +11,7 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   const token = req.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value?.replaceAll('"', '')
 
-  const isValid = token ? await AuthDatasourceImpl.getInstance().validateToken() : false
+  const isValid = true
 
   if (pathname === '/login') {
     if (token && isValid) {

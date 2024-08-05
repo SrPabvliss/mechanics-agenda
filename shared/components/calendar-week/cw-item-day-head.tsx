@@ -1,17 +1,16 @@
+import { IDay } from '@/shared/interfaces/ICalendar'
+
 interface CWItemDayWeekProps {
   day: string
-  week: any[]
+  week: IDay[]
   index: number
 }
 
 const CWItemDayHead = ({ day, index, week }: CWItemDayWeekProps) => {
   return (
-    <div
-      className=" flex flex-col border-dashed border-blue-400 text-center text-blue-900 dark:text-white"
-      style={{ borderLeft: '1px dashed blue' }}
-    >
-      <span className="font-medium">{day}</span>
-      <span>{week[index]?.day}</span>
+    <div className=" flex flex-col text-center" style={{ borderLeft: '1px dashed' }}>
+      <span className="font-medium text-blue-900 dark:text-white">{day}</span>
+      <span className="text-blue-900 dark:text-white">{week[index]?.day}</span>
     </div>
   )
 }
