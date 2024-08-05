@@ -1,5 +1,6 @@
 'use client'
 
+import { showErrorToast } from '@/core/infrastructure/http/error-handler'
 import { NotificationDataSourceImpl } from '@/features/notifications/services/Datasource'
 import { IUser } from '@/features/users/models/IUser'
 import { fetchToken, messaging } from '@/firebase'
@@ -17,7 +18,7 @@ async function getNotificationPermissionAndToken(user: IUser | null) {
   }
 
   if (!user) {
-    toast.error('User not found')
+    showErrorToast('User not found')
     return null
   }
 
@@ -53,7 +54,7 @@ const useFcmToken = (user: IUser | null) => {
 
     if (!token) {
       if (retryLoadToken.current >= 3) {
-        toast.error('No se pudo activar las notificaciones. Por favor, recarga la página')
+        showErrorToast('No se pudo activar las notificaciones. Por favor, recarga la página')
         isLoading.current = false
         return
       }

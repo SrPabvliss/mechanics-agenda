@@ -1,9 +1,9 @@
 import { useRouter } from 'next/navigation'
 
+import { showErrorToast } from '@/core/infrastructure/http/error-handler'
 import { agendaColorOptions } from '@/shared/constants/color-options'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import { z } from 'zod'
 
 import { formatDateTime } from '@/lib/formatDate'
@@ -115,7 +115,7 @@ export const useQuotesForm = ({ currentQuote }: UseQuotesFormProps) => {
       const updateQuoteAdapter = QuotesAdapter.updateQuoteAdapter(data)
       const fields = changedFields(currentQuote, updateQuoteAdapter)
       if (Object.keys(fields).length === 0) {
-        toast.error('No se ha modificado ningún campo')
+        showErrorToast('No se ha modificado ningún campo')
         return
       }
       const updateQuote = await QuotesDatasourceImpl.getInstance().update(currentQuote.id, fields)

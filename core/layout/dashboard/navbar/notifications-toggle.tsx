@@ -1,3 +1,4 @@
+import { showErrorToast } from '@/core/infrastructure/http/error-handler'
 import { UseAccountStore } from '@/features/auth/context/use-account-store'
 import ConfirmationDialog from '@/shared/components/confirmation-dialog'
 import { useFcmToken, useNotificationListener } from '@/shared/hooks/use-fcm-token'
@@ -13,7 +14,7 @@ export function NotificationToggle() {
 
   const handleEnableNotifications = async () => {
     if (!user) {
-      toast.error('User not found')
+      showErrorToast('User not found')
       return
     }
     const settingUp = toast.loading('Activando notificaciones...', { icon: '🔔' })

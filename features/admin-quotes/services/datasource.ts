@@ -33,13 +33,17 @@ export class AdminQuotesDatasourceImpl implements AdminQuoteDatasource {
   }
 
   async create(quote: IApiCreateAdminQuote) {
-    const { data, error } = await this.httpClient.post<IApiAdminQuote>(API_ROUTES.REMINDERS.CREATE, quote)
+    const { data, error } = await this.httpClient.post<IApiAdminQuote>(API_ROUTES.REMINDERS.CREATE, quote, {
+      successMessage: MESSAGES.ADMIN_QUOTES.CREATE,
+    })
     if (error) return
     return data
   }
 
   async update(id: number, quote: IApiUpdateAdminQuote) {
-    const { data, error } = await this.httpClient.patch<IApiAdminQuote>(API_ROUTES.REMINDERS.UPDATE(id), quote)
+    const { data, error } = await this.httpClient.patch<IApiAdminQuote>(API_ROUTES.REMINDERS.UPDATE(id), quote, {
+      successMessage: MESSAGES.ADMIN_QUOTES.UPDATE,
+    })
     if (error) return
     return data
   }
