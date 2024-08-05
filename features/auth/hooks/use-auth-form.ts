@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { UseAccountStore } from '../context/use-account-store'
 
 const schema = z.object({
-  ci: z.string().min(1, 'Cédula requerida'),
+  ci: z.string().min(1, 'Cédula requerida').max(10, 'Cédula no puede tener más de 10 caracteres'),
   password: z.string().min(1, 'La contraseña es requerida'),
 })
 
