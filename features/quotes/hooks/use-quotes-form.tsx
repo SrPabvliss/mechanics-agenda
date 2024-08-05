@@ -24,6 +24,18 @@ const timeAndResponsibleSchema = z.object({
   }),
 })
 
+const defaultDataTime = z.object({
+  defaultTime: z.string().optional(),
+  defaultResponsible: z.object({
+    ci: z.string().optional(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    role: z.string().optional(),
+    color: z.string().optional(),
+  }),
+  defaultDate: z.date().optional(),
+})
+
 const quotesSchema = z.object({
   id: z.number().optional(),
   date: z.date({ required_error: 'La fecha es requerida' }),
@@ -31,6 +43,7 @@ const quotesSchema = z.object({
   client: z.string().min(1, 'El cliente es requerido'),
   vehicleType: z.string().min(1, 'El tipo de vehículo es requerido'),
   description: z.string().optional(),
+  defaultDataTime: defaultDataTime.optional(),
 })
 
 export type QuotesFormValues = z.infer<typeof quotesSchema>
@@ -80,6 +93,17 @@ export const useQuotesForm = ({ currentQuote }: UseQuotesFormProps) => {
       client: currentQuote?.clientName || '',
       vehicleType: currentQuote?.vehicleDescription || '',
       description: currentQuote?.description || '',
+      defaultDataTime: {
+        defaultTime: currentQuote?.date ? formatTime(currentQuote.date) : '',
+        defaultResponsible: {
+          ci: currentQuote?.user?.ci || '',
+          firstName: currentQuote?.user?.firstName || '',
+          lastName: currentQuote?.user?.lastName || '',
+          role: currentQuote?.user?.role || '',
+          color: currentQuote?.user?.color || agendaColorOptions[0].value,
+        },
+        defaultDate: currentQuote?.date ? new Date(currentQuote.date) : undefined,
+      },
     },
   })
 

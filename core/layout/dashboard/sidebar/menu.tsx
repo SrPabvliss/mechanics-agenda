@@ -101,7 +101,12 @@ export function Menu({ isOpen }: MenuProps) {
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" onClick={() => onLogout()} className="mt-5 h-10 w-full justify-center">
+                  <Button
+                    disabled={loading}
+                    variant="outline"
+                    onClick={() => onLogout()}
+                    className="mt-5 h-10 w-full justify-center"
+                  >
                     {loading ? (
                       <LoadingSpinner className="text-center" />
                     ) : (

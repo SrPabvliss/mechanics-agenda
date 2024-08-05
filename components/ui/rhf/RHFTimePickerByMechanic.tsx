@@ -60,7 +60,7 @@ const RHFTimePickerByMechanic: React.FC<TimePickerByMechanicProps> = ({ name, la
                     {time && mechanic ? (
                       `${time} - ${mechanic.firstName} ${mechanic.lastName}`
                     ) : (
-                      <span>{placeholder || 'Seleciona una hora y encargado disponible'}</span>
+                      <span className="truncate">{placeholder || 'Seleciona una hora y encargado'}</span>
                     )}
                   </div>
                 </div>

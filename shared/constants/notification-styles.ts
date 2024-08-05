@@ -19,4 +19,12 @@ export const notificationStyles = {
     fontWeight: 'bold',
     fontSize: '16px',
   },
+  button: {
+    padding: '10px',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    backgroundColor: '#f9f9f9',
+    cursor: 'pointer',
+    width: '100%',
+  },
 }
