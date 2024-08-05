@@ -23,7 +23,7 @@ const CalendarDayInMonth = ({ currentDate, dayInMonth, events, handleDayClick }:
   return (
     <div
       className={cn(
-        'flex h-32 flex-col border-l-[1.5px] border-t-[1.5px] border-dashed border-blue-400 bg-blue-50 p-1 text-center transition-all duration-200 dark:text-white md:p-2',
+        'flex h-32 flex-col border-l-2 border-t-2 border-dashed border-blue-400 bg-blue-50 p-1 text-center transition-all duration-200 dark:text-white md:p-2',
         currentDate.getMonth() === dayInMonth.month ? 'bg-blue-50 dark:bg-blue-950' : 'bg-gray-100 dark:bg-gray-800',
         containsEvents &&
           currentDate.getMonth() === dayInMonth.month &&
