@@ -7,6 +7,7 @@ import { onMessage, Unsubscribe } from 'firebase/messaging'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
+import { notificationStyles } from '../constants/notification-styles'
 import useNotificationContent from './use-notification-content'
 
 async function getNotificationPermissionAndToken(user: IUser | null) {
@@ -77,9 +78,27 @@ const useFcmToken = (user: IUser | null): any => {
 
       const NotificationContent = useNotificationContent(title, body)
 
-      toast(<NotificationContent />, {
-        icon: '🔔',
-      })
+      toast(
+        (t) => (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <NotificationContent />
+            <button onClick={() => toast.dismiss(t.id)} style={notificationStyles.button}>
+              Descartar
+            </button>
+          </div>
+        ),
+        {
+          icon: '🔔',
+        },
+      )
     })
   }
 
