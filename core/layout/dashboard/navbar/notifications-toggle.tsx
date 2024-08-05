@@ -1,21 +1,15 @@
 import { UseAccountStore } from '@/features/auth/context/use-account-store'
 import ConfirmationDialog from '@/shared/components/confirmation-dialog'
-import useFcmToken from '@/shared/hooks/use-fcm-token'
+import { useFcmToken, useNotificationListener } from '@/shared/hooks/use-fcm-token'
 import { Bell } from 'lucide-react'
-import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 
 export function NotificationToggle() {
   const { user } = UseAccountStore()
-  const { enableNotifications, cleanup } = useFcmToken(user!)
-
-  useEffect(() => {
-    return () => {
-      cleanup()
-    }
-  }, [cleanup])
+  const { loadToken } = useFcmToken(user!)
+  useNotificationListener(user!)
 
   const handleEnableNotifications = async () => {
     if (!user) {
@@ -24,7 +18,7 @@ export function NotificationToggle() {
     }
     const settingUp = toast.loading('Activando notificaciones...', { icon: '🔔' })
 
-    await enableNotifications()
+    await loadToken()
 
     toast.dismiss(settingUp)
   }
