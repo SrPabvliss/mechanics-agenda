@@ -5,6 +5,7 @@ export const MESSAGES = {
   AUTH: {
     LOGIN: 'Bienvenido de vuelta!',
     LOGOUT: 'Hasta luego!',
+    UNAUTHORIZED: 'No autorizado!',
   },
   REVIEWS: {
     CREATE: 'Revisión creada con éxito',
