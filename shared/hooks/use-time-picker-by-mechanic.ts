@@ -1,6 +1,5 @@
 import { QuotesAdapter } from '@/features/quotes/adapters/quotes-adapter'
 import useQuotesByFilterQuery from '@/features/quotes/hooks/use-quotes-by-filter-query'
-import useQuotesByIdQuery from '@/features/quotes/hooks/use-quotes-by-id-query'
 import useUsersQuery from '@/features/users/hooks/use-users-query'
 import { UserRole } from '@/features/users/models/IApiUser'
 import { IUser } from '@/features/users/models/IUser'
@@ -8,7 +7,6 @@ import React from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { formatDate, formatDateTimeEC } from '@/lib/formatDate'
-import { formatTime } from '@/lib/formatTime'
 
 import { isDefaultValues } from '../components/time-selection/time-picker-dialog'
 import { IScheduleMechanicRecord } from '../interfaces/ISchedule'
@@ -25,9 +23,8 @@ const useTimePickerByMechanic = ({ onChange, selectMechanic, selectTime }: UseTi
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const { watch } = useFormContext()
   const date = watch('date')
-  const idQuote = watch('id')
+  const defaultDataTime = watch('defaultDataTime')
   const [mechanicSchedule, setMechanicSchedule] = React.useState<IScheduleMechanicRecord>({})
-  const { data: initialQuote } = useQuotesByIdQuery(idQuote)
   const [defaultValues, setDefaultValues] = React.useState<{ selectTime: string; selectMechanic: IUser; date: Date }>()
   const { data: users, isFetching: isFetchingUsers, isError: isErrorUsers, isPaused: isPausedUsers } = useUsersQuery()
   const {
@@ -42,14 +39,14 @@ const useTimePickerByMechanic = ({ onChange, selectMechanic, selectTime }: UseTi
   const mechanics = React.useMemo(() => users?.filter((user) => user.role === UserRole.MECHANIC) || [], [users])
 
   React.useEffect(() => {
-    if (initialQuote) {
+    if (defaultDataTime) {
       setDefaultValues({
-        selectTime: formatTime(initialQuote.date),
-        selectMechanic: initialQuote.user,
-        date: new Date(initialQuote.date),
+        selectTime: defaultDataTime.defaultTime,
+        selectMechanic: defaultDataTime.defaultResponsible,
+        date: new Date(defaultDataTime.defaultDate),
       })
     }
-  }, [initialQuote])
+  }, [defaultDataTime])
 
   React.useEffect(() => {
     if (quotes && date) {
