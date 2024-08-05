@@ -100,8 +100,8 @@ const AdminQuoteEventDetails: React.FC<ReviewEventDetailsProps<IAdminQuoteEvent>
               onDelete(event.id)
               onClose()
             }}
-            title="Eliminar Cita Administrativa"
-            description="¿Estás seguro que deseas eliminar esta cita administrativa?"
+            title="Eliminar Cita"
+            description="¿Estás seguro que deseas eliminar esta cita?"
             triggerLabel={'Eliminar'}
             confirmLabel="Eliminar"
             cancelLabel="Cancelar"

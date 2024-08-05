@@ -40,8 +40,11 @@ const quotesSchema = z.object({
   id: z.number().optional(),
   date: z.date({ required_error: 'La fecha es requerida' }),
   timeAndResponsible: timeAndResponsibleSchema,
-  client: z.string().min(1, 'El cliente es requerido'),
-  vehicleType: z.string().min(1, 'El tipo de vehículo es requerido'),
+  client: z.string().min(1, 'El cliente es requerido').max(30, 'El cliente no puede tener más de 30 caracteres'),
+  vehicleType: z
+    .string()
+    .min(1, 'El tipo de vehículo es requerido')
+    .max(50, 'El tipo de vehículo no puede tener más de 50 caracteres'),
   description: z.string().optional(),
   defaultDataTime: defaultDataTime.optional(),
 })

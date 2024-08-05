@@ -3,9 +3,9 @@ import { getCookie } from '@/shared/api/cookies-util'
 import { HttpHandler, HttpResponse } from '@/shared/api/http-handler'
 import { MESSAGES } from '@/shared/constants/messages'
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import toast from 'react-hot-toast'
 
 import { handleError } from './error-handler'
+import { showSuccessToast } from './success-handler'
 
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   successMessage?: string
@@ -43,7 +43,8 @@ export class AxiosAdapter implements HttpHandler {
         const customConfig = response.config as CustomAxiosRequestConfig
         const successMessage = customConfig.successMessage || MESSAGES.DEFAULT_SUCCESS_MESSAGE
 
-        if (!['get'].includes(response.config.method || '')) toast.success(successMessage)
+        if (!['get'].includes(response.config.method || '')) showSuccessToast(successMessage)
+
         return response
       },
       (error) => {
