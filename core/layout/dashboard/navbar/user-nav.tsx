@@ -59,7 +59,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="hover:cursor-pointer">
-          <Button variant={'ghost'} className="flex items-center" onClick={() => onLogout()}>
+          <Button disabled={loading} variant={'ghost'} className="flex items-center" onClick={() => onLogout()}>
             {loading ? (
               <LoadingSpinner className="text-center" />
             ) : (

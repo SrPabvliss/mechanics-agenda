@@ -49,6 +49,14 @@ export class AuthDatasourceImpl implements AuthDatasource {
     await deleteCookie(ACCESS_TOKEN_COOKIE_NAME)
     const messaging = getMessaging()
     await deleteToken(messaging)
+      .then(() => {
+        // eslint-disable-next-line no-console
+        console.log('Token de notificaciones eliminado')
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('Error eliminando token de notificaciones', err)
+      })
     return true
   }
 

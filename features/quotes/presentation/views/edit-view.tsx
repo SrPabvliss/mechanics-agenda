@@ -4,7 +4,7 @@ import { ContentLayout } from '@/core/layout/content/content-layout'
 import Spinner from '@/shared/components/spinner'
 import React from 'react'
 
-import { useQuotesByIdQuery } from '../../hooks/use-quotes-by-id-query'
+import { useQuotesByIdQuery } from '../../hooks/use-quotes-query'
 import NewEditQuotesForm from '../components/new-edit-quotes-form'
 
 export const QuotesEditView = ({ id }: { id: string }) => {
