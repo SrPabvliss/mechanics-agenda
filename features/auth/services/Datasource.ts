@@ -47,8 +47,12 @@ export class AuthDatasourceImpl implements AuthDatasource {
     if (error) return false
     await this.httpClient.setAccessToken(null)
     await deleteCookie(ACCESS_TOKEN_COOKIE_NAME)
-    const messaging = getMessaging()
-    await deleteToken(messaging)
+    try {
+      const messaging = getMessaging()
+      await deleteToken(messaging)
+    } catch (error) {
+      console.error('Error deleting token')
+    }
     return true
   }
 
