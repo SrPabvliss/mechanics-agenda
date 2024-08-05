@@ -33,13 +33,17 @@ export class QuotesDatasourceImpl implements QuoteDatasource {
   }
 
   async create(quote: IApiCreateQuote) {
-    const { data, error } = await this.httpClient.post<IApiQuote>(API_ROUTES.APPOINTMENTS.CREATE, quote)
+    const { data, error } = await this.httpClient.post<IApiQuote>(API_ROUTES.APPOINTMENTS.CREATE, quote, {
+      successMessage: MESSAGES.QUOTES.CREATE,
+    })
     if (error) return
     return data
   }
 
   async update(id: number, quote: IApiUpdateQuote) {
-    const { data, error } = await this.httpClient.patch<IApiQuote>(API_ROUTES.APPOINTMENTS.UPDATE(id), quote)
+    const { data, error } = await this.httpClient.patch<IApiQuote>(API_ROUTES.APPOINTMENTS.UPDATE(id), quote, {
+      successMessage: MESSAGES.QUOTES.UPDATE,
+    })
     if (error) return
     return data
   }
