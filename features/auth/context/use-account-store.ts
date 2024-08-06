@@ -27,9 +27,15 @@ export const UseAccountStore = create<StoreState>(
       user: DEFAULT_USER,
       loading: false,
       login: async (credentials: IAuth) => {
-        if (get().loading) return false
         const token = await getCookie(ACCESS_TOKEN_COOKIE_NAME)
-        if (token) return true
+        if (token) {
+          set({ loading: false })
+          return true
+        }
+        if (!token) {
+          set({ loading: false })
+        }
+        if (get().loading) return false
         set({ loading: true })
         const user = await AuthDatasourceImpl.getInstance().login(credentials)
         if (!user?.ci) {
