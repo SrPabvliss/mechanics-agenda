@@ -10,6 +10,7 @@ import {
   IScheduleWeek,
 } from '@/shared/interfaces/ISchedule'
 
+import { clientLastName } from '@/lib/clientName'
 import { formatDate, formatDateTimeEC } from '@/lib/formatDate'
 import { formatTime } from '@/lib/formatTime'
 
@@ -23,8 +24,8 @@ export class QuotesAdapter {
     data.forEach((quote) => {
       const event: IQuoteEvent = {
         id: quote.id,
-        title: quote.vehicleDescription,
-        label: quote.description || quote.clientName,
+        title: quote.clientName,
+        label: quote.description,
         startTime: formatTime(quote.date),
         color: quote.user.color || agendaColorOptions[0].value,
       }
@@ -51,7 +52,7 @@ export class QuotesAdapter {
     data.forEach((quote) => {
       const event: IQuoteEvent = {
         id: quote.id,
-        title: quote.vehicleDescription,
+        title: clientLastName(quote.clientName),
         label: quote.description,
         startTime: formatTime(quote.date),
         color: quote.user.color || agendaColorOptions[0].value,
@@ -85,7 +86,7 @@ export class QuotesAdapter {
     data.forEach((quote) => {
       const event: IQuoteEvent = {
         id: quote.id,
-        title: quote.vehicleDescription,
+        title: clientLastName(quote.clientName),
         label: quote.description,
         startTime: formatTime(quote.date),
         color: quote.user.color || agendaColorOptions[0].value,

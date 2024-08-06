@@ -2,6 +2,7 @@ import { agendaColorOptions } from '@/shared/constants/color-options'
 import { IReviewEvent, IReviewEventsDay } from '@/shared/interfaces/IEvents'
 import { IScheduleWeek } from '@/shared/interfaces/ISchedule'
 
+import { clientLastName } from '@/lib/clientName'
 import { formatTime } from '@/lib/formatTime'
 
 import { formatDate } from '../../../lib/formatDate'
@@ -16,7 +17,7 @@ export class ReviewAdapter {
     data.forEach((review) => {
       const event: IReviewEvent = {
         id: review.id,
-        title: `${review.appointment?.clientName}'s ${review.appointment?.vehicleDescription}`,
+        title: clientLastName(review.appointment?.clientName),
         label: review.appointment?.description || review.appointment?.clientName,
         startTime: formatTime(review.startDate),
         endTime: review.endDate ? formatTime(review.endDate) : '',
@@ -54,7 +55,7 @@ export class ReviewAdapter {
     data.forEach((review) => {
       const event: IReviewEvent = {
         id: review.id,
-        title: review.appointment?.vehicleDescription,
+        title: clientLastName(review.appointment?.clientName),
         label: review.appointment?.clientName,
         startTime: formatDate(review.startDate),
         endTime: review.endDate ? formatDate(review.endDate) : '',
