@@ -7,5 +7,5 @@ type SpanishUserRole = {
 export const spanishUserRole: SpanishUserRole = {
   ADMIN: 'Administrador',
   MECHANIC: 'Mecánico',
-  SECRETARY: 'Secretaria',
+  SECRETARY: 'Secretari@',
 }

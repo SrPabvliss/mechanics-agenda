@@ -14,11 +14,11 @@ const ItemDay = ({ schedule, onDelete }: ItemDayProps) => {
     <li id={schedule.hour} className="flex gap-0.5">
       <span className=" w-12 text-sm text-blue-900 dark:text-white">{schedule.hour}</span>
       <div
-        className="flex w-[calc(100%-50px)] flex-col gap-1 bg-blue-50 pb-1 dark:bg-blue-950"
+        className="flex w-[calc(100%-50px)] flex-col gap-1 bg-blue-50 py-1 dark:bg-blue-950"
         style={{ borderTop: '1px dashed' }}
       >
         <ScrollArea className="text-blue-900">
-          <ul className="flex h-16 w-full gap-1 p-1">
+          <ul className="flex h-14 w-full gap-1 px-1">
             {schedule.events1.map((event) => (
               <ItemHour key={event.id} event={event} onDelete={onDelete} />
             ))}
@@ -27,7 +27,7 @@ const ItemDay = ({ schedule, onDelete }: ItemDayProps) => {
         </ScrollArea>
 
         <ScrollArea className="text-blue-900">
-          <ul className="flex h-16 w-full gap-1 px-1">
+          <ul className="flex h-14 w-full gap-1 px-1">
             {schedule.events2.map((event) => (
               <ItemHour key={event.id} event={event} onDelete={onDelete} />
             ))}
